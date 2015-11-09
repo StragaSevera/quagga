@@ -10,6 +10,6 @@ RSpec.describe Question, type: :model do
     it { should validate_presence_of :body }
     it { should validate_length_of(:body).is_at_least(10).is_at_most 10.kilobytes }
 
-    it { should have_many(:answers) }    
+    it { should have_many(:answers).dependent(:destroy) }    
   end
 end
