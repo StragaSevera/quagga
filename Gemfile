@@ -74,11 +74,16 @@ group :development, :test do
 end
 
 group :test do
-
   # Launch test in automode
   gem 'guard'
   gem 'guard-rspec'
   
   gem 'shoulda-matchers', '~> 3.0'
 
+  gem 'capybara'
+  gem 'capybara-screenshot'
+  gem 'capybara-webkit'
+
+  gem 'database_cleaner'
+  gem 'launchy'
 end
