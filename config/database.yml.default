@@ -1,0 +1,23 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  host: localhost
+
+development:
+  <<: *default
+  database: quagga_development
+  username: <%= ENV['QUAGGA_DATABASE_USER_DEV'] %>
+  password: <%= ENV['QUAGGA_DATABASE_PASSWORD_DEV'] %>
+
+test:
+  <<: *default
+  database: quagga_test
+  username: <%= ENV['QUAGGA_DATABASE_USER_DEV'] %>
+  password: <%= ENV['QUAGGA_DATABASE_PASSWORD_DEV'] %>
+
+production:
+  <<: *default
+  database: quagga_production
+  username: <%= ENV['QUAGGA_DATABASE_USER'] %>
+  password: <%= ENV['QUAGGA_DATABASE_PASSWORD'] %>
