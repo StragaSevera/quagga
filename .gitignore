@@ -19,6 +19,7 @@
 
 # Ignore Sublime
 *.sublime-workspace
+*.sublime-project
 
 # Ignore rbenv-vars
 *.rbenv-vars
