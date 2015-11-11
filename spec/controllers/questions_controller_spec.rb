@@ -12,7 +12,7 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:questions)).to match_array(questions)
     end
 
-    it 'renders index view' do
+    it 'renders the :index template' do
       expect(response).to render_template :index
     end    
   end
