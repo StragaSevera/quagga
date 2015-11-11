@@ -1,0 +1,20 @@
+ru:
+  activerecord:
+    models:
+      question: "Вопрос"
+      answer: "Ответ"
+    attributes:
+      post:
+        title: "Заголовок"
+        body: "Вопрос"
+      answer:
+        body: "Ответ"
+  will_paginate:
+    previous_label: "&#8592; Назад"
+    next_label: "Вперед &#8594;"
+    page_gap: "&hellip;"
+  custom_errors:
+    zero: "не обнаружено ошибок"
+    one: "обнаружена ошибка"
+    few: "обнаружено %{count} ошибки"
+    many: "обнаружено %{count} ошибок"

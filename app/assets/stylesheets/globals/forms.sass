@@ -1,0 +1,44 @@
+input, textarea, select, .uneditable-input 
+  border: 1px solid #bbb
+  width: 100%
+  margin-bottom: 15px
+  box-sizing: border-box
+
+label, input, .btn-primary 
+  font-size: 1.4em
+
+.btn-primary 
+  margin-top: 10px
+  margin-bottom: 15px
+
+input 
+  height: auto !important
+
+#error-explanation 
+  color: red
+  ul 
+    color: red
+    margin: 0px 0px 0px 0px
+
+.field_with_errors 
+  @extend .has-error
+  .form-control 
+    color: $state-danger-text
+
+.checkbox 
+  label 
+    padding-left: 0px
+  .checkbox-text 
+    margin-left: 5px
+    font-weight: normal
+    letter-spacing: 0px
+  input[type=checkbox] 
+    width: auto
+    margin-left: 0
+    margin-top: 0
+    position: relative
+
+    &:focus 
+      border-color: rgba(82, 168, 236, 0.8)
+      outline: 0
+      box-shadow: 0px 0px 8px rgba(82, 168, 236, 0.6)

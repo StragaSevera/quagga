@@ -16,6 +16,9 @@ gem 'sass-rails', '~> 5.0'
 # Boot'em on, Strap!
 gem 'bootstrap-sass'
 
+# Fix browser problems
+gem 'selectivizr-rails'
+
 # Divide anything to pages
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
