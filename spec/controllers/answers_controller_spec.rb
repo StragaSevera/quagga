@@ -37,7 +37,6 @@ RSpec.describe AnswersController, type: :controller do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
 
-    # Не уверен, стоит ли дергать базу?..
     it "adds @question to @answer parents" do
       expect(assigns(:answer).question).to eq question
     end
@@ -54,6 +53,11 @@ RSpec.describe AnswersController, type: :controller do
         expect {
           post :create, answer: attributes_for(:answer), question_id: question
         }.to change(Answer, :count).by 1
+      end
+
+      it "adds @question to @answer parents" do
+        post :create, answer: attributes_for(:answer), question_id: question
+        expect(assigns(:answer).question).to eq question
       end
 
       it "redirects to answers path" do
