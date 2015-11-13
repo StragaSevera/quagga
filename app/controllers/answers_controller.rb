@@ -10,8 +10,6 @@ class AnswersController < ApplicationController
   end
 
   def new
-    # Не уверен, может быть, не дергать базу
-    # и сделать просто @answer = Answer.new ?
     @answer = @question.answers.new
   end
 

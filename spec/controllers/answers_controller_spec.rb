@@ -56,8 +56,9 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it "adds @question to @answer parents" do
-        post :create, answer: attributes_for(:answer), question_id: question
-        expect(assigns(:answer).question).to eq question
+        expect {
+          post :create, answer: attributes_for(:answer), question_id: question
+        }.to change(question.answers, :count).by 1
       end
 
       it "redirects to answers path" do
