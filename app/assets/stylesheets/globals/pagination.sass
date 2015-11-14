@@ -1,0 +1,26 @@
+div.pagination 
+  margin: 10px 0px 0px 0px
+  ul 
+    margin: 10px 0px 0px 0px
+    li 
+      a 
+        color: $text-color-light
+        background-color: $bg-dark
+
+      a:hover 
+        color: $text-color-light
+        background-color: $clr-emph
+
+      &, &.disabled, &.active 
+        a, a:hover 
+          border-color: $clr-border
+
+      &.disabled 
+        a, a:hover 
+          color: $text-color
+          background-color: $bg-medium
+
+      &.active 
+        a, a:hover 
+          color: $text-color
+          background-color: $bg-medium

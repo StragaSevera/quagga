@@ -1,0 +1,45 @@
+p 
+  font-size: 1.2em
+  line-height: 1.2em
+  color: $text-color
+
+h1, h2, h3, h4, h5, h6 
+  line-height: 1
+  font-family: $font-header
+  margin-top: 10px
+
+h1 
+  font-size: 2.5em
+  letter-spacing: -1px
+  font-weight: normal
+  &:first-child, &.nomargin 
+    margin-top: 0px
+
+h2 
+  font-size: 2em
+  font-weight: normal
+  &:first-child, &.nomargin 
+    margin-top: 0px
+
+h3 
+  font-size: 1.6em
+  font-weight: normal
+  &:first-child, &.nomargin 
+    margin-top: 0px
+
+h4 
+  font-size: 1.4em
+  font-weight: normal
+  font-family: $font-header
+  margin-bottom: 5px
+  &:first-child, &.nomargin 
+    margin-top: 0px
+
+label:not(.label-plain) 
+  font-family: $font-header
+  font-size: 1.8em
+  font-weight: normal
+  margin: 0px
+
+label.label-plain 
+  @extend p

@@ -1,0 +1,5 @@
+.content-flash
+  .row
+    .col-full
+      - flash.each do |message_type, message|
+        .alert class="alert-#{message_type}" = message
