@@ -14,11 +14,12 @@ RSpec.feature "UserLogins",
     user
     log_in_as(:user)
 
-    expect(page).to have_content 'Добро пожаловать, #{user.name}!'
+
+    expect(page).to have_content "Добро пожаловать, #{user.name}!"
   end
 
   scenario 'Incorrect user trying to log in' do
-    log_in_as(:user_incorrect)
+    log_in_as(:user_invalid)
 
     expect(page).to have_content 'Неправильный email или пароль. Пожалуйста, перепроверьте данные!'
   end

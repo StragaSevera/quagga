@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'users/sessions'  }
+
   root 'questions#index'
 
   resources :questions, only: [:show, :new, :create] do

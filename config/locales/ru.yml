@@ -3,12 +3,18 @@ ru:
     models:
       question: "Вопрос"
       answer: "Ответ"
+      user: "Пользователь"
     attributes:
       post:
         title: "Заголовок"
         body: "Вопрос"
       answer:
         body: "Ответ"
+      user:
+        name: "Ник"
+        email: "E-mail"
+        password: "Пароль"
+        remember_me: "Запомнить пароль?"
   will_paginate:
     previous_label: "&#8592; Назад"
     next_label: "Вперед &#8594;"
@@ -18,3 +24,7 @@ ru:
     one: "обнаружена ошибка"
     few: "обнаружено %{count} ошибки"
     many: "обнаружено %{count} ошибок"
+  # devise:
+  #   failure:
+  #     user:        
+  #       invalid: "Неправильный email или пароль. Пожалуйста, перепроверьте данные!"
