@@ -11,8 +11,7 @@ RSpec.feature "UserLogouts",
   given(:user) { create(:user) }
 
   scenario "User trying to log out" do
-    user
-    log_in_as(:user)
+    log_in_as(user)
 
     click_link 'Выход'
 

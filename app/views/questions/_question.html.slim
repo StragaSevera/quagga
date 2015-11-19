@@ -1,0 +1,8 @@
+.row id="question-#{question.id}"
+  .col-full.col-question-body
+    h2.question-title
+      = link_to question.title, question_path(question.id)
+    .question-body
+        = simple_format question.body
+    .question-info 
+      => link_to publication_date(question.created_at), question_path(question.id)

@@ -11,8 +11,7 @@ RSpec.feature "UserLogins",
   given(:user) { create(:user) }
 
   scenario "Correct user trying to log in" do
-    user
-    log_in_as(:user)
+    log_in_as(user)
 
     expect(page).to have_content "Добро пожаловать, #{user.name}!"
   end

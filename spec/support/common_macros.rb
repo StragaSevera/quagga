@@ -1,9 +1,14 @@
 module CommonMacros
   def log_in_as(user, options = {})
     if feature_test?
-      attrs = attributes_for(user)
-      email = options[:email] || attrs[:email]
-      password = options[:password] || attrs[:password]
+      if user && ( user.is_a? Symbol )
+        attrs = attributes_for(user)
+        email = options[:email] || attrs[:email]
+        password = options[:password] || attrs[:password]   
+      else
+        email = options[:email] || user.email
+        password = options[:password] || user.password
+      end
 
       visit new_user_session_path
 
@@ -12,9 +17,8 @@ module CommonMacros
 
       click_on 'Войти'
     else
-      @user = create(user)
       @request.env['devise.mapping'] = Devise.mappings[:user]
-      sign_in @user
+      sign_in user
     end
   end
 

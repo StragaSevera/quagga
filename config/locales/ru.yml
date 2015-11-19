@@ -5,7 +5,7 @@ ru:
       answer: "Ответ"
       user: "Пользователь"
     attributes:
-      post:
+      question:
         title: "Заголовок"
         body: "Вопрос"
       answer:

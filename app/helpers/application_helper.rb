@@ -34,4 +34,8 @@ module ApplicationHelper
   def errors_count(number)
     "К сожалению, в форме #{t(:custom_errors, count: number)}:"
   end
+
+  def publication_date(date)
+    str = "Опубликовано %s в %s" % [date.strftime("%d.%m.%Y"), date.strftime("%k:%M")]
+  end
 end
