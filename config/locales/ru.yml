@@ -14,7 +14,14 @@ ru:
         name: "Ник"
         email: "E-mail"
         password: "Пароль"
+        password_confirmation: "Подтверждение пароля"
         remember_me: "Запомнить пароль?"
+    errors:
+      models:
+        user:
+          attributes:
+            password_confirmation:
+              confirmation: "не совпадает с самим паролем. Возможно, вы допустили опечатку?.."
   will_paginate:
     previous_label: "&#8592; Назад"
     next_label: "Вперед &#8594;"
@@ -24,7 +31,3 @@ ru:
     one: "обнаружена ошибка"
     few: "обнаружено %{count} ошибки"
     many: "обнаружено %{count} ошибок"
-  # devise:
-  #   failure:
-  #     user:        
-  #       invalid: "Неправильный email или пароль. Пожалуйста, перепроверьте данные!"

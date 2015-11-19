@@ -21,7 +21,6 @@ header#app-header
                 => current_user.name
                 b.caret
               ul.dropdown-menu
-                = nav_link "Профиль", current_user
                 = nav_link "Настройки", edit_user_registration_path(current_user)
                 li.divider
                 li = link_to "Выход", logout_path, method: "delete"

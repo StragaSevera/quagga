@@ -28,4 +28,8 @@ module ApplicationHelper
       link_to link_text, link_path, options
     end
   end
+
+  def errors_count(number)
+    "К сожалению, в форме #{t(:custom_errors, count: number)}:"
+  end
 end
