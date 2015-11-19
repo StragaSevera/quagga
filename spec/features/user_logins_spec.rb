@@ -21,6 +21,6 @@ RSpec.feature "UserLogins",
   scenario 'Incorrect user trying to log in' do
     log_in_as(:user_invalid)
 
-    expect(page).to have_content 'Неправильный email или пароль. Пожалуйста, перепроверьте данные!'
+    expect(page).to have_content 'Неверный e-mail или пароль. Пожалуйста, перепроверьте данные!'
   end
 end

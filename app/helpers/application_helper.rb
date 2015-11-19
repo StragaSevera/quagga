@@ -8,6 +8,15 @@ module ApplicationHelper
     end
   end
 
+  def alert_type(type)
+    case type
+    when "alert"
+      "alert-danger"
+    else
+      "alert-#{type}"
+    end
+  end
+
   def errors_count(number)
     "К сожалению, в форме #{t(:custom_errors, count: number)}:"
   end
