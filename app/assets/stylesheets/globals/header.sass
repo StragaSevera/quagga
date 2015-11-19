@@ -2,6 +2,45 @@
   margin-bottom: 20px
   .navbar-inverse
     background-color: $bg-dark
+    border-radius: 0px
+
+  .navbar-nav
+    font-weight: normal
+    font-family: $font-menu
+    font-size: 1.1em
+    line-height: 1.1em
+    
+    li
+      a
+        @media (min-width: $screen-lg-min)
+          font-size: 1.4em
+        @media (min-width: $screen-md-min) and (max-width: $screen-md-max)
+          font-size: 1.2em
+
+        line-height: 30px
+
+      .passive-node
+        color: $text-color-light
+        &:hover, &:focus
+          background-color: $clr-emph
+
+      .active-node
+        background-color: $bg-medium
+        color: $text-color
+
+        &:hover, &:focus
+          color: $clr-emph
+
+      // Да, я понимаю, что логика сложная. Может, просто разбросать по коду .not-active?..
+      & .dropdown-menu, &.dropdown
+        li:not(.active) a:not(.active), > a:not(.active)
+          @extend .passive-node
+
+      &.not-active a, & a.not-active
+        @extend .passive-node
+
+      &.active a, & .dropdown-menu .active a, & a.active
+        @extend .active-node
 
 #app-header-logo
   height: 100%

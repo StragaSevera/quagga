@@ -17,7 +17,15 @@ module ApplicationHelper
     end
   end
 
-  def errors_count(number)
-    "К сожалению, в форме #{t(:custom_errors, count: number)}:"
+  def nav_class(link_path)
+    current_page?(link_path) ? 'active' : 'not-active'
+  end
+
+  def nav_link(link_text, link_path, options = {})
+    class_name = nav_class(link_path)
+
+    content_tag(:li, :class => class_name) do
+      link_to link_text, link_path, options
+    end
   end
 end
