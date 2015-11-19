@@ -12,6 +12,8 @@ module ApplicationHelper
     case type
     when "alert"
       "alert-danger"
+    when "notice"
+      "alert-info"  
     else
       "alert-#{type}"
     end

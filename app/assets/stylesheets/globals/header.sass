@@ -1,3 +1,10 @@
+#app-header-logo
+  height: 100%
+  padding-top: 2px
+  padding-bottom: 2px
+  .img-logo
+    border: 2px solid $clr-border
+
 #app-header
   margin-bottom: 20px
   .navbar-inverse
@@ -42,9 +49,10 @@
       &.active a, & .dropdown-menu .active a, & a.active
         @extend .active-node
 
-#app-header-logo
-  height: 100%
-  padding-top: 2px
-  padding-bottom: 2px
-  .img-logo
-    border: 2px solid $clr-border
+  .dropdown-menu
+    background-color: $bg-dark
+    margin-top: 0px
+    padding-top: 5px
+    a
+      @media (min-width: $screen-lg-min)
+        padding-right: 30px

@@ -4,7 +4,7 @@ RSpec.feature "UserLogins",
   %q{
     In order to ask questions
     As an user
-    I want to sign in
+    I want to log in
   },
   type: :feature do
 
@@ -13,7 +13,6 @@ RSpec.feature "UserLogins",
   scenario "Correct user trying to log in" do
     user
     log_in_as(:user)
-
 
     expect(page).to have_content "Добро пожаловать, #{user.name}!"
   end
