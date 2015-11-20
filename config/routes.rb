@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     get "signup", to: "users/registrations#new"
   end
 
-  resources :questions, only: [:index, :show, :new, :create] do
+  resources :questions, only: [:index, :show, :new, :create, :destroy] do
     resources :answers, only: [:index, :show, :new, :create]
   end
 end

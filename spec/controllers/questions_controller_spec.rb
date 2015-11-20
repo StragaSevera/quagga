@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question, user: user) }
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 2) }
+    let(:questions) { create_list(:question, 2, user: user) }
 
     before { get :index }
 
@@ -31,12 +32,15 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #new' do
     context 'when logged in' do
-      let (:user) { create(:user) }
       before(:each) { log_in_as user }
       before(:each) { get :new }
     
       it "assigns a new Question to @question" do
         expect(assigns(:question)).to be_a_new(Question)
+      end
+
+      it "has parent user for @question" do
+        expect(assigns(:question).user).to eq user
       end
 
       it "renders the :new template" do
@@ -55,7 +59,6 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'POST #create' do
     context 'when logged in' do
-      let (:user) { create(:user) }
       before(:each) { log_in_as user }
     
       context 'with valid attributes' do
@@ -63,6 +66,12 @@ RSpec.describe QuestionsController, type: :controller do
           expect {
             post :create, question: attributes_for(:question)
           }.to change(Question, :count).by 1
+        end
+
+        it "has parent user for @question" do
+          expect {
+            post :create, question: attributes_for(:question)
+          }.to change(user.questions, :count).by 1
         end
 
         it "redirects to questions path" do
@@ -96,6 +105,46 @@ RSpec.describe QuestionsController, type: :controller do
           post :create, question: attributes_for(:question_invalid)
         }.not_to change(Question, :count)
       end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let! (:question) { create(:question, user: user) }
+
+    context 'when logged in' do
+      context 'as correct user' do
+        before(:each) { log_in_as user }
+
+        it 'deletes the question' do
+          expect {
+            delete :destroy, id: question
+          }.to change(Question, :count).by -1
+        end
+
+        it "redirects to question#index" do
+          delete :destroy, id: question
+          expect(response).to redirect_to questions_path
+        end
+      end
+
+      context 'as incorrect user' do
+        let (:other) { create(:user_multi) }
+        before(:each) { log_in_as other }
+
+        it "does not delete question" do
+          expect {
+            delete :destroy, id: question
+          }.not_to change(Question, :count)
+        end 
+      end
+    end
+
+    context 'when logged out' do
+      it "does not delete question" do
+        expect {
+          delete :destroy, id: question
+        }.not_to change(Question, :count)
+      end      
     end
   end
 end
