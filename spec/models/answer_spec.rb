@@ -10,5 +10,6 @@ RSpec.describe Answer, type: :model do
     it { should validate_length_of(:body).is_at_least(10).is_at_most 10.kilobytes }
 
     it { should belong_to(:question) }
+    it { should belong_to(:user) }
   end
 end
