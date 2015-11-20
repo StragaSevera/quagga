@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature "QuestionAsk", 
+RSpec.feature "QuestionNew", 
   %q{
     In order to get help
     As an user

@@ -1,28 +1,30 @@
 require 'rails_helper'
 
-RSpec.feature "QuestionDelete", 
+RSpec.feature "AnswerDelete", 
   %q{
-    In order to undo asking
+    In order to undo answering
     As an user
-    I want to delete question
+    I want to delete answer
   },
   type: :feature do
 
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
+  given!(:answer) { create(:answer, user: user, question: question) }
 
   context "when logged in" do
     context "as correct user" do
       before(:each) { log_in_as(user) }    
 
-      scenario "User can delete questions" do
+      scenario "User can delete answers" do
         visit question_path(question)
 
-        click_link 'удалить'
+        within "#answer-#{answer.id}" do
+          click_link 'удалить'
+        end
 
-        expect(page).to have_content "Вопрос был удален!"
-        expect(page).not_to have_content attributes_for(:question)[:body]
-        expect(page).not_to have_content attributes_for(:question)[:title]
+        expect(page).to have_content "Ответ был удален!"
+        expect(page).not_to have_content attributes_for(:answer)[:body]
       end
     end
 

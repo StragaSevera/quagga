@@ -8,6 +8,8 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @answers = @question.answers.page(params[:page]).order('id DESC')
+    @answer = @question.answers.build
   end
 
   def new

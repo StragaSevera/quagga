@@ -19,7 +19,9 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
+    let (:answers) { create_list(:answer, 2, user: user, question: question) }
     before(:each) { get :show, id: question }
+
 
     it "assigns the requested question to @question" do     
       expect(assigns(:question)).to eq question
@@ -27,6 +29,10 @@ RSpec.describe QuestionsController, type: :controller do
 
     it "renders the :show template" do
       expect(response).to render_template :show
+    end
+
+    it 'populates an array of all answers' do
+      expect(assigns(:answers)).to match_array(answers)
     end
   end
 

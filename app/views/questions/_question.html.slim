@@ -7,6 +7,8 @@
         = simple_format question.body
     .question-info 
       => link_to publication_date(question.created_at), question_path(question.id)
+      | |
+      =<> question.user.name
       - if question.user == current_user
         | |
         =< link_to "удалить", question, method: :delete,

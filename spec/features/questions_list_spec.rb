@@ -9,7 +9,8 @@ RSpec.feature "QuestionsList",
   type: :feature do
   
   scenario "User can list questions" do
-    1.upto(30) { create(:question_multi) }
+    user = create(:user)
+    1.upto(30) { create(:question_multi, user: user) }
     visit questions_path
 
     # Тестируем с учетом пагинации и порядка

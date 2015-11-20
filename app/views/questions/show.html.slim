@@ -1,3 +1,24 @@
 - provide :title, @question.title
 .content-block
   = render @question
+  - if user_signed_in?
+    .row
+      .col-full
+        = form_for([@question, @answer]) do |f|
+          = render 'shared/error_messages', object: @answer
+
+          = f.label :body, "Ваш ответ"
+          = f.text_area :body, class: 'form-control', rows: 4
+
+          = f.submit "Ответить", class: "btn btn-primary", id: "button-submit"
+
+  - @answers.each do |answer|
+    = render answer
+    - unless @answers.last == answer
+      .row
+        .col-full
+          hr
+          
+  .row
+    .col-middle.text-center
+      = will_paginate(@answers)
