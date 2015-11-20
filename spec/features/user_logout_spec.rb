@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature "UserLogouts",
+RSpec.feature "UserLogout",
   %q{
     In order to switch accounts
     As an user

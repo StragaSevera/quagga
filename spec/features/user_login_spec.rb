@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature "UserLogins", 
+RSpec.feature "UserLogin", 
   %q{
     In order to ask questions
     As an user

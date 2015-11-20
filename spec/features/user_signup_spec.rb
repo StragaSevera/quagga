@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature "UserSignups", 
+RSpec.feature "UserSignup", 
   %q{
     In order to be able to log in
     As an user

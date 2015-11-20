@@ -1,0 +1,11 @@
+- provide :title
+.content-block
+  - @questions.each do |question|
+    = render question
+    - unless @questions.last == question
+      .row
+        .col-full
+          hr
+  .row
+    .col-middle.text-center
+      = will_paginate
