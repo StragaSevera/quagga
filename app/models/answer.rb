@@ -4,4 +4,6 @@ class Answer < ActiveRecord::Base
 
   validates :question_id, presence: true 
   validates :body, presence: true, length: { in: 10..10.kilobytes }
+
+  self.per_page = 10
 end

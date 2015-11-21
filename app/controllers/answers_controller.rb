@@ -13,7 +13,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to question_path(@question)
     else
-      @answers = @question.answers.page(params[:page]).order('id DESC')
+      @answers = @question.answers.page(1).order('id DESC')
       render "questions/show"
     end
   end

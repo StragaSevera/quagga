@@ -35,6 +35,12 @@ RSpec.describe AnswersController, type: :controller do
           }.to change(question.answers, :count).by 1
         end
 
+        it "adds @user to @answer parents" do
+          expect {
+            post :create, answer: attributes_for(:answer), question_id: question
+          }.to change(user.answers, :count).by 1
+        end
+
         it "redirects to question path" do
           post :create, answer: attributes_for(:answer), question_id: question
           expect(response).to redirect_to question_path(question)

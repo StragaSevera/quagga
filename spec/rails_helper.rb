@@ -42,6 +42,8 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include Devise::TestHelpers, type: :controller
   config.include CommonMacros
+  config.include FeatureMacros, type: :feature
+  config.include ControllerMacros, type: :controller
 end
 
 Shoulda::Matchers.configure do |config|

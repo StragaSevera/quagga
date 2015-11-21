@@ -20,5 +20,12 @@ RSpec.feature "QuestionsList",
       end
     end 
     10.downto(1) { |n| expect(page).not_to have_css "#question-#{n}" }
+
+    click_link '2'
+    10.downto(1) do |n| 
+      within("div.question-row:nth-of-type(#{11-n})") do
+        expect(page).to have_content "Question ##{n}"
+      end
+    end     
   end  
 end
