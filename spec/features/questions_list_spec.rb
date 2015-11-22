@@ -10,21 +10,21 @@ RSpec.feature "QuestionsList",
   
   scenario "User can list questions" do
     user = create(:user)
-    1.upto(30) { create(:question_multi, user: user) }
+    1.upto(6) { create(:question_multi, user: user) }
     visit questions_path
 
     # Тестируем с учетом пагинации и порядка
-    30.downto(11) do |n| 
-      within("div.question-row:nth-of-type(#{31-n})") do
-        expect(page).to have_content "Question ##{n}"
+    6.downto(4) do |n| 
+      within("div.question-row:nth-of-type(#{7-n})") do
+        expect(page).to have_content "##{n} question"
       end
     end 
-    10.downto(1) { |n| expect(page).not_to have_css "#question-#{n}" }
+    3.downto(1) { |n| expect(page).not_to have_content "##{n} question" }
 
     click_link '2'
-    10.downto(1) do |n| 
-      within("div.question-row:nth-of-type(#{11-n})") do
-        expect(page).to have_content "Question ##{n}"
+    3.downto(1) do |n| 
+      within("div.question-row:nth-of-type(#{4-n})") do
+        expect(page).to have_content "##{n} question"
       end
     end     
   end  

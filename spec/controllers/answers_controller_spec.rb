@@ -22,13 +22,6 @@ RSpec.describe AnswersController, type: :controller do
       before(:each) { log_in_as user }
 
       context 'with valid attributes' do
-        it "saves the new answer to database" do
-          question
-          expect {
-            post :create, answer: attributes_for(:answer), question_id: question
-          }.to change(Answer, :count).by 1
-        end
-
         it "adds @question to @answer parents" do
           expect {
             post :create, answer: attributes_for(:answer), question_id: question

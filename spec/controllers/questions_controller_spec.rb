@@ -68,12 +68,6 @@ RSpec.describe QuestionsController, type: :controller do
       before(:each) { log_in_as user }
     
       context 'with valid attributes' do
-        it "saves the new question to database" do
-          expect {
-            post :create, question: attributes_for(:question)
-          }.to change(Question, :count).by 1
-        end
-
         it "has parent user for @question" do
           expect {
             post :create, question: attributes_for(:question)
