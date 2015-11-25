@@ -18,10 +18,13 @@ RSpec.feature "QuestionDelete",
       scenario "User can delete questions" do
         create(:question, user: user, title: 'Other title')
         visit question_path(question)
-
-        click_link 'удалить'
+        
+        within "#question-#{question.id}" do
+          click_link 'удалить'
+        end
 
         expect(page).to have_content "Вопрос был удален!"
+        expect(current_path).to eq questions_path
         expect(page).not_to have_content attributes_for(:question)[:body]
         expect(page).not_to have_content attributes_for(:question)[:title]
         expect(page).to have_content 'Other title'
