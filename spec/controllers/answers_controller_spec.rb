@@ -24,19 +24,19 @@ RSpec.describe AnswersController, type: :controller do
       context 'with valid attributes' do
         it "adds @question to @answer parents" do
           expect {
-            post :create, answer: attributes_for(:answer), question_id: question
+            post :create, answer: attributes_for(:answer), question_id: question, format: :js
           }.to change(question.answers, :count).by 1
         end
 
         it "adds @user to @answer parents" do
           expect {
-            post :create, answer: attributes_for(:answer), question_id: question
+            post :create, answer: attributes_for(:answer), question_id: question, format: :js
           }.to change(user.answers, :count).by 1
         end
 
-        it "redirects to question path" do
-          post :create, answer: attributes_for(:answer), question_id: question
-          expect(response).to redirect_to question_path(question)
+        it "renders js :create" do
+          post :create, answer: attributes_for(:answer), question_id: question, format: :js
+          expect(response).to render_template :create
         end
       end
 
@@ -44,17 +44,17 @@ RSpec.describe AnswersController, type: :controller do
         it "does not save the new answer to database" do
           question
           expect {
-            post :create, answer: attributes_for(:answer_invalid), question_id: question
+            post :create, answer: attributes_for(:answer_invalid), question_id: question, format: :js
           }.not_to change(Answer, :count)
         end
 
-        it "redirects to question path" do
-          post :create, answer: attributes_for(:answer_invalid), question_id: question
-          expect(response).to render_template 'questions/show'
+        it "renders js :create" do
+          post :create, answer: attributes_for(:answer_invalid), question_id: question, format: :js
+          expect(response).to render_template :create
         end
 
         it "shows error message" do
-          post :create, answer: attributes_for(:answer_invalid), question_id: question
+          post :create, answer: attributes_for(:answer_invalid), question_id: question, format: :js
           expect(assigns(:answer).errors).not_to be_empty
         end  
       end
@@ -64,7 +64,7 @@ RSpec.describe AnswersController, type: :controller do
       it "does not save the new answer to database" do
         question
         expect {
-          post :create, answer: attributes_for(:answer_invalid), question_id: question
+          post :create, answer: attributes_for(:answer_invalid), question_id: question, format: :js
         }.not_to change(Answer, :count)
       end   
     end
