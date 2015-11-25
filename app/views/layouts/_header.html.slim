@@ -9,3 +9,21 @@ header#app-header
           span.icon-bar
         = link_to root_path, class: "navbar-brand", id: "app-header-logo" do
             = image_tag "quagga-small.jpg", class: "img-logo"
+
+      #navbar.collapse.navbar-collapse
+        ul.nav.navbar-nav
+          = nav_link "Главная", root_path
+          = nav_link "Задать вопрос", new_question_path
+        ul.nav.navbar-nav.navbar-right
+          - if user_signed_in?
+            li.dropdown
+              a#user-menu href="#" class="dropdown-toggle" data-toggle="dropdown"
+                => current_user.name
+                b.caret
+              ul.dropdown-menu
+                = nav_link "Настройки", edit_user_registration_path(current_user)
+                li.divider
+                li = link_to "Выход", logout_path, method: "delete"
+          - else
+            = nav_link "Регистрация", signup_path
+            = nav_link "Вход", login_path

@@ -1,0 +1,22 @@
+- provide :title, "Регистрация"
+.content-block
+  = render 'shared/error_messages', object: resource
+  .row
+    .col-middle
+      h1.text-center Регистрация
+      = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+        = f.label :name
+        = f.text_field :name, class: 'form-control', autofocus: true        
+
+        = f.label :email
+        = f.email_field :email, class: 'form-control'
+
+        = f.label :password
+        = f.password_field :password, class: 'form-control', autocomplete: "off"
+
+        = f.label :password_confirmation
+        = f.password_field :password_confirmation, class: 'form-control', autocomplete: "off"
+
+        = f.submit "Зарегистрироваться", class: "btn btn-primary", id: "button-submit"
+
+        = render "devise/shared/links"

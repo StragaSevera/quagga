@@ -1,5 +1,6 @@
 .content-flash
   .row
     .col-full
-      - flash.each do |message_type, message|
-        .alert class="alert-#{message_type}" = message
+      - flash.each do |type, message|
+        - if type != :timedout
+          .alert class=alert_type(type) = message

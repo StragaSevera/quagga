@@ -3,12 +3,25 @@ ru:
     models:
       question: "Вопрос"
       answer: "Ответ"
+      user: "Пользователь"
     attributes:
-      post:
+      question:
         title: "Заголовок"
         body: "Вопрос"
       answer:
         body: "Ответ"
+      user:
+        name: "Ник"
+        email: "E-mail"
+        password: "Пароль"
+        password_confirmation: "Подтверждение пароля"
+        remember_me: "Запомнить пароль?"
+    errors:
+      models:
+        user:
+          attributes:
+            password_confirmation:
+              confirmation: "не совпадает с самим паролем. Возможно, вы допустили опечатку?.."
   will_paginate:
     previous_label: "&#8592; Назад"
     next_label: "Вперед &#8594;"

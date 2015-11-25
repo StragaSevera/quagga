@@ -1,25 +1,28 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!, only: [:create, :destroy]
   before_action :load_question
-  before_action :load_answer, only: [:show, :edit]
-
-  def index
-    @answers = @question.answers.page(params[:page]).order('id DESC')
-  end
+  before_action :load_answer, only: [:show, :destroy]
+  before_action :check_current_user, only: [:destroy]
 
   def show
   end
 
-  def new
-    @answer = @question.answers.new
+  def create
+    @answer = @question.answers.build(answer_params)
+    @answer.user = current_user
+    if @answer.save
+      redirect_to question_path(@question)
+    else
+      @answers = @question.answers.page(1).order('id DESC')
+      render "questions/show"
+    end
   end
 
-  def create
-    @answer = @question.answers.new(answer_params)
-    if @answer.save
-      redirect_to question_answers_path(@question)
-    else
-      render :new
-    end
+  def destroy
+    @answer.destroy
+    flash[:success] = "Ответ был удален!"
+
+    redirect_to question_url(@question)
   end
 
   private
@@ -34,4 +37,8 @@ class AnswersController < ApplicationController
     def answer_params
       params.require(:answer).permit(:body)
     end  
+
+    def check_current_user
+      redirect_to root_url unless @answer.user == current_user
+    end
 end

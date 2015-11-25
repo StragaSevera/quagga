@@ -1,0 +1,20 @@
+- provide :title, "Вход"
+.content-block
+  .row
+    .col-middle
+      h1.text-center Вход
+      = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+        = f.label :email
+        = f.email_field :email, class: 'form-control', autofocus: true
+
+        = f.label :password
+        = f.password_field :password, class: 'form-control', autocomplete: "off"
+
+        - if devise_mapping.rememberable?
+          = f.label :forget_me, class: "checkbox inline label-plain" do
+            span = f.check_box :remember_me
+            span.checkbox-text Запомнить пароль
+
+        = f.submit "Войти", class: "btn btn-primary", id: "button-submit"
+
+        = render "devise/shared/links"

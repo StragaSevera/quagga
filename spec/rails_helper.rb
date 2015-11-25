@@ -40,6 +40,10 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.include FactoryGirl::Syntax::Methods
+  config.include Devise::TestHelpers, type: :controller
+  config.include CommonMacros
+  config.include FeatureMacros, type: :feature
+  config.include ControllerMacros, type: :controller
 end
 
 Shoulda::Matchers.configure do |config|

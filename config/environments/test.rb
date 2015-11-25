@@ -40,3 +40,6 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end
+
+# Не 2, чтобы в будущем иметь возможность тестировать "первый", "средний" и "последний" элементы
+WillPaginate.per_page = 3

@@ -1,0 +1,9 @@
+- if object.errors.any?
+  .row
+    .col-full
+      #error-explanation
+        .alert.alert-danger
+          p = errors_count(object.errors.count)
+          ul
+            - object.errors.full_messages.each do |msg|
+              li = msg

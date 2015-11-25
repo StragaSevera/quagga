@@ -8,7 +8,34 @@ module ApplicationHelper
     end
   end
 
+  def alert_type(type)
+    case type
+    when "alert"
+      "alert-danger"
+    when "notice"
+      "alert-info"  
+    else
+      "alert-#{type}"
+    end
+  end
+
+  def nav_class(link_path)
+    current_page?(link_path) ? 'active' : 'not-active'
+  end
+
+  def nav_link(link_text, link_path, options = {})
+    class_name = nav_class(link_path)
+
+    content_tag(:li, :class => class_name) do
+      link_to link_text, link_path, options
+    end
+  end
+
   def errors_count(number)
     "К сожалению, в форме #{t(:custom_errors, count: number)}:"
+  end
+
+  def publication_date(date)
+    str = "Опубликовано %s в %s" % [date.strftime("%d.%m.%Y"), date.strftime("%k:%M")]
   end
 end
