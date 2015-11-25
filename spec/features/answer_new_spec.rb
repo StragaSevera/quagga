@@ -20,10 +20,10 @@ RSpec.feature "AnswerNew",
       fill_in 'Ваш ответ', with: "No way. It cannot exist."
       click_button 'Ответить'
 
-
       within "#answers-block" do
         expect(page).to have_content "No way. It cannot exist."
       end
+
       expect(current_path).to eq question_path(question)
     end
 
