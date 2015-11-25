@@ -2,22 +2,20 @@
 .content-block
   = render @question
   - if user_signed_in?
-    .row
+    .row#answer-form-row
       .col-full
-        = form_for([@question, @answer]) do |f|
-          = render 'shared/error_messages', object: @answer
+        = form_for [@question, @answer], remote: true do |f|
+          span#answer-errors
+            = render 'shared/error_messages', object: @answer
 
           = f.label :body, "Ваш ответ"
           = f.text_area :body, class: 'form-control', rows: 4
 
           = f.submit "Ответить", class: "btn btn-primary", id: "button-submit"
 
+.content-block#answers-block
   - @answers.each do |answer|
-    = render answer
-    - unless @answers.last == answer
-      .row
-        .col-full
-          hr
+    = render answer, last: ( @answers.last == answer )
           
   .row
     .col-middle.text-center
