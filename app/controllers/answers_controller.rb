@@ -10,11 +10,18 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
-    if @answer.save
-      redirect_to question_path(@question)
-    else
-      @answers = @question.answers.page(1).order('id DESC')
-      render "questions/show"
+    respond_to do |format|
+      if @result = @answer.save
+        format.html { redirect_to question_path(@question) }
+        format.js
+      else
+        format.html do 
+          @answers = @question.answers.page(1).order('id DESC')
+          render "questions/show" 
+        end
+
+        format.js
+      end
     end
   end
 

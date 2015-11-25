@@ -11,7 +11,7 @@ RSpec.feature "AnswerNew",
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
-  context "when logged in" do
+  context "when logged in", js: true do
     before(:each) { log_in_as(user) }    
 
     scenario "User can make correct answers" do
@@ -21,6 +21,7 @@ RSpec.feature "AnswerNew",
       click_button 'Ответить'
 
       expect(page).to have_content "No way. It cannot exist."
+      expect(current_path).to eq question_path(question)
     end
 
     scenario "User cannot make incorrect answers" do
@@ -29,6 +30,7 @@ RSpec.feature "AnswerNew",
       click_button 'Ответить'
 
       expect(page).to have_content 'Ответ не может быть пустым'
+      expect(current_path).to eq question_path(question)
     end
   end
 
