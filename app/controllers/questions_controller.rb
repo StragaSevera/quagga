@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :destroy]
-  before_action :load_question, only: [:show, :destroy]
-  before_action :check_current_user, only: [:destroy]
+  before_action :load_question, only: [:show, :update, :destroy]
+  before_action :check_current_user, only: [:update, :destroy]
 
   def index
     @questions = Question.page(params[:page]).order('id DESC')    
@@ -23,6 +23,10 @@ class QuestionsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def update
+    @question.update_attributes(question_params)
   end
 
   def destroy

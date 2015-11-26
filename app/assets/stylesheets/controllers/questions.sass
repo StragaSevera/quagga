@@ -1,3 +1,9 @@
-#answers-block > div:nth-last-of-type(2)
+.hide-ruler
   hr
     display: none
+
+#answers-block > div:nth-last-of-type(2)
+  @extend .hide-ruler
+
+// .question-edit-row
+//   display: none

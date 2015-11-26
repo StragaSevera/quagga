@@ -1,11 +1,28 @@
 - provide :title, @question.title
-.content-block
-  = render @question
-  - if user_signed_in?
-    .row#answer-form-row
+.content-block#question-block
+  #question-content
+    = render @question
+  - if @question.user == current_user
+    .row.question-edit-row class=question_edit_class
+      .col-full
+        = form_for @question, remote: true, html: { id: "question-edit-form-#{@question.id}" } do |f|
+          #question-edit-errors
+            = render 'shared/error_messages', object: @question
+
+          = f.label :title
+          = f.text_field :title, class: 'form-control'
+
+          = f.label :body
+          = f.text_area :body, class: 'form-control', rows: 15
+
+          = f.submit "Изменить вопрос", class: "btn btn-primary", id: "button-submit"
+
+- if user_signed_in?
+  .content-block#answer-form-block
+    .row
       .col-full
         = form_for [@question, @answer], remote: true do |f|
-          span#answer-errors
+          #answer-new-errors
             = render 'shared/error_messages', object: @answer
 
           = f.label :body, "Ваш ответ"

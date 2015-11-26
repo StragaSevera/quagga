@@ -1,5 +1,5 @@
 - provide :title
-.content-block
+.content-block#questions-block
   - @questions.each do |question|
     = render question
     - unless @questions.last == question
