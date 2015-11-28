@@ -91,7 +91,7 @@ group :test do
 
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'capybara-webkit'
+  gem 'poltergeist'
 
   gem 'database_cleaner'
   gem 'launchy'

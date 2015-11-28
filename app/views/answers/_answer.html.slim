@@ -1,14 +1,9 @@
 .row.answer-row id="answer-row-#{answer.id}"
   .col-full
     .answer-stats
-      - if answer.best?
-        = link_to(demote_question_answers_url(question_id: answer.question.id), 
-          method: :patch, id: "answer-demote-#{answer.id}", remote: true) do
-          - fa_icon "check 3x", class: "answer-best"
-      - else
-        = link_to(promote_question_answer_url(question_id: answer.question.id, id: answer.id), 
-          method: :patch, id: "answer-promote-#{answer.id}", remote: true) do
-          - fa_icon "check 3x", class: "answer-normal"
+      = link_to(switch_promotion_question_answer_url(id: answer.id, question_id: answer.question.id), 
+        method: :patch, id: "answer-switch-#{answer.id}", remote: true) do
+        - fa_icon "check 3x", id: "answer-check-#{answer.id}", class: check_class(answer)
 
     .answer-text
       .answer-body

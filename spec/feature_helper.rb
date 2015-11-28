@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'capybara/poltergeist'
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = false
@@ -32,5 +33,5 @@ Capybara::Screenshot.autosave_on_failure = false
 
 Capybara.configure do |config|
   config.asset_host = "http://localhost:3000"
-  config.javascript_driver = :webkit
+  config.javascript_driver = :poltergeist
 end

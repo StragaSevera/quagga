@@ -11,10 +11,7 @@ Rails.application.routes.draw do
   resources :questions, only: [:index, :show, :new, :create, :update, :destroy] do
     resources :answers, only: [:show, :create, :update, :destroy] do
       member do
-        patch "promote"
-      end
-      collection do
-        patch "demote"
+        patch "switch_promotion"
       end
     end
   end

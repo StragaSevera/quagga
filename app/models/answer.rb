@@ -18,4 +18,8 @@ class Answer < ActiveRecord::Base
   def best?
     self.question.best_answer == self
   end
+
+  def switch_promotion!
+    self.question.switch_promotion!(self)
+  end
 end

@@ -1,9 +1,9 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:create, :destroy]
   before_action :load_question
-  before_action :load_answer, only: [:show, :update, :promote, :destroy]
+  before_action :load_answer, only: [:show, :update, :switch_promotion, :destroy]
   before_action :check_current_user, only: [:update, :destroy]
-  before_action :check_question_user, only: [:promote, :demote]
+  before_action :check_question_user, only: [:switch_promotion]
 
   def show
   end
@@ -27,14 +27,8 @@ class AnswersController < ApplicationController
     flash.now[:success] = "Ответ был удален!"
   end
 
-  def promote
-    # Можно сразу вызвать @answer.question.promote(@answer),
-    # но принцип "тонкие контроллеры, толстые модели" грустит...
-    @answer.promote!
-  end
-
-  def demote
-    @question.demote!
+  def switch_promotion
+    @answer.switch_promotion!
   end
 
   private
