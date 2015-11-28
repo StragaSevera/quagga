@@ -9,6 +9,6 @@ Rails.application.routes.draw do
   end
 
   resources :questions, only: [:index, :show, :new, :create, :update, :destroy] do
-    resources :answers, only: [:show, :create, :destroy]
+    resources :answers, only: [:show, :create, :update, :destroy]
   end
 end

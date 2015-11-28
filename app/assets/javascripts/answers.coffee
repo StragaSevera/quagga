@@ -1,3 +1,11 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+toggleAnswerForm = (id) ->
+  $("#answer-edit-#{id}").toggleClass 'block-hidden'
+
+@bindToggleAnswerForms = ->
+  $('.answer-show-edit-form').click (e) ->
+    e.preventDefault()
+    answer_id = $(this).data('answerId')
+    toggleAnswerForm(answer_id)
+
+$(document).ready(bindToggleAnswerForms)
+$(document).on('page:load', bindToggleAnswerForms)

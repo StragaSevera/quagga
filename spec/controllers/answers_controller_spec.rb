@@ -6,6 +6,7 @@ RSpec.describe AnswersController, type: :controller do
   let (:answer) { create(:answer, user: user, question: question) }
 
   describe 'GET #show' do
+    let (:answer) { create(:answer, user: user, question: question) }
     before(:each) { get :show, id: answer, question_id: question }
 
     it "assigns the requested answer to @answer" do     
@@ -68,6 +69,66 @@ RSpec.describe AnswersController, type: :controller do
         }.not_to change(Answer, :count)
       end   
     end
+  end
+
+  describe 'PATCH #update' do  
+    shared_examples_for 'not changing answer' do
+      it 'does not change body' do
+        answer.reload
+        expect(answer.body).to eq attributes_for(:answer)[:body]         
+      end     
+    end
+
+    describe 'when logged in' do
+      context 'as correct user' do
+        before(:each) { log_in_as user }
+
+        context 'with valid attributes' do
+          before(:each) { patch :update, id: answer.id, question_id: question.id, format: :js, 
+                          answer: { body: "A very special answer" } }
+        
+          it "assigns correct Question to @question" do
+            expect(assigns(:question)).to eq question
+          end
+
+          it "assigns correct Answer to @answer" do
+            expect(assigns(:answer)).to eq answer
+          end
+
+          it "changes body for @qanswer" do
+            answer.reload
+            expect(answer.body).to eq "A very special answer"
+          end
+
+          it "renders the :update template" do
+            expect(response).to render_template :update
+          end           
+        end
+        
+        context 'with invalid attributes' do
+          before(:each) { patch :update, id: answer.id, question_id: question.id, format: :js, 
+                          answer: { body: "" } }
+
+          it_behaves_like 'not changing answer'
+        end
+      end
+
+      context 'as incorrect user' do
+        let (:other) { create(:user_multi) }
+        before(:each) { log_in_as other }
+        before(:each) { patch :update, id: answer.id, question_id: question.id, format: :js, 
+                        answer: { body: "A very special answer" } }
+
+        it_behaves_like 'not changing answer'
+      end
+    end
+
+    context 'when logged out' do
+      before(:each) { patch :update, id: answer.id, question_id: question.id, format: :js, 
+                      answer: { body: "A very special answer" } }
+                
+      it_behaves_like 'not changing answer'   
+    end    
   end
 
   describe 'DELETE #destroy' do

@@ -1,8 +1,8 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:create, :destroy]
   before_action :load_question
-  before_action :load_answer, only: [:show, :destroy]
-  before_action :check_current_user, only: [:destroy]
+  before_action :load_answer, only: [:show, :update, :destroy]
+  before_action :check_current_user, only: [:update, :destroy]
 
   def show
   end
@@ -11,6 +11,10 @@ class AnswersController < ApplicationController
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
     @answer.save
+  end
+
+  def update
+    @answer.update_attributes(answer_params)
   end
 
   def destroy

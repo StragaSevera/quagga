@@ -1,4 +1,4 @@
-.row.answer-row id="answer-#{answer.id}"
+.row.answer-row
   .col-full
     .answer-body
       = simple_format answer.body
@@ -8,7 +8,15 @@
       =<> answer.user.name
       - if answer.user == current_user
         | |
+        =<> link_to "редактировать", "#", class: 'answer-show-edit-form', data: { answer_id: answer.id }
+        | |
         =< link_to "удалить", question_answer_path(question_id: answer.question.id, id:answer.id), method: :delete,
                    data: { confirm: "Вы уверены, что хотите удалить ответ?" }
+    .answer-edit.block-hidden id="answer-edit-#{answer.id}"
+      = form_for [@question, answer], remote: true do |f|
+        div id="answer-edit-errors-#{answer.id}"
+          = render 'shared/error_messages', object: @question
+        = f.label :body
+        = f.text_area :body, class: 'form-control', rows: 3
+        = f.submit 'Изменить ответ', class: "btn btn-primary"
     hr
-      

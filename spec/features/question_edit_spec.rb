@@ -64,9 +64,9 @@ RSpec.feature "QuestionEdit",
             expect(page).to have_content attributes_for(:question)[:body]
             expect(page).not_to have_content 'New title'
           end
-        end
 
-        expect(page).to have_content 'Вопрос не может быть пустым'
+          expect(page).to have_content 'Вопрос не может быть пустым'
+        end
       end
     end
 

@@ -3,9 +3,9 @@
   #question-content
     = render @question
   - if @question.user == current_user
-    .row.question-edit-row class=question_edit_class
+    .row.question-edit class=question_edit_class
       .col-full
-        = form_for @question, remote: true, html: { id: "question-edit-form-#{@question.id}" } do |f|
+        = form_for @question, remote: true do |f|
           #question-edit-errors
             = render 'shared/error_messages', object: @question
 
@@ -32,7 +32,8 @@
 
 .content-block#answers-block
   - @answers.each do |answer|
-    = render answer, last: ( @answers.last == answer )
+    div id="answer-#{answer.id}"
+      = render answer
           
   .row
     .col-middle.text-center

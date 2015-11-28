@@ -1,4 +1,4 @@
-$("#question-edit-errors").html '<%= render "shared/error_messages", object: @question %>'
+$("#question-edit-errors").html '<%= j render "shared/error_messages", object: @question %>'
 
 <% if @question.errors.empty? %>
 $('#question-content').html '<%= j render @question %>'
