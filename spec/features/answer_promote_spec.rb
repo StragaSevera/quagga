@@ -33,37 +33,46 @@ RSpec.feature "AnswerPromote",
 
           click_link "answer-switch-#{answers[0].id}"
 
-          expect(page).to have_css ".answer-normal"
-          expect(page).not_to have_css ".answer-normal"
+          # Напоролся здесь на баг с race condition,
+          # который может привести к false positive.
+          # Поэтому выжидаем время.
+          sleep 0.05
 
+          expect(page).not_to have_css ".answer-normal"
           expect(page).to have_selector ".answer-best"
         end
 
         within "#answer-#{answers[1].id}" do
           expect(page).to have_selector ".answer-normal"
-          click_link "answer-switch-#{answers[1].id}"
+          expect(page).not_to have_selector ".answer-best"
 
+          click_link "answer-switch-#{answers[1].id}"
+          sleep 0.05
+
+          expect(page).not_to have_css ".answer-normal"
           expect(page).to have_selector ".answer-best"
         end      
 
         within "#answer-#{answers[0].id}" do
           expect(page).to have_selector ".answer-normal"
+          expect(page).not_to have_selector ".answer-best"
         end 
 
         click_link "answer-switch-#{answers[1].id}"
+        sleep 0.05
 
         expect(page).not_to have_selector ".answer-best"        
       end
     end
 
-    xcontext "as incorrect user" do
+    context "as incorrect user" do
       before(:each) { log_in_as(other) }
 
       it_behaves_like "cannot switch best answer"
     end
   end
 
-  xcontext "when logged out" do
+  context "when logged out" do
     it_behaves_like "cannot switch best answer"  
   end
 end
