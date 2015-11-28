@@ -1,22 +1,33 @@
 .row.answer-row id="answer-row-#{answer.id}"
   .col-full
-    .answer-body
-      = simple_format answer.body
-    .answer-info 
-      => link_to publication_date(answer.created_at), question_answer_path(question_id: answer.question.id, id:answer.id)
-      | |
-      =<> answer.user.name
-      - if answer.user == current_user
+    .answer-stats
+      - if answer.best?
+        = link_to(demote_question_answers_url(question_id: answer.question.id), 
+          method: :patch, id: "answer-demote-#{answer.id}", remote: true) do
+          - fa_icon "check 3x", class: "answer-best"
+      - else
+        = link_to(promote_question_answer_url(question_id: answer.question.id, id: answer.id), 
+          method: :patch, id: "answer-promote-#{answer.id}", remote: true) do
+          - fa_icon "check 3x", class: "answer-normal"
+
+    .answer-text
+      .answer-body
+        = simple_format answer.body
+      .answer-info 
+        => link_to publication_date(answer.created_at), question_answer_path(question_id: answer.question.id, id:answer.id)
         | |
-        =<> link_to "редактировать", "#", class: 'answer-show-edit-form', data: { answer_id: answer.id }
-        | |
-        =< link_to "удалить", question_answer_path(question_id: answer.question.id, id:answer.id), method: :delete,
-                   data: { confirm: "Вы уверены, что хотите удалить ответ?" }, remote: true
-    .answer-edit.block-hidden id="answer-edit-#{answer.id}"
-      = form_for [@question, answer], remote: true do |f|
-        div id="answer-edit-errors-#{answer.id}"
-          = render 'shared/error_messages', object: @question
-        = f.label :body
-        = f.text_area :body, class: 'form-control', rows: 3
-        = f.submit 'Изменить ответ', class: "btn btn-primary"
-    hr
+        =<> answer.user.name
+        - if answer.user == current_user
+          | |
+          =<> link_to "редактировать", "#", class: 'answer-show-edit-form', data: { answer_id: answer.id }
+          | |
+          =< link_to "удалить", question_answer_path(question_id: answer.question.id, id:answer.id), method: :delete,
+                     data: { confirm: "Вы уверены, что хотите удалить ответ?" }, remote: true
+      .answer-edit.block-hidden id="answer-edit-#{answer.id}"
+        = form_for [@question, answer], remote: true do |f|
+          div id="answer-edit-errors-#{answer.id}"
+            = render 'shared/error_messages', object: @question
+          = f.label :body
+          = f.text_area :body, class: 'form-control', rows: 3
+          = f.submit 'Изменить ответ', class: "btn btn-primary"
+      hr

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
+  let (:question) { create(:question, user: user) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2, user: user) }
@@ -18,10 +19,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    let (:question) { create(:question, user: user) }
     let (:answers) { create_list(:answer, 2, user: user, question: question) }
     before(:each) { get :show, id: question }
-
 
     it "assigns the requested question to @question" do     
       expect(assigns(:question)).to eq question
@@ -107,8 +106,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let(:question) { create(:question, user: user) }
-
     shared_examples_for 'not changing question' do
       it 'does not change title' do
         question.reload
@@ -176,19 +173,19 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let! (:question) { create(:question, user: user) }
-
     context 'when logged in' do
       context 'as correct user' do
         before(:each) { log_in_as user }
 
         it 'deletes the question' do
+          question
           expect {
             delete :destroy, id: question
           }.to change(Question, :count).by -1
         end
 
         it "redirects to question#index" do
+          question
           delete :destroy, id: question
           expect(response).to redirect_to questions_path
         end
@@ -199,6 +196,7 @@ RSpec.describe QuestionsController, type: :controller do
         before(:each) { log_in_as other }
 
         it "does not delete question" do
+          question
           expect {
             delete :destroy, id: question
           }.not_to change(Question, :count)
@@ -208,6 +206,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'when logged out' do
       it "does not delete question" do
+        question
         expect {
           delete :destroy, id: question
         }.not_to change(Question, :count)

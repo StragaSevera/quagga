@@ -6,4 +6,16 @@ class Answer < ActiveRecord::Base
   validates :body, presence: true, length: { in: 10..10.kilobytes }
 
   self.per_page = 10
+
+  def promote!
+    self.question.promote!(self)
+  end
+
+  def demote!
+    self.question.demote!
+  end
+
+  def best?
+    self.question.best_answer == self
+  end
 end

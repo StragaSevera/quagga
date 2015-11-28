@@ -9,6 +9,13 @@ Rails.application.routes.draw do
   end
 
   resources :questions, only: [:index, :show, :new, :create, :update, :destroy] do
-    resources :answers, only: [:show, :create, :update, :destroy]
+    resources :answers, only: [:show, :create, :update, :destroy] do
+      member do
+        patch "promote"
+      end
+      collection do
+        patch "demote"
+      end
+    end
   end
 end

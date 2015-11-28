@@ -6,7 +6,6 @@ RSpec.describe AnswersController, type: :controller do
   let (:answer) { create(:answer, user: user, question: question) }
 
   describe 'GET #show' do
-    let (:answer) { create(:answer, user: user, question: question) }
     before(:each) { get :show, id: answer, question_id: question }
 
     it "assigns the requested answer to @answer" do     
@@ -95,7 +94,7 @@ RSpec.describe AnswersController, type: :controller do
             expect(assigns(:answer)).to eq answer
           end
 
-          it "changes body for @qanswer" do
+          it "changes body for @answer" do
             answer.reload
             expect(answer.body).to eq "A very special answer"
           end
@@ -170,4 +169,155 @@ RSpec.describe AnswersController, type: :controller do
       it_behaves_like 'not deleting answer'
     end
   end
+
+  describe 'PATCH #switch_promotion' do  
+    shared_examples_for 'not switching answer' do
+      it 'does not become best' do
+        patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+        expect(answer).not_to be_best
+      end    
+
+      it 'does not become normal' do
+        answer.promote!
+        patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+        expect(answer).to be_best
+      end   
+    end
+
+    describe 'when logged in' do
+      context 'as correct user' do
+        before(:each) { log_in_as user }
+      
+        it "assigns correct Question to @question" do
+          patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+          expect(assigns(:question)).to eq question
+        end
+
+        it "assigns correct Answer to @answer" do
+          patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+          expect(assigns(:answer)).to eq answer
+        end
+
+        it "renders the :promote template" do
+          patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+          expect(response).to render_template :promote
+        end   
+
+        it "changes to best answer for @question" do
+          patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+          expect(answer).to be_best
+        end       
+
+        it "changes best answer to normal for @question" do
+          answer.promote!
+          patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+          expect(answer).not_to be_best
+        end 
+      end
+
+      context 'as incorrect user' do
+        let (:other) { create(:user_multi) }
+        before(:each) { log_in_as other }
+        before(:each) { patch :promote, id: answer.id, question_id: question.id, format: :js }
+
+        it_behaves_like 'not promoting answer'
+      end
+    end
+
+    context 'when logged out' do
+      before(:each) { patch :promote, id: answer.id, question_id: question.id, format: :js }
+                
+      it_behaves_like 'not promoting answer'   
+    end    
+  end    
+
+  # describe 'PATCH #promote' do  
+  #   shared_examples_for 'not promoting answer' do
+  #     it 'does not become best' do
+  #       expect(answer).not_to be_best
+  #     end     
+  #   end
+
+  #   describe 'when logged in' do
+  #     context 'as correct user' do
+  #       before(:each) { log_in_as user }
+  #       before(:each) { patch :promote, id: answer.id, question_id: question.id, format: :js }
+      
+  #       it "assigns correct Question to @question" do
+  #         expect(assigns(:question)).to eq question
+  #       end
+
+  #       it "assigns correct Answer to @answer" do
+  #         expect(assigns(:answer)).to eq answer
+  #       end
+
+  #       it "renders the :promote template" do
+  #         expect(response).to render_template :promote
+  #       end   
+
+  #       it "changes best answer for @question" do
+  #         question.reload
+  #         expect(answer).to be_best
+  #       end        
+  #     end
+
+  #     context 'as incorrect user' do
+  #       let (:other) { create(:user_multi) }
+  #       before(:each) { log_in_as other }
+  #       before(:each) { patch :promote, id: answer.id, question_id: question.id, format: :js }
+
+  #       it_behaves_like 'not promoting answer'
+  #     end
+  #   end
+
+  #   context 'when logged out' do
+  #     before(:each) { patch :promote, id: answer.id, question_id: question.id, format: :js }
+                
+  #     it_behaves_like 'not promoting answer'   
+  #   end    
+  # end  
+
+  # describe 'PATCH #demote' do  
+  #   before(:each) { answer.promote! }
+
+  #   shared_examples_for 'not demoting answer' do
+  #     it 'does not lose best status' do
+  #       expect(answer).to be_best
+  #     end     
+  #   end
+
+  #   describe 'when logged in' do
+  #     context 'as correct user' do
+  #       before(:each) { log_in_as user }
+  #       before(:each) { patch :demote, question_id: question.id, format: :js }
+      
+  #       it "assigns correct Question to @question" do
+  #         expect(assigns(:question)).to eq question
+  #       end
+
+  #       it "renders the :demote template" do
+  #         expect(response).to render_template :demote
+  #       end   
+
+  #       it "changes best answer for @question" do
+  #         question.reload
+  #         expect(question.best_answer).to eq nil
+  #       end        
+  #     end
+
+  #     context 'as incorrect user' do
+  #       let (:other) { create(:user_multi) }
+  #       before(:each) { log_in_as other }
+  #       before(:each) { patch :demote, question_id: question.id, format: :js }
+
+  #       it_behaves_like 'not demoting answer'
+  #     end
+  #   end
+
+  #   context 'when logged out' do
+  #     before(:each) { patch :demote, question_id: question.id, format: :js }
+                
+  #     it_behaves_like 'not demoting answer'   
+  #   end    
+  # end  
 end

@@ -16,6 +16,9 @@ gem 'sass-rails', '~> 5.0'
 # Boot'em on, Strap!
 gem 'bootstrap-sass'
 
+# Use Font Awesome instead of Glyphicons
+gem 'font-awesome-rails'
+
 # Fix browser problems
 gem 'selectivizr-rails'
 
