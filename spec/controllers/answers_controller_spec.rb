@@ -132,6 +132,15 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    shared_examples_for 'not deleting answer' do
+      it "does not delete answer" do
+        answer
+        expect {
+          delete :destroy, id: answer.id, question_id: question.id, format: :js
+        }.not_to change(Answer, :count)
+      end 
+    end
+
     context 'when logged in' do
       context 'as correct user' do
         before(:each) { log_in_as user }
@@ -139,13 +148,13 @@ RSpec.describe AnswersController, type: :controller do
         it 'deletes the question' do
           answer
           expect {
-            delete :destroy, id: answer.id, question_id: question.id
+            delete :destroy, id: answer.id, question_id: question.id, format: :js
           }.to change(Answer, :count).by -1
-        end
+        end   
 
-        it "redirects to question#index" do
-          delete :destroy, id: answer.id, question_id: question.id
-          expect(response).to redirect_to question_path(question)
+        it "renders the :destroy template"  do
+          delete :destroy, id: answer.id, question_id: question.id, format: :js
+          expect(response).to render_template :destroy
         end
       end
 
@@ -153,22 +162,12 @@ RSpec.describe AnswersController, type: :controller do
         let (:other) { create(:user_multi) }
         before(:each) { log_in_as other }
 
-        it "does not delete question" do
-          answer
-          expect {
-            delete :destroy, id: answer.id, question_id: question.id
-          }.not_to change(Answer, :count)
-        end 
+        it_behaves_like 'not deleting answer'
       end
     end
 
     context 'when logged out' do
-      it "does not delete question" do
-        answer
-        expect {
-          delete :destroy, id: answer.id, question_id: question.id
-        }.not_to change(Answer, :count)
-      end      
+      it_behaves_like 'not deleting answer'
     end
   end
 end

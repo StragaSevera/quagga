@@ -1,4 +1,4 @@
-.row.answer-row
+.row.answer-row id="answer-row-#{answer.id}"
   .col-full
     .answer-body
       = simple_format answer.body
@@ -11,7 +11,7 @@
         =<> link_to "редактировать", "#", class: 'answer-show-edit-form', data: { answer_id: answer.id }
         | |
         =< link_to "удалить", question_answer_path(question_id: answer.question.id, id:answer.id), method: :delete,
-                   data: { confirm: "Вы уверены, что хотите удалить ответ?" }
+                   data: { confirm: "Вы уверены, что хотите удалить ответ?" }, remote: true
     .answer-edit.block-hidden id="answer-edit-#{answer.id}"
       = form_for [@question, answer], remote: true do |f|
         div id="answer-edit-errors-#{answer.id}"

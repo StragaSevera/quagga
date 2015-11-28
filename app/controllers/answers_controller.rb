@@ -19,9 +19,7 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer.destroy
-    flash[:success] = "Ответ был удален!"
-
-    redirect_to question_url(@question)
+    flash.now[:success] = "Ответ был удален!"
   end
 
   private
