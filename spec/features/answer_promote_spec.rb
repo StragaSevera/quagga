@@ -11,7 +11,7 @@ RSpec.feature "AnswerPromote",
   given(:user) { create(:user) }
   given(:other) { create(:user_multi) }
   given(:question) { create(:question, user: user) }
-  given!(:answers) { create_list(:answer, 2, question: question, user: other) }
+  given!(:answers) { create_list(:answer, 3, question: question, user: other) }
 
   shared_examples_for "cannot switch best answer" do
     scenario "has not edit link" do
@@ -25,7 +25,16 @@ RSpec.feature "AnswerPromote",
       before(:each) { log_in_as(user) }
 
       scenario "User can switch best answer" do
+        answers[1].promote!
         visit question_path(question)
+
+        # Проверяем, чтобы первым шел принятый ответ
+        within("#answers-block") do
+          within("div.answer-subblock:first-of-type") do
+            expect(page).not_to have_css ".answer-normal"
+            expect(page).to have_selector ".answer-best"
+          end
+        end
 
         within "#answer-#{answers[0].id}" do
           expect(page).to have_selector ".answer-normal"
@@ -42,11 +51,11 @@ RSpec.feature "AnswerPromote",
           expect(page).to have_selector ".answer-best"
         end
 
-        within "#answer-#{answers[1].id}" do
+        within "#answer-#{answers[2].id}" do
           expect(page).to have_selector ".answer-normal"
           expect(page).not_to have_selector ".answer-best"
 
-          click_link "answer-switch-#{answers[1].id}"
+          click_link "answer-switch-#{answers[2].id}"
           sleep 0.05
 
           expect(page).not_to have_css ".answer-normal"
@@ -58,7 +67,7 @@ RSpec.feature "AnswerPromote",
           expect(page).not_to have_selector ".answer-best"
         end 
 
-        click_link "answer-switch-#{answers[1].id}"
+        click_link "answer-switch-#{answers[2].id}"
         sleep 0.05
 
         expect(page).not_to have_selector ".answer-best"        

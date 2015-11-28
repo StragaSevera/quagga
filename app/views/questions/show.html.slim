@@ -31,8 +31,11 @@
           = f.submit "Ответить", class: "btn btn-primary", id: "button-submit"
 
 .content-block#answers-block
+  - if @best_answer
+    div.answer-subblock id="answer-#{@best_answer.id}"
+      = render @best_answer   
   - @answers.each do |answer|
-    div id="answer-#{answer.id}"
+    div.answer-subblock id="answer-#{answer.id}"
       = render answer
           
   .row

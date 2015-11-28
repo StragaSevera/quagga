@@ -8,7 +8,14 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @answers = @question.answers.page(params[:page]).order('id DESC')
+    # @answers = []
+    if @question.best_answer
+      @best_answer = @question.best_answer
+      @answers = @question.answers.where.not(id: @best_answer.id).page(params[:page]).order('id DESC')
+    else
+      @answers = @question.answers.page(params[:page]).order('id DESC')
+    end
+
     @answer = @question.answers.build
   end
 
