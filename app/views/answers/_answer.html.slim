@@ -1,9 +1,11 @@
 .row.answer-row id="answer-row-#{answer.id}"
   .col-full
     .answer-stats
-      = link_to(switch_promotion_question_answer_url(id: answer.id, question_id: answer.question.id), 
-        method: :patch, id: "answer-switch-#{answer.id}", remote: true) do
-        - fa_icon "check 3x", id: "answer-check-#{answer.id}", class: check_class(answer)
+      - if answer.question.user == current_user
+        = link_to(switch_promotion_question_answer_url(id: answer.id, question_id: answer.question.id), 
+          method: :patch, id: "answer-switch-#{answer.id}", remote: true) { check_icon(answer) }
+      - else
+        = check_icon(answer)
 
     .answer-text
       .answer-body
