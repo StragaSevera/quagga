@@ -1,2 +1,2 @@
 $('#answer-row-<%= @answer.id %>').remove()
-renderFlash("<%= j render 'layouts/flash' if flash.any? %>")
+<%= render partial: "shared/flash_messages_coffee.txt.erb" %>

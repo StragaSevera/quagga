@@ -10,11 +10,15 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
-    @answer.save
+    if @answer.save
+      flash.now[:success] = "Ответ был создан!"
+    end
   end
 
   def update
-    @answer.update_attributes(answer_params)
+    if @answer.update_attributes(answer_params)
+      flash.now[:success] = "Ответ был изменен!"
+    end
   end
 
   def destroy

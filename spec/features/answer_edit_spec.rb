@@ -41,6 +41,8 @@ RSpec.feature "AnswerEdit",
             expect(page).to have_content "It's a very new answer!!!"
           end
         end
+
+        expect(page).to have_content "Ответ был изменен!"
       end
 
       scenario "User cannot edit with incorrect data" do
@@ -60,6 +62,8 @@ RSpec.feature "AnswerEdit",
 
           expect(page).to have_content 'Ответ не может быть пустым'
         end
+
+        expect(page).not_to have_content "Ответ был изменен!"
       end
     end
 

@@ -26,7 +26,9 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update_attributes(question_params)
+    if @question.update_attributes(question_params)
+      flash.now[:success] = "Вопрос был изменен!"
+    end
   end
 
   def destroy

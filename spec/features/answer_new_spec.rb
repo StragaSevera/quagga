@@ -25,6 +25,7 @@ RSpec.feature "AnswerNew",
       end
 
       expect(current_path).to eq question_path(question)
+      expect(page).to have_content "Ответ был создан!"
     end
 
     scenario "User cannot make incorrect answers" do
@@ -34,6 +35,7 @@ RSpec.feature "AnswerNew",
 
       expect(page).to have_content 'Ответ не может быть пустым'
       expect(current_path).to eq question_path(question)
+      expect(page).not_to have_content "Ответ был создан!"
     end
   end
 

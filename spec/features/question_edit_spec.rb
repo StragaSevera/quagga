@@ -44,6 +44,8 @@ RSpec.feature "QuestionEdit",
             expect(page).to have_content "It's a very new body!!!"
           end
         end
+
+        expect(page).to have_content "Вопрос был изменен!"
       end
 
       scenario "User cannot edit with incorrect data" do
@@ -67,6 +69,8 @@ RSpec.feature "QuestionEdit",
 
           expect(page).to have_content 'Вопрос не может быть пустым'
         end
+
+        expect(page).not_to have_content "Вопрос был изменен!"
       end
     end
 
