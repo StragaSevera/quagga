@@ -12,6 +12,7 @@ RSpec.describe Question, type: :model do
 
     it { should have_many(:answers).dependent(:destroy) } 
     it { should belong_to(:user) }
+    it { should have_one(:best_answer).conditions(best: true).class_name(:Answer) } 
   end
 
   it "can get best answer" do
