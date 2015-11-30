@@ -45,10 +45,10 @@ class AnswersController < ApplicationController
     end  
 
     def check_current_user
-      redirect_to root_url unless @answer.user == current_user
+      redirect_to root_url unless current_user && @answer.user.id == current_user.id
     end
 
     def check_question_user
-      redirect_to root_url unless @question.user == current_user
+      redirect_to root_url unless current_user && @question.user.id == current_user.id
     end
 end

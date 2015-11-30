@@ -55,6 +55,6 @@ class QuestionsController < ApplicationController
     end
 
     def check_current_user
-      redirect_to root_url unless @question.user == current_user
+      redirect_to root_url unless current_user && @question.user.id == current_user.id
     end
 end
