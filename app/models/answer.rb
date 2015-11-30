@@ -7,15 +7,16 @@ class Answer < ActiveRecord::Base
 
   self.per_page = 10
 
-  def promote!
-    self.question.promote!(self)
-  end
-
-  def demote!
-    self.question.demote!
-  end
-
   def switch_promotion!
-    self.question.switch_promotion!(self)
+    if self.valid?
+      if self.best?
+        self.best = false
+      else
+        # Стоит ли делать через SQL, или лучше через each?
+        self.question.answers.update_all(best: false)
+        self.best = true
+      end
+      self.save
+    end
   end
 end

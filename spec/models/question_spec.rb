@@ -14,25 +14,9 @@ RSpec.describe Question, type: :model do
     it { should belong_to(:user) }
   end
 
-  it "can promote answers" do
+  it "can get best answer" do
     answer = create(:answer, question: question)
-    question.promote!(answer)
+    answer.switch_promotion!
     expect(question.best_answer).to eq answer
   end
-
-  it "can demote answers" do
-    answer = create(:answer, question: question)
-    question.promote!(answer)
-    question.demote!
-    expect(question.best_answer).to eq nil
-  end   
-
-  # Ну не разбивать же на две спеки?..
-  it "can switch best status" do
-    answer = create(:answer, question: question)
-    question.switch_promotion!(answer)
-    expect(question.best_answer).to eq answer
-    question.switch_promotion!(answer)
-    expect(question.best_answer).to eq nil
-  end  
 end

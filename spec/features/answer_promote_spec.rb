@@ -25,7 +25,7 @@ RSpec.feature "AnswerPromote",
       before(:each) { log_in_as(user) }
 
       scenario "User can switch best answer" do
-        answers[1].promote!
+        answers[1].switch_promotion!
         visit question_path(question)
 
         # Проверяем, чтобы первым шел принятый ответ

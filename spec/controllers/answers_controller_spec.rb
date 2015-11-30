@@ -179,7 +179,7 @@ RSpec.describe AnswersController, type: :controller do
       end    
 
       it 'does not become normal' do
-        answer.promote!
+        answer.switch_promotion!
         patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
         answer.reload
         expect(answer).to be_best
@@ -212,7 +212,7 @@ RSpec.describe AnswersController, type: :controller do
         end       
 
         it "changes best answer to normal for @question" do
-          answer.promote!
+          answer.switch_promotion!
           patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
           answer.reload
           expect(answer).not_to be_best
