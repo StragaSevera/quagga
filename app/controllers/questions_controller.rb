@@ -8,7 +8,6 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    # @answers = []
     if @question.best_answer
       @best_answer = @question.best_answer
       @answers = @question.answers.where.not(id: @best_answer.id).page(params[:page]).order('id DESC')

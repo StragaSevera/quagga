@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
-  let (:answer) { build(:answer) }
+  let (:answer) { create(:answer) }
 
   context "with validations" do
     it { should validate_presence_of :question_id }
@@ -15,7 +15,7 @@ RSpec.describe Answer, type: :model do
 
   it "can be promotable" do
     answer.promote!
-    expect(answer.question.best_answer).to eq answer
+    expect(answer.reload).to be_best
   end
 
   it "can check promoted status" do
@@ -27,14 +27,14 @@ RSpec.describe Answer, type: :model do
   it "can be demotable" do
     answer.promote!
     answer.demote!
-    expect(answer.question.best_answer).to eq nil
+    expect(answer.reload).not_to be_best
   end
 
   # Ну не разбивать же на две спеки?..
   it "can switch best status" do
     answer.switch_promotion!
-    expect(answer).to be_best
+    expect(answer.reload).to be_best
     answer.switch_promotion!
-    expect(answer).not_to be_best
+    expect(answer.reload).not_to be_best
   end 
 end

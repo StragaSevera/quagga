@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151128070104) do
+ActiveRecord::Schema.define(version: 20151130024917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,24 +19,24 @@ ActiveRecord::Schema.define(version: 20151128070104) do
   create_table "answers", force: :cascade do |t|
     t.integer  "question_id"
     t.text     "body"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "user_id"
+    t.boolean  "best",        default: false, null: false
   end
 
+  add_index "answers", ["best"], name: "index_answers_on_best", using: :btree
   add_index "answers", ["question_id"], name: "index_answers_on_question_id", using: :btree
   add_index "answers", ["user_id"], name: "index_answers_on_user_id", using: :btree
 
   create_table "questions", force: :cascade do |t|
     t.string   "title"
     t.text     "body"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer  "user_id"
-    t.integer  "best_answer_id"
   end
 
-  add_index "questions", ["best_answer_id"], name: "index_questions_on_best_answer_id", using: :btree
   add_index "questions", ["user_id"], name: "index_questions_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
@@ -60,6 +60,5 @@ ActiveRecord::Schema.define(version: 20151128070104) do
 
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
-  add_foreign_key "questions", "answers", column: "best_answer_id"
   add_foreign_key "questions", "users"
 end
