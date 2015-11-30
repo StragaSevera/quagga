@@ -1,13 +1,13 @@
 module AnswersHelper
-  def check_icon(answer)
-    fa_icon "check 3x", id: "answer-check-#{answer.id}", class: check_class(answer)
+  def best_check_icon(answer)
+    fa_icon "check", id: "answer-best-check-#{answer.id}"
   end
 
-  def check_class(answer)
+  def best_status_class(answer)
     if answer.best?
-      "answer-check answer-best"
+      "answer-best-status answer-best"
     else
-      "answer-check answer-normal"
+      "answer-best-status answer-normal"
     end
   end
 end

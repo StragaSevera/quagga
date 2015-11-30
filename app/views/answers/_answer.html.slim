@@ -3,9 +3,12 @@
     .answer-stats
       - if answer.question.user == current_user
         = link_to(switch_promotion_question_answer_url(id: answer.id, question_id: answer.question.id), 
-          method: :patch, id: "answer-switch-#{answer.id}", remote: true) { check_icon(answer) }
+          method: :patch, id: "answer-best-status-#{answer.id}", remote: true, class: best_status_class(answer)) do
+          = best_check_icon(answer)
+          .answer-status-text лучший ответ
+
       - else
-        = check_icon(answer)
+        = best_check_icon(answer)
 
     .answer-text
       .answer-body
@@ -27,4 +30,3 @@
           = f.label :body
           = f.text_area :body, class: 'form-control', rows: 3
           = f.submit 'Изменить ответ', class: "btn btn-primary"
-      hr

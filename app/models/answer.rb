@@ -12,7 +12,6 @@ class Answer < ActiveRecord::Base
       if self.best?
         self.best = false
       else
-        # Стоит ли делать через SQL, или лучше через each?
         self.question.answers.update_all(best: false)
         self.best = true
       end

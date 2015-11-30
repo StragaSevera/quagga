@@ -16,7 +16,7 @@ RSpec.feature "AnswerPromote",
   shared_examples_for "cannot switch best answer" do
     scenario "has not edit link" do
       visit question_path(question)
-      expect(page).not_to have_link "answer-switch-#{answers[0].id}"
+      expect(page).not_to have_link "answer-best-status-#{answers[0].id}"
     end    
   end
 
@@ -28,48 +28,53 @@ RSpec.feature "AnswerPromote",
         answers[1].switch_promotion!
         visit question_path(question)
 
+        
         # Проверяем, чтобы первым шел принятый ответ
         within("#answers-block") do
           within("div.answer-subblock:first-of-type") do
+            expect(page).to have_content "лучший ответ"
             expect(page).not_to have_css ".answer-normal"
             expect(page).to have_selector ".answer-best"
           end
         end
 
+        # Переключаем принятый ответ на первый
         within "#answer-#{answers[0].id}" do
+          expect(page).not_to have_content "лучший ответ"
           expect(page).to have_selector ".answer-normal"
           expect(page).not_to have_selector ".answer-best"
 
-          click_link "answer-switch-#{answers[0].id}"
+          click_link "answer-best-status-#{answers[0].id}"
 
-          # Напоролся здесь на баг с race condition,
-          # который может привести к false positive.
-          # Поэтому выжидаем время.
-          sleep 0.05
-
+          expect(page).to have_content "лучший ответ"
           expect(page).not_to have_css ".answer-normal"
           expect(page).to have_selector ".answer-best"
         end
 
+        # Переключаем принятый ответ на третий
         within "#answer-#{answers[2].id}" do
+          expect(page).not_to have_content "лучший ответ"
           expect(page).to have_selector ".answer-normal"
           expect(page).not_to have_selector ".answer-best"
 
-          click_link "answer-switch-#{answers[2].id}"
-          sleep 0.05
+          click_link "answer-best-status-#{answers[2].id}"
 
+          expect(page).to have_content "лучший ответ"
           expect(page).not_to have_css ".answer-normal"
           expect(page).to have_selector ".answer-best"
         end      
 
+        # Проверяем, что первый элемент отщелкнулся
         within "#answer-#{answers[0].id}" do
+          expect(page).not_to have_content "лучший ответ"
           expect(page).to have_selector ".answer-normal"
           expect(page).not_to have_selector ".answer-best"
         end 
 
-        click_link "answer-switch-#{answers[2].id}"
-        sleep 0.05
+        # Отменяем выбор элемента вообще
+        click_link "answer-best-status-#{answers[2].id}"
 
+        expect(page).not_to have_content "лучший ответ"
         expect(page).not_to have_selector ".answer-best"        
       end
     end

@@ -76,6 +76,7 @@ group :development, :test do
 
   # Debug by pry
   gem 'pry-byebug'
+  gem 'pry-rails'
 
   # Testing by rspec
   gem 'rspec-rails'
