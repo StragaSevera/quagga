@@ -2,7 +2,7 @@
   .col-full
     h2.question-title
       = link_to question.title, question_path(question.id)
-    - if params[:action] == "show"
+    - if params[:action] != "index"
       .question-body
         = simple_format question.body
     .question-info 
@@ -10,6 +10,11 @@
       | |
       =<> question.user.name
       - if question.user == current_user
+        | |
+        - if params[:action] == "index"
+          =<> link_to "редактировать", question_path(question.id, edit: 1)
+        - else
+          =<> link_to "редактировать", "#", class: 'question-show-edit-form'
         | |
         =< link_to "удалить", question, method: :delete,
                    data: { confirm: "Вы уверены, что хотите удалить запись \"#{question.title}?\"" }

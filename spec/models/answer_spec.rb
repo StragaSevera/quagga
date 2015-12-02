@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
-  let (:answer) { build(:answer) }
+  let (:question) { create(:question) }
+  let (:answer) { create(:answer, question: question) }
 
   context "with validations" do
     it { should validate_presence_of :question_id }
@@ -11,5 +12,20 @@ RSpec.describe Answer, type: :model do
 
     it { should belong_to(:question) }
     it { should belong_to(:user) }
+  end
+
+  # Ну не разбивать же на две спеки?..
+  it "can switch best status" do
+    answer.switch_promotion!
+    expect(answer).to be_best
+    answer.switch_promotion!
+    expect(answer).not_to be_best
+  end 
+
+  it "can toggle best status between many answers" do
+    other = create(:answer_multi, question: question)
+    other.switch_promotion!
+    answer.switch_promotion!
+    expect(other.reload).not_to be_best
   end
 end

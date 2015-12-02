@@ -1,0 +1,5 @@
+$('.answer-best-status').removeClass("answer-best").addClass("answer-normal");
+
+<% if @answer.reload.best? %>
+$('#answer-best-status-<%= @answer.id %>').removeClass("answer-normal").addClass("answer-best");
+<% end %>

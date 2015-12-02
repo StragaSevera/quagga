@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'feature_helper'
 
 RSpec.feature "QuestionsList", 
   %q{
@@ -10,9 +10,11 @@ RSpec.feature "QuestionsList",
   
   scenario "User can list questions" do
     user = create(:user)
-    1.upto(6) { create(:question_multi, user: user) }
-    visit questions_path
 
+    # Гугл показал, что полагаться на то, что сиквенс начнется с определенного номера
+    # суть антипаттерн
+    1.upto(6) { |n| create(:question_multi, user: user, title: "##{n} question") }
+    visit questions_path
     # Тестируем с учетом пагинации и порядка
     6.downto(4) do |n| 
       within("div.question-row:nth-of-type(#{7-n})") do

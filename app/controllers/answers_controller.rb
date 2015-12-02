@@ -1,8 +1,9 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: [:create, :destroy]
   before_action :load_question
-  before_action :load_answer, only: [:show, :destroy]
-  before_action :check_current_user, only: [:destroy]
+  before_action :load_answer, only: [:show, :update, :switch_promotion, :destroy]
+  before_action :check_current_user, only: [:update, :destroy]
+  before_action :check_question_user, only: [:switch_promotion]
 
   def show
   end
@@ -10,14 +11,24 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
-    @answer.save
+    if @answer.save
+      flash.now[:success] = "Ответ был создан!"
+    end
+  end
+
+  def update
+    if @answer.update_attributes(answer_params)
+      flash.now[:success] = "Ответ был изменен!"
+    end
   end
 
   def destroy
     @answer.destroy
-    flash[:success] = "Ответ был удален!"
+    flash.now[:success] = "Ответ был удален!"
+  end
 
-    redirect_to question_url(@question)
+  def switch_promotion
+    @answer.switch_promotion!
   end
 
   private
@@ -34,6 +45,10 @@ class AnswersController < ApplicationController
     end  
 
     def check_current_user
-      redirect_to root_url unless @answer.user == current_user
+      redirect_to root_url unless current_user && @answer.user.id == current_user.id
+    end
+
+    def check_question_user
+      redirect_to root_url unless current_user && @question.user.id == current_user.id
     end
 end

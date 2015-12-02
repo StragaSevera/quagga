@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'feature_helper'
 
 RSpec.feature "QuestionDelete", 
   %q{
@@ -16,7 +16,7 @@ RSpec.feature "QuestionDelete",
       before(:each) { log_in_as(user) }    
 
       scenario "User can delete questions" do
-        create(:question, user: user, title: 'Other title')
+        create(:question_multi, user: user, title: 'Other title')
         visit question_path(question)
         
         within "#question-#{question.id}" do

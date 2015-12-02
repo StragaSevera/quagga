@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'feature_helper'
 
 RSpec.feature "AnswerDelete", 
   %q{
@@ -13,7 +13,7 @@ RSpec.feature "AnswerDelete",
   given!(:answer) { create(:answer, user: user, question: question) }
 
   context "when logged in" do
-    context "as correct user" do
+    context "as correct user", js: true do
       before(:each) { log_in_as(user) }    
 
       scenario "User can delete answers" do

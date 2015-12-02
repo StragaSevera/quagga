@@ -14,7 +14,8 @@ html
 
   body data-force-encoding="✓"
     = render 'layouts/header'
-    = render 'layouts/flash' if flash.any?
+    #application-flash
+      = render 'layouts/flash' if flash.any?
     = yield    
     = render 'layouts/footer'
     = render 'layouts/debug' if Rails.env.development?

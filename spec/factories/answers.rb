@@ -6,6 +6,10 @@ FactoryGirl.define do
     factory :answer_invalid do
       body ""
     end
+
+    factory :answer_multi do
+      sequence(:body) { |n| "##{n} problem solved!" }
+    end
   end
 
 end

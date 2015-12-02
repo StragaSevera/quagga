@@ -16,6 +16,9 @@ gem 'sass-rails', '~> 5.0'
 # Boot'em on, Strap!
 gem 'bootstrap-sass'
 
+# Use Font Awesome instead of Glyphicons
+gem 'font-awesome-rails'
+
 # Fix browser problems
 gem 'selectivizr-rails'
 
@@ -73,6 +76,7 @@ group :development, :test do
 
   # Debug by pry
   gem 'pry-byebug'
+  gem 'pry-rails'
 
   # Testing by rspec
   gem 'rspec-rails'
@@ -88,7 +92,7 @@ group :test do
 
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'capybara-webkit'
+  gem 'poltergeist'
 
   gem 'database_cleaner'
   gem 'launchy'

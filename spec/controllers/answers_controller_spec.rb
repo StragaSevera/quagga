@@ -70,7 +70,76 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATCH #update' do  
+    shared_examples_for 'not changing answer' do
+      it 'does not change body' do
+        answer.reload
+        expect(answer.body).to eq attributes_for(:answer)[:body]         
+      end     
+    end
+
+    describe 'when logged in' do
+      context 'as correct user' do
+        before(:each) { log_in_as user }
+
+        context 'with valid attributes' do
+          before(:each) { patch :update, id: answer.id, question_id: question.id, format: :js, 
+                          answer: { body: "A very special answer" } }
+        
+          it "assigns correct Question to @question" do
+            expect(assigns(:question)).to eq question
+          end
+
+          it "assigns correct Answer to @answer" do
+            expect(assigns(:answer)).to eq answer
+          end
+
+          it "changes body for @answer" do
+            answer.reload
+            expect(answer.body).to eq "A very special answer"
+          end
+
+          it "renders the :update template" do
+            expect(response).to render_template :update
+          end           
+        end
+        
+        context 'with invalid attributes' do
+          before(:each) { patch :update, id: answer.id, question_id: question.id, format: :js, 
+                          answer: { body: "" } }
+
+          it_behaves_like 'not changing answer'
+        end
+      end
+
+      context 'as incorrect user' do
+        let (:other) { create(:user_multi) }
+        before(:each) { log_in_as other }
+        before(:each) { patch :update, id: answer.id, question_id: question.id, format: :js, 
+                        answer: { body: "A very special answer" } }
+
+        it_behaves_like 'not changing answer'
+      end
+    end
+
+    context 'when logged out' do
+      before(:each) { patch :update, id: answer.id, question_id: question.id, format: :js, 
+                      answer: { body: "A very special answer" } }
+                
+      it_behaves_like 'not changing answer'   
+    end    
+  end
+
   describe 'DELETE #destroy' do
+    shared_examples_for 'not deleting answer' do
+      it "does not delete answer" do
+        answer
+        expect {
+          delete :destroy, id: answer.id, question_id: question.id, format: :js
+        }.not_to change(Answer, :count)
+      end 
+    end
+
     context 'when logged in' do
       context 'as correct user' do
         before(:each) { log_in_as user }
@@ -78,13 +147,13 @@ RSpec.describe AnswersController, type: :controller do
         it 'deletes the question' do
           answer
           expect {
-            delete :destroy, id: answer.id, question_id: question.id
+            delete :destroy, id: answer.id, question_id: question.id, format: :js
           }.to change(Answer, :count).by -1
-        end
+        end   
 
-        it "redirects to question#index" do
-          delete :destroy, id: answer.id, question_id: question.id
-          expect(response).to redirect_to question_path(question)
+        it "renders the :destroy template"  do
+          delete :destroy, id: answer.id, question_id: question.id, format: :js
+          expect(response).to render_template :destroy
         end
       end
 
@@ -92,22 +161,74 @@ RSpec.describe AnswersController, type: :controller do
         let (:other) { create(:user_multi) }
         before(:each) { log_in_as other }
 
-        it "does not delete question" do
-          answer
-          expect {
-            delete :destroy, id: answer.id, question_id: question.id
-          }.not_to change(Answer, :count)
-        end 
+        it_behaves_like 'not deleting answer'
       end
     end
 
     context 'when logged out' do
-      it "does not delete question" do
-        answer
-        expect {
-          delete :destroy, id: answer.id, question_id: question.id
-        }.not_to change(Answer, :count)
-      end      
+      it_behaves_like 'not deleting answer'
     end
   end
+
+  describe 'PATCH #switch_promotion' do  
+    shared_examples_for 'not switching answer' do
+      it 'does not become best' do
+        patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+        answer.reload
+        expect(answer).not_to be_best
+      end    
+
+      it 'does not become normal' do
+        answer.switch_promotion!
+        patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+        answer.reload
+        expect(answer).to be_best
+      end   
+    end
+
+    describe 'when logged in' do
+      context 'as correct user' do
+        before(:each) { log_in_as user }
+      
+        it "assigns correct Question to @question" do
+          patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+          expect(assigns(:question)).to eq question
+        end
+
+        it "assigns correct Answer to @answer" do
+          patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+          expect(assigns(:answer)).to eq answer
+        end
+
+        it "renders the :switch_promotion template" do
+          patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+          expect(response).to render_template :switch_promotion
+        end   
+
+        it "changes to best answer for @question" do
+          patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+          answer.reload
+          expect(answer).to be_best
+        end       
+
+        it "changes best answer to normal for @question" do
+          answer.switch_promotion!
+          patch :switch_promotion, id: answer.id, question_id: question.id, format: :js
+          answer.reload
+          expect(answer).not_to be_best
+        end 
+      end
+
+      context 'as incorrect user' do
+        let (:other) { create(:user_multi) }
+        before(:each) { log_in_as other }
+
+        it_behaves_like 'not switching answer'
+      end
+    end
+
+    context 'when logged out' do
+      it_behaves_like 'not switching answer'
+    end    
+  end    
 end

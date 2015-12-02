@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Question, type: :model do
-  let (:question) { build(:question) }
+  let (:question) { create(:question) }
 
   context "with validations" do
     it { should validate_presence_of :title }
@@ -12,5 +12,12 @@ RSpec.describe Question, type: :model do
 
     it { should have_many(:answers).dependent(:destroy) } 
     it { should belong_to(:user) }
+    it { should have_one(:best_answer).conditions(best: true).class_name(:Answer) } 
+  end
+
+  it "can get best answer" do
+    answer = create(:answer, question: question)
+    answer.switch_promotion!
+    expect(question.best_answer).to eq answer
   end
 end

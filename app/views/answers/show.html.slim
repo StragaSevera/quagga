@@ -1,3 +1,4 @@
 - provide :title, @answer.question.title
 .content-block
-  = render @answer
+  div id="answer-#{@answer.id}"
+    = render @answer

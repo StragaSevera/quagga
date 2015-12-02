@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question, user: user) }
+  let (:question) { create(:question, user: user) }
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 2, user: user) }
+    let(:questions) { create_list(:question_multi, 2, user: user) }
 
     before { get :index }
 
@@ -21,7 +21,6 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'GET #show' do
     let (:answers) { create_list(:answer, 2, user: user, question: question) }
     before(:each) { get :show, id: question }
-
 
     it "assigns the requested question to @question" do     
       expect(assigns(:question)).to eq question
@@ -55,8 +54,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'when logged out' do
-      # Нет, мы не тестируем здесь чужой код.
-      # Мы проверяем, не удалил ли кто-то случайно строчку из кода нашего ;-)
       it "does not assign a new Question to @question" do
         expect(assigns(:question)).to be_nil
       end    
@@ -81,7 +78,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       context 'with invalid attributes' do
-        it "saves the new question to database" do
+        it "does not save the new question to database" do
           expect {
             post :create, question: attributes_for(:question_invalid)
           }.not_to change(Question, :count)
@@ -108,20 +105,87 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do
-    let! (:question) { create(:question, user: user) }
+  describe 'PATCH #update' do
+    shared_examples_for 'not changing question' do
+      it 'does not change title' do
+        question.reload
+        expect(question.title).to eq attributes_for(:question)[:title]         
+      end
 
+      it 'does not change body' do
+        question.reload
+        expect(question.body).to eq attributes_for(:question)[:body]         
+      end     
+    end
+
+    describe 'when logged in' do
+      context 'as correct user' do
+        before(:each) { log_in_as user }
+
+        context 'with valid attributes' do
+          before(:each) { patch :update, id: question.id, format: :js, 
+                          question: { title: "New title", body: "A very special body" } }
+        
+          it "assigns correct Question to @question" do
+            expect(assigns(:question)).to eq question
+          end
+
+          # Не уверен насчет принципа "один expect на тест"... не разрастутся ли?
+          it "changes title for @question" do
+            question.reload
+            expect(question.title).to eq "New title"
+          end
+
+          it "changes body for @question" do
+            question.reload
+            expect(question.body).to eq "A very special body"
+          end
+
+          it "renders the :update template" do
+            expect(response).to render_template :update
+          end           
+        end
+        
+        context 'with invalid attributes' do
+          before(:each) { patch :update, id: question.id, format: :js, 
+                          question: { title: "New title", body: "" } } 
+
+          it_behaves_like 'not changing question'
+        end
+      end
+
+      context 'as incorrect user' do
+        let (:other) { create(:user_multi) }
+        before(:each) { log_in_as other }
+        before(:each) { patch :update, id: question.id, format: :js, 
+                        question: { title: "New title", body: "A very special body" } }
+
+        it_behaves_like 'not changing question'
+      end
+    end
+
+    context 'when logged out' do
+      before(:each) { patch :update, id: question.id, format: :js, 
+                      question: { title: "New title", body: "A very special body" } }
+                
+      it_behaves_like 'not changing question'   
+    end    
+  end
+
+  describe 'DELETE #destroy' do
     context 'when logged in' do
       context 'as correct user' do
         before(:each) { log_in_as user }
 
         it 'deletes the question' do
+          question
           expect {
             delete :destroy, id: question
           }.to change(Question, :count).by -1
         end
 
         it "redirects to question#index" do
+          question
           delete :destroy, id: question
           expect(response).to redirect_to questions_path
         end
@@ -132,6 +196,7 @@ RSpec.describe QuestionsController, type: :controller do
         before(:each) { log_in_as other }
 
         it "does not delete question" do
+          question
           expect {
             delete :destroy, id: question
           }.not_to change(Question, :count)
@@ -141,6 +206,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'when logged out' do
       it "does not delete question" do
+        question
         expect {
           delete :destroy, id: question
         }.not_to change(Question, :count)
