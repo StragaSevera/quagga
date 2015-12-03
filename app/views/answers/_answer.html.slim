@@ -24,9 +24,4 @@
           =< link_to "удалить", question_answer_path(question_id: answer.question.id, id:answer.id), method: :delete,
                      data: { confirm: "Вы уверены, что хотите удалить ответ?" }, remote: true
       .answer-edit.block-hidden id="answer-edit-#{answer.id}"
-        = form_for [@question, answer], remote: true do |f|
-          div id="answer-edit-errors-#{answer.id}"
-            = render 'shared/error_messages', object: @question
-          = f.label :body
-          = f.text_area :body, class: 'form-control', rows: 3
-          = f.submit 'Изменить ответ', class: "btn btn-primary"
+        = render partial: 'answers/form', locals: { answer: answer, errors_id: "answer-edit-errors-#{answer.id}" }
