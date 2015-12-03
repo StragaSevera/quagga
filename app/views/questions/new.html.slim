@@ -1,15 +1,7 @@
 - provide :title, "Задать вопрос"
+- provide :button_text, "Задать вопрос"
 .content-block
   .row
     .col-full
       h1.text-center Задать вопрос
-      = form_for(@question) do |f|
-        = render 'shared/error_messages', object: @question
-
-        = f.label :title
-        = f.text_field :title, class: 'form-control'
-
-        = f.label :body
-        = f.text_area :body, class: 'form-control', rows: 15
-
-        = f.submit "Задать вопрос", class: "btn btn-primary", id: "button-submit"
+      = render 'form'

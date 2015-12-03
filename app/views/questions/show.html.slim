@@ -1,21 +1,12 @@
 - provide :title, @question.title
+- provide :button_text, "Изменить вопрос"
 .content-block#question-block
   #question-content
     = render @question
   - if @question.user == current_user
-    .row.question-edit class=question_edit_class
-      .col-full
-        = form_for @question, remote: true do |f|
-          #question-edit-errors
-            = render 'shared/error_messages', object: @question
-
-          = f.label :title
-          = f.text_field :title, class: 'form-control'
-
-          = f.label :body
-          = f.text_area :body, class: 'form-control', rows: 15
-
-          = f.submit "Изменить вопрос", class: "btn btn-primary", id: "button-submit"
+      .row.question-edit class=question_edit_class
+        .col-full
+          = render 'form'
 
 - if user_signed_in?
   .content-block#answer-form-block
