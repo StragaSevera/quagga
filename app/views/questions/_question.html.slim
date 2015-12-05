@@ -5,6 +5,13 @@
     - if params[:action] != "index"
       .question-body
         = simple_format question.body
+      - if question.attachments.any?
+        .attachments-list
+          p Вложенные файлы:
+          ul
+            - question.attachments.each do |a|
+              li= link_to a.file.identifier, a.file.url
+  
     .question-info 
       => link_to publication_date(question.created_at), question_path(question.id)
       | |

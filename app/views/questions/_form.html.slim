@@ -1,11 +1,15 @@
 = form_for @question, remote: true do |f|
   #question-edit-errors
     = render 'shared/error_messages', object: @question
-
-  = f.label :title
-  = f.text_field :title, class: 'form-control'
-
-  = f.label :body
-  = f.text_area :body, class: 'form-control', rows: 15
+  .form-group
+    = f.label :title
+    = f.text_field :title, class: 'form-control'
+  .form-group
+    = f.label :body
+    = f.text_area :body, class: 'form-control', rows: 15
+  .form-group
+    = f.fields_for :attachments do |a|
+      = a.label :file
+      = a.file_field :file
 
   = f.submit yield(:button_text), class: "btn btn-primary", id: "button-submit"

@@ -4,6 +4,7 @@ ru:
       question: "Вопрос"
       answer: "Ответ"
       user: "Пользователь"
+      attachment: "Вложение"
     attributes:
       question:
         title: "Заголовок"
@@ -16,6 +17,8 @@ ru:
         password: "Пароль"
         password_confirmation: "Подтверждение пароля"
         remember_me: "Запомнить пароль?"
+      attachment:
+        file: "Файл"
     errors:
       models:
         user:
