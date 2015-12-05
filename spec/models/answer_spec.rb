@@ -12,10 +12,13 @@ RSpec.describe Answer, type: :model do
 
     it { should belong_to(:question) }
     it { should belong_to(:user) }
+
+    it { should have_many(:attachments) }
   end
 
   # Ну не разбивать же на две спеки?..
   it "can switch best status" do
+    expect(answer).not_to be_best
     answer.switch_promotion!
     expect(answer).to be_best
     answer.switch_promotion!

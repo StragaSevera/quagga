@@ -1,4 +1,6 @@
 class Answer < ActiveRecord::Base
+  has_many :attachments, as: :attachable
+  
   belongs_to :question, required: true
   belongs_to :user, required: true
 

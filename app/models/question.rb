@@ -1,7 +1,8 @@
 class Question < ActiveRecord::Base
   has_many :answers, dependent: :destroy
-  has_many :attachments, foreign_key: :attachable_id
+  has_many :attachments, as: :attachable
   has_one :best_answer, -> { where(best: true) }, class_name: 'Answer'
+  
   belongs_to :user, required: true
 
   validates :title, presence: true, length: { in: 5..150 }
