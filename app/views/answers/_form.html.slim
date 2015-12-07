@@ -5,4 +5,9 @@
     = f.label :body
     = f.text_area :body, class: 'form-control', rows: 4
 
+  .form-group
+    = f.fields_for :attachments do |a|
+      = a.label :file
+      = a.file_field :file
+
   = f.submit "Отправить", class: "btn btn-primary", id: "button-submit"

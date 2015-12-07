@@ -33,6 +33,14 @@ RSpec.describe QuestionsController, type: :controller do
     it 'populates an array of all answers' do
       expect(assigns(:answers)).to match_array(answers)
     end
+
+    it "assigns a new Answer to @answer" do
+      expect(assigns(:question).answers.first).to be_a_new Answer
+    end
+
+    it "builds a new Attachment to @answer" do
+      expect(assigns(:answer).attachments.first).to be_a_new Attachment
+    end
   end
 
   describe 'GET #new' do

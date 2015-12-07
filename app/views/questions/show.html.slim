@@ -6,7 +6,7 @@
   - if @question.user == current_user
       .row.question-edit class=question_edit_class
         .col-full
-          = render 'form'
+          = render 'form', remote: true
 
 - if user_signed_in?
   .content-block#answer-form-block

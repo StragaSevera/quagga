@@ -1,4 +1,4 @@
-= form_for @question, remote: true do |f|
+= form_for @question, remote: remote do |f|
   #question-edit-errors
     = render 'shared/error_messages', object: @question
   .form-group
