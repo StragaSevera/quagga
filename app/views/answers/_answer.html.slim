@@ -13,12 +13,14 @@
     .answer-text
       .answer-body
         = simple_format answer.body
+
       - if answer.attachments.any?
         .attachments-list
           p Вложенные файлы:
           ul
             - answer.attachments.each do |a|
               li= link_to a.file.identifier, a.file.url
+
       .answer-info 
         => link_to publication_date(answer.created_at), question_answer_path(question_id: answer.question.id, id:answer.id)
         | |

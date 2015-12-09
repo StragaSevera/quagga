@@ -12,12 +12,12 @@ RSpec.feature "AnswerAttach",
   given!(:question) { create(:question) }
 
 
-  scenario 'User adds file when asks question' do
+  scenario 'User adds file when makes answer', js: true do
     log_in_as(user)
     visit question_path(question)
 
     fill_in 'Ответ', with: "Why do you need this, anyway?"
-    attach_file 'answer_attachments_file', "#{Rails.root}/spec/spec_helper.rb"
+    attach_file 'Файл', "#{Rails.root}/spec/spec_helper.rb"
     click_button 'Отправить'
 
     within '#answers-block' do
