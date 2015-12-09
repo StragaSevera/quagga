@@ -9,10 +9,11 @@
           = render 'form', remote: true
 
 - if user_signed_in?
-  .content-block#answer-form-block
+  .content-block
     .row
       .col-full
-        = render partial: 'answers/form', locals: { answer: @answer, errors_id: "answer-new-errors" }
+        #answer-form-block.answer-edit
+          = render partial: 'answers/form', locals: { answer: @answer, errors_id: "answer-new-errors" }
 
 .content-block#answers-block
   - if @best_answer

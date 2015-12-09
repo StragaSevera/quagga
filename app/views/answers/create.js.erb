@@ -1,7 +1,18 @@
-$('#answer-new-errors').html('<%= j render "shared/error_messages", object: @answer %>');
-
 <% if @answer.errors.empty? %>
-$('#answers-block').prepend('<%= j render @answer %>');
-$('#answer_body').val('');
-<%= render partial: "shared/flash_messages_js.txt.erb" %>
+  <% if remotipart_submitted? %>
+    $('#answers-block').prepend("<%= j "#{render @answer}" %>");
+  <% else %>
+    $('#answers-block').prepend('<%= j render @answer %>');
+  <% end %>
+
+  $('#answer_body').val('');
+  $('#answer-form-block .nested-fields').remove();
+
+  bindToggleAnswerForms();
+  <%= render partial: "shared/flash_messages_js.txt.erb" %>
+
+<% else %>
+
+  $('#answer-new-errors').html('<%= j render "shared/error_messages", object: @answer %>');
+
 <% end %>

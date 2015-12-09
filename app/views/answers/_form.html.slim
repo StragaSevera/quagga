@@ -5,9 +5,8 @@
     = f.label :body
     = f.text_area :body, class: 'form-control', rows: 4
 
-  .form-group
-    = f.fields_for :attachments do |a|
-      = a.label :file
-      = a.file_field :file
+  .form-group.answer-attachments id="answer-#{answer.id}-attachments"
+    .links
+      = link_to_add_association 'добавить файл', f, :attachments, partial: 'attachments/attachment_fields'
 
   = f.submit "Отправить", class: "btn btn-primary", id: "button-submit"

@@ -33,6 +33,7 @@ RSpec.feature "AnswerEdit",
           click_link "редактировать"
           fill_in 'Ответ', with: "It's a very new answer!!!"
           click_button 'Отправить'
+          
 
           expect(page).not_to have_content attributes_for(:answer)[:body]
           expect(page).not_to have_selector '#answer_body'
