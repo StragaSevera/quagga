@@ -9,9 +9,10 @@ RSpec.feature "QuestionAttach",
   type: :feature do
 
   given(:user) { create(:user) }
+  given(:question) { create(:question, user: user) }
   before(:each) { log_in_as(user) }    
 
-  scenario 'User adds file when asks question', js: true do
+  scenario 'User adds files when asks question', js: true do
     visit new_question_path
 
     fill_in 'Заголовок', with: 'Rails autoloading'
@@ -40,14 +41,34 @@ RSpec.feature "QuestionAttach",
         link = page.find('a', text: 'rails_helper.rb')
         expect(link[:href]).to match %r!/uploads/attachment/file/*./rails_helper.rb!
 
+      end
+    end
+  end
+
+  scenario 'User deletes file from question', js: true do
+    attachment = create(:attachment, attachable: question)
+    visit question_path(question)
+
+    # Не уверен, что привязываться к attachment хорошо,
+    # но хардкодить имя файла - явно не очень правильно,
+    # а из factory_girl можно выцарапать лишь tempfile,
+    # который не имеет свойства "имя файла"
+    
+
+    within '#question-block' do
+      within '.attachments-list' do
+        expect(page).to have_content attachment.file.identifier
+        
         first("li").click_link("удалить")
       end
     end
 
     expect(page).to have_content "Файл был удален!"
-    expect(page).to have_content 'spec_helper.rb'
-    expect(page).not_to have_content 'rails_helper.rb'
+    expect(page).not_to have_content attachment.file.identifier
+  end
 
+  scenario 'User attaches file when edits question', js: true do
+    visit question_path(question)
     within '#question-block' do
       click_link 'редактировать'
       click_link 'добавить файл'
@@ -56,8 +77,6 @@ RSpec.feature "QuestionAttach",
     end
 
     expect(page).to have_content "Вопрос был изменен!"
-    expect(page).to have_content 'spec_helper.rb'
-    expect(page).not_to have_content 'rails_helper.rb'
     expect(page).to have_content 'Gemfile'
   end
 end
