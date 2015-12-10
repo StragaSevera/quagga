@@ -9,11 +9,12 @@ RSpec.feature "AnswerAttach",
   type: :feature do
 
   given(:user) { create(:user) }
-  given!(:question) { create(:question) }
+  given(:question) { create(:question, user: user) }
+  given!(:answer) { create(:answer, question: question, user: user) }
+  before(:each) { log_in_as(user) }
 
 
   scenario 'User adds file when makes answer', js: true do
-    log_in_as(user)
     visit question_path(question)
 
     within ".answer-edit form" do
@@ -40,14 +41,32 @@ RSpec.feature "AnswerAttach",
 
         link = page.find('a', text: 'rails_helper.rb')
         expect(link[:href]).to match %r!/uploads/attachment/file/*./rails_helper.rb!
+      end
+    end
+  end
+
+  scenario 'User deletes file from answer', js: true do
+    attachment = create(:attachment, attachable: answer)
+    visit question_path(question)
+
+    within '#answers-block' do
+      within '.attachments-list' do
+        # Не уверен, что привязываться к attachment хорошо,
+        # но хардкодить имя файла - явно не очень правильно,
+        # а из factory_girl можно выцарапать лишь tempfile,
+        # который не имеет свойства "имя файла"
+        expect(page).to have_content attachment.file.identifier
 
         first("li").click_link("удалить")
       end
     end
 
     expect(page).to have_content "Файл был удален!"
-    expect(page).to have_content 'spec_helper.rb'
-    expect(page).not_to have_content 'rails_helper.rb'
+    expect(page).not_to have_content attachment.file.identifier
+  end
+
+  scenario 'User attaches file when edits answer', js: true do
+    visit question_path(question)
 
     within '#answers-block' do
       click_link 'редактировать'
@@ -59,15 +78,9 @@ RSpec.feature "AnswerAttach",
     end
 
     expect(page).to have_content "Ответ был изменен!"
-    expect(page).to have_content 'spec_helper.rb'
-    expect(page).not_to have_content 'rails_helper.rb'
 
-    # Имею проблему в этом моменте.
-    # AJAJ-ответ после запроса update не проходит по непонятной мне причине.
-    # Не проходит он ТОЛЬКО в тесте, в реальности работает прекрасно.
-    # Возможно, связано с remotipart, однако в аналогичной спеке вопроса
-    # подобный тест работает прекрасно.
-    # 
-    # expect(page).to have_content 'Gemfile'
+    # ВНЕЗАПНО проблема решилась сама собой после рефакторинга.
+    # Не имею ни малейшего понятия, откуда она взялась и куда делась =-)
+    expect(page).to have_content 'Gemfile'
   end
 end
