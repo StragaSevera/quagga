@@ -7,7 +7,7 @@
   
   bindToggleAnswerForms();
 
-  <%= render partial: "shared/flash_messages_js.txt.erb" %>
+  <%= render partial: "shared/flash_messages_js.erb" %>
 
 <% else %>
   $('#answer-edit-errors-<%= @answer.id %>').html('<%= j render "shared/error_messages", object: @answer %>');
