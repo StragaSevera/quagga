@@ -1,0 +1,10 @@
+- if object.attachments.any?
+  .attachments-list
+    p Вложенные файлы:
+    ul
+      - object.attachments.each do |a|
+        li id="attachment-#{a.id}"
+          => link_to a.file.identifier, a.file.url
+          - if object.user == current_user
+            | |
+            =< link_to "удалить", a, method: :delete, remote: true, data: { confirm: "Вы уверены, что хотите удалить вложенный файл \"#{a.file.identifier}?\"" }

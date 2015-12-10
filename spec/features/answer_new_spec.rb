@@ -17,8 +17,8 @@ RSpec.feature "AnswerNew",
     scenario "User can make correct answers" do
       visit question_path(question)
 
-      fill_in 'Ваш ответ', with: "No way. It cannot exist."
-      click_button 'Ответить'
+      fill_in 'Ответ', with: "No way. It cannot exist."
+      click_button 'Отправить'
 
       within "#answers-block" do
         expect(page).to have_content "No way. It cannot exist."
@@ -31,7 +31,7 @@ RSpec.feature "AnswerNew",
     scenario "User cannot make incorrect answers" do
       visit question_path(question)
 
-      click_button 'Ответить'
+      click_button 'Отправить'
 
       expect(page).to have_content 'Ответ не может быть пустым'
       expect(current_path).to eq question_path(question)

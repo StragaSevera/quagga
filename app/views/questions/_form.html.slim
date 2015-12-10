@@ -1,0 +1,16 @@
+= form_for @question, remote: remote do |f|
+  #question-edit-errors
+    = render 'shared/error_messages', object: @question
+  .form-group
+    = f.label :title
+    = f.text_field :title, class: 'form-control'
+
+  .form-group
+    = f.label :body
+    = f.text_area :body, class: 'form-control', rows: 15
+    
+  .form-group#question-attachments
+    .links
+      = link_to_add_association 'добавить файл', f, :attachments, partial: 'attachments/attachment_fields'
+
+  = f.submit yield(:button_text), class: "btn btn-primary", id: "button-submit"

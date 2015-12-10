@@ -1,0 +1,12 @@
+= form_for [@question, answer], remote: true do |f|
+  div id=errors_id
+    = render 'shared/error_messages', object: answer
+  .form-group
+    = f.label :body
+    = f.text_area :body, class: 'form-control', rows: 4
+
+  .form-group.answer-attachments id="answer-#{answer.id}-attachments"
+    .links
+      = link_to_add_association 'добавить файл', f, :attachments, partial: 'attachments/attachment_fields'
+
+  = f.submit "Отправить", class: "btn btn-primary", id: "button-submit"

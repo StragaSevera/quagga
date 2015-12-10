@@ -1,34 +1,19 @@
 - provide :title, @question.title
+- provide :button_text, "Изменить вопрос"
 .content-block#question-block
   #question-content
     = render @question
   - if @question.user == current_user
-    .row.question-edit class=question_edit_class
-      .col-full
-        = form_for @question, remote: true do |f|
-          #question-edit-errors
-            = render 'shared/error_messages', object: @question
-
-          = f.label :title
-          = f.text_field :title, class: 'form-control'
-
-          = f.label :body
-          = f.text_area :body, class: 'form-control', rows: 15
-
-          = f.submit "Изменить вопрос", class: "btn btn-primary", id: "button-submit"
+      .row.question-edit class=question_edit_class
+        .col-full
+          = render 'form', remote: true
 
 - if user_signed_in?
-  .content-block#answer-form-block
+  .content-block
     .row
       .col-full
-        = form_for [@question, @answer], remote: true do |f|
-          #answer-new-errors
-            = render 'shared/error_messages', object: @answer
-
-          = f.label :body, "Ваш ответ"
-          = f.text_area :body, class: 'form-control', rows: 4
-
-          = f.submit "Ответить", class: "btn btn-primary", id: "button-submit"
+        #answer-form-block.answer-edit
+          = render partial: 'answers/form', locals: { answer: @answer, errors_id: "answer-new-errors" }
 
 .content-block#answers-block
   - if @best_answer

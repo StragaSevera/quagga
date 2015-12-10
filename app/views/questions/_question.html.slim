@@ -5,6 +5,8 @@
     - if params[:action] != "index"
       .question-body
         = simple_format question.body
+      = render 'attachments/attachment_list', object: question
+  
     .question-info 
       => link_to publication_date(question.created_at), question_path(question.id)
       | |
