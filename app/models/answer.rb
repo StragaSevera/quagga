@@ -7,7 +7,7 @@ class Answer < ActiveRecord::Base
   validates :question_id, presence: true 
   validates :body, presence: true, length: { in: 10..10.kilobytes }
 
-  accepts_nested_attributes_for :attachments
+  accepts_nested_attributes_for :attachments, reject_if: :all_blank
 
   self.per_page = 10
 

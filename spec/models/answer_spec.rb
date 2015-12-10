@@ -16,11 +16,17 @@ RSpec.describe Answer, type: :model do
     it { should have_many(:attachments) }
   end
 
-  # Ну не разбивать же на две спеки?..
-  it "can switch best status" do
+  it "has default best status" do
     expect(answer).not_to be_best
+  end
+
+  it "can switch best status to true" do
     answer.switch_promotion!
     expect(answer).to be_best
+  end 
+
+  it "can switch best status to false" do
+    answer.best = true
     answer.switch_promotion!
     expect(answer).not_to be_best
   end 
