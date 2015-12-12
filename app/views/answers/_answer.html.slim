@@ -1,14 +1,7 @@
 .row.answer-row id="answer-row-#{answer.id}"
   .col-full
     .answer-stats
-      - if answer.question.user == current_user
-        = link_to(switch_promotion_question_answer_url(id: answer.id, question_id: answer.question.id), 
-          method: :patch, id: "answer-best-status-#{answer.id}", remote: true, class: best_status_class(answer)) do
-          = best_check_icon(answer)
-          .answer-status-text лучший ответ
-
-      - else
-        = best_check_icon(answer)
+      = render 'answers/stats', answer: answer
 
     .answer-text
       .answer-body

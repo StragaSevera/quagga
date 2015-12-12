@@ -5,31 +5,39 @@
 
 .answer-text
   overflow: visible
-  margin-left: 95px
+  margin-left: 100px
 
 .answer-stats
   width: 95px
   float: left 
   overflow: hidden
   text-align: center
-  font-size: 3.5em
-  line-height: 0em
 
-  .answer-best-status
-    text-decoration: none
-
-  .answer-status-text
-    font-size: 10px
+  .answer-score-block
+    font-size: 2.5em
     line-height: 1em
+    color: $clr-weak
 
-  .answer-best
-    color: $clr-good
-    &:hover
-      color: $clr-bad
+    .answer-vote-up, .answer-vote-down
+      text-decoration: none
+      font-weight: bold
+      color: $clr-lweak
+      &:hover
+        color: $clr-good
 
-  .answer-normal
-    color: $clr-ok
-    &:hover
+  .answer-best-block
+    font-size: 3.5em
+    line-height: 0.5em
+
+    .answer-best-status
+      text-decoration: none
+
+    .answer-best
       color: $clr-good
-    .answer-status-text
-      display: none
+      &:hover
+        color: $clr-bad
+
+    .answer-normal
+      color: $clr-ok
+      &:hover
+        color: $clr-good

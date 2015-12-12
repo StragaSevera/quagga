@@ -1,0 +1,17 @@
+.answer-score-block
+  => link_to(vote_down_question_answer_url(id: answer.id, question_id: answer.question.id), 
+    method: :patch, id: "answer-score-vote-down-#{answer.id}", remote: true, class: "answer-vote-down") do
+    | &lt; 
+  | 0 
+  =< link_to(vote_up_question_answer_url(id: answer.id, question_id: answer.question.id), 
+    method: :patch, id: "answer-score-up-down-#{answer.id}", remote: true, class: "answer-vote-up") do
+    | &gt; 
+
+.answer-best-block
+  - if answer.question.user == current_user
+    = link_to(switch_promotion_question_answer_url(id: answer.id, question_id: answer.question.id), 
+      method: :patch, id: "answer-best-status-#{answer.id}", remote: true, class: best_status_class(answer)) do
+      = best_check_icon(answer)
+
+  - else
+    = best_check_icon(answer)

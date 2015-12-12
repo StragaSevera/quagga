@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   resources :questions, only: [:index, :show, :new, :create, :update, :destroy] do
     resources :answers, only: [:show, :create, :update, :destroy] do
       member do
-        patch "switch_promotion"
+        patch :switch_promotion
+        patch :vote_up, :vote_down
       end
     end
   end

@@ -79,8 +79,6 @@ RSpec.feature "AnswerAttach",
 
     expect(page).to have_content "Ответ был изменен!"
 
-    # ВНЕЗАПНО проблема решилась сама собой после рефакторинга.
-    # Не имею ни малейшего понятия, откуда она взялась и куда делась =-)
     expect(page).to have_content 'Gemfile'
   end
 end

@@ -32,7 +32,6 @@ RSpec.feature "AnswerPromote",
         # Проверяем, чтобы первым шел принятый ответ
         within("#answers-block") do
           within("div.answer-subblock:first-of-type") do
-            expect(page).to have_content "лучший ответ"
             expect(page).not_to have_css ".answer-normal"
             expect(page).to have_selector ".answer-best"
           end
@@ -40,33 +39,28 @@ RSpec.feature "AnswerPromote",
 
         # Переключаем принятый ответ на первый
         within "#answer-#{answers[0].id}" do
-          expect(page).not_to have_content "лучший ответ"
           expect(page).to have_selector ".answer-normal"
           expect(page).not_to have_selector ".answer-best"
 
           click_link "answer-best-status-#{answers[0].id}"
 
-          expect(page).to have_content "лучший ответ"
           expect(page).not_to have_css ".answer-normal"
           expect(page).to have_selector ".answer-best"
         end
 
         # Переключаем принятый ответ на третий
         within "#answer-#{answers[2].id}" do
-          expect(page).not_to have_content "лучший ответ"
           expect(page).to have_selector ".answer-normal"
           expect(page).not_to have_selector ".answer-best"
 
           click_link "answer-best-status-#{answers[2].id}"
 
-          expect(page).to have_content "лучший ответ"
           expect(page).not_to have_css ".answer-normal"
           expect(page).to have_selector ".answer-best"
         end      
 
         # Проверяем, что первый элемент отщелкнулся
         within "#answer-#{answers[0].id}" do
-          expect(page).not_to have_content "лучший ответ"
           expect(page).to have_selector ".answer-normal"
           expect(page).not_to have_selector ".answer-best"
         end 
@@ -74,7 +68,6 @@ RSpec.feature "AnswerPromote",
         # Отменяем выбор элемента вообще
         click_link "answer-best-status-#{answers[2].id}"
 
-        expect(page).not_to have_content "лучший ответ"
         expect(page).not_to have_selector ".answer-best"        
       end
     end
