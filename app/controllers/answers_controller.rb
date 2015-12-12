@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, only: [:create, :destroy]
+  before_action :authenticate_user!, only: [:create, :destroy, :switch_promotion, :vote]
   before_action :load_question
-  before_action :load_answer, only: [:show, :update, :switch_promotion, :destroy]
+  before_action :load_answer, only: [:show, :update, :destroy, :switch_promotion, :vote]
   before_action :check_current_user, only: [:update, :destroy]
   before_action :check_question_user, only: [:switch_promotion]
 
@@ -31,6 +31,10 @@ class AnswersController < ApplicationController
     @answer.switch_promotion!
   end
 
+  def vote
+    @answer.vote(vote_params)
+  end
+
   private
     def load_question
       @question = Question.find(params[:question_id])
@@ -43,6 +47,10 @@ class AnswersController < ApplicationController
     def answer_params
       params.require(:answer).permit(:body, attachments_attributes: [:id, :file, :_destroy])
     end  
+
+    def vote_params
+      params.require(:direction)
+    end
 
     def check_current_user
       redirect_to root_url unless current_user && @answer.user.id == current_user.id

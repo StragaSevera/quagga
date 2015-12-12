@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     resources :answers, only: [:show, :create, :update, :destroy] do
       member do
         patch :switch_promotion
-        patch :vote_up, :vote_down
+        patch :vote
       end
     end
   end

@@ -230,5 +230,65 @@ RSpec.describe AnswersController, type: :controller do
     context 'when logged out' do
       it_behaves_like 'not switching answer'
     end    
+  end  
+
+  describe 'PATCH #vote' do  
+    shared_examples_for 'not voting for answer' do
+      it 'does not raise score' do
+        expect {
+          patch :vote, id: answer.id, question_id: question.id, direction: :up, format: :json
+        }.not_to change(answer, :score)
+      end    
+
+      it 'does not lower score' do
+        expect {
+          patch :vote, id: answer.id, question_id: question.id, direction: :down, format: :json
+        }.not_to change(answer, :score)
+      end   
+    end
+
+    describe 'when logged in' do
+      context 'as correct user' do
+        before(:each) { log_in_as user }
+      
+        it "assigns correct Question to @question" do
+          patch :vote, id: answer.id, question_id: question.id, direction: :up, format: :json
+          expect(assigns(:question)).to eq question
+        end
+
+        it "assigns correct Answer to @answer" do
+          patch :vote, id: answer.id, question_id: question.id, direction: :up, format: :json
+          expect(assigns(:answer)).to eq answer
+        end
+
+        it "renders the :vote template" do
+          patch :vote, id: answer.id, question_id: question.id, direction: :up, format: :json
+          expect(response).to render_template :switch_promotion
+        end   
+
+        it "increments score for @answer" do
+          expect {
+          patch :vote, id: answer.id, question_id: question.id, direction: :up, format: :json
+          }.to change(answer, :score).by 1
+        end    
+
+        it "decrements score for @answer" do
+          expect {
+          patch :vote, id: answer.id, question_id: question.id, direction: :down, format: :json
+          }.to change(answer, :score).by -1
+        end    
+      end
+
+      context 'as incorrect user' do
+        let (:other) { create(:user_multi) }
+        before(:each) { log_in_as other }
+
+        it_behaves_like 'not voting for answer'
+      end
+    end
+
+    context 'when logged out' do
+      it_behaves_like 'not voting for answer'
+    end    
   end    
 end

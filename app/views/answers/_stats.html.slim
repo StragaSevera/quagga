@@ -1,9 +1,9 @@
 .answer-score-block
-  => link_to(vote_down_question_answer_url(id: answer.id, question_id: answer.question.id), 
+  => link_to(vote_question_answer_url(id: answer.id, question_id: answer.question.id, direction: :down), 
     method: :patch, id: "answer-score-vote-down-#{answer.id}", remote: true, class: "answer-vote-down") do
     | &lt; 
   | 0 
-  =< link_to(vote_up_question_answer_url(id: answer.id, question_id: answer.question.id), 
+  =< link_to(vote_question_answer_url(id: answer.id, question_id: answer.question.id, direction: :up), 
     method: :patch, id: "answer-score-up-down-#{answer.id}", remote: true, class: "answer-vote-up") do
     | &gt; 
 
