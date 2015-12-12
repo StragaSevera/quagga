@@ -37,4 +37,20 @@ RSpec.describe Answer, type: :model do
     answer.switch_promotion!
     expect(other.reload).not_to be_best
   end
+
+  it "has default zero score" do
+    expect(answer.score).to eq 0
+  end
+
+  it "can upvote score" do
+    expect {
+      answer.vote(:up)
+    }.to change(answer, :score).by 1
+  end
+
+  it "can downvote score" do
+    expect {
+      answer.vote(:down)
+    }.to change(answer, :score).by -1
+  end
 end

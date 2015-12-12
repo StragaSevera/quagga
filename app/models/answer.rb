@@ -22,4 +22,14 @@ class Answer < ActiveRecord::Base
       save!
     end
   end
+
+  def vote(direction)
+    case direction
+    when :up
+      self.score += 1
+    when :down
+      self.score -= 1
+    end
+    save!
+  end
 end
