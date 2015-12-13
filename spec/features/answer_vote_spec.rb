@@ -20,9 +20,13 @@ RSpec.feature "AnswerAttach",
     within '.answer-stats' do
       expect(page).to have_content "0"
 
-      click_link 'vote-up'
+      click_link '>'
       expect(page).not_to have_content "0"
+      expect(page).to have_content "1"
+
+      click_link '<'
       expect(page).not_to have_content "1"
+      expect(page).to have_content "0"
     end
 
   end

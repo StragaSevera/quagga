@@ -263,18 +263,21 @@ RSpec.describe AnswersController, type: :controller do
 
         it "renders the :vote template" do
           patch :vote, id: answer.id, question_id: question.id, direction: :up, format: :json
-          expect(response).to render_template :switch_promotion
+          parsed_body = JSON.parse(response.body)
+          expect(parsed_body["score"]).to eq answer.reload.score
         end   
 
         it "increments score for @answer" do
           expect {
-          patch :vote, id: answer.id, question_id: question.id, direction: :up, format: :json
+            patch :vote, id: answer.id, question_id: question.id, direction: :up, format: :json
+            answer.reload
           }.to change(answer, :score).by 1
         end    
 
         it "decrements score for @answer" do
           expect {
-          patch :vote, id: answer.id, question_id: question.id, direction: :down, format: :json
+            patch :vote, id: answer.id, question_id: question.id, direction: :down, format: :json
+            answer.reload
           }.to change(answer, :score).by -1
         end    
       end

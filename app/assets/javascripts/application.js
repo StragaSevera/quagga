@@ -16,4 +16,5 @@
 //= require cocoon
 //= require bootstrap-sprockets
 //= require turbolinks
+//= require jquery_extensions
 //= require_tree .

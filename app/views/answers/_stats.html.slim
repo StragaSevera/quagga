@@ -1,11 +1,8 @@
 .answer-score-block
-  => link_to(vote_question_answer_url(id: answer.id, question_id: answer.question.id, direction: :down), 
-    method: :patch, id: "answer-score-vote-down-#{answer.id}", remote: true, class: "answer-vote-down") do
-    | &lt; 
-  | 0 
-  =< link_to(vote_question_answer_url(id: answer.id, question_id: answer.question.id, direction: :up), 
-    method: :patch, id: "answer-score-up-down-#{answer.id}", remote: true, class: "answer-vote-up") do
-    | &gt; 
+  => vote_link(answer, :down)
+  span.answer-score-value id="answer-score-value-#{answer.id}"
+    = answer.score
+  =< vote_link(answer, :up)
 
 .answer-best-block
   - if answer.question.user == current_user
@@ -14,4 +11,4 @@
       = best_check_icon(answer)
 
   - else
-    = best_check_icon(answer)
+    = best_check_icon(answer, best_status_class(answer))

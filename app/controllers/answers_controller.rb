@@ -33,6 +33,7 @@ class AnswersController < ApplicationController
 
   def vote
     @answer.vote(vote_params)
+    render json: { score: @answer.score }
   end
 
   private
