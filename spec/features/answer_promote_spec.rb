@@ -43,6 +43,7 @@ RSpec.feature "AnswerPromote",
           expect(page).not_to have_selector ".answer-best"
 
           click_link "answer-best-status-#{answers[0].id}"
+          wait_for_ajax
 
           expect(page).not_to have_css ".answer-normal"
           expect(page).to have_selector ".answer-best"
@@ -54,6 +55,7 @@ RSpec.feature "AnswerPromote",
           expect(page).not_to have_selector ".answer-best"
 
           click_link "answer-best-status-#{answers[2].id}"
+          wait_for_ajax
 
           expect(page).not_to have_css ".answer-normal"
           expect(page).to have_selector ".answer-best"
@@ -67,6 +69,7 @@ RSpec.feature "AnswerPromote",
 
         # Отменяем выбор элемента вообще
         click_link "answer-best-status-#{answers[2].id}"
+        wait_for_ajax
 
         expect(page).not_to have_selector ".answer-best"        
       end
