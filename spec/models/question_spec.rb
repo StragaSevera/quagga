@@ -18,6 +18,8 @@ RSpec.describe Question, type: :model do
     it { should accept_nested_attributes_for :attachments }
   end
 
+  it_behaves_like "votable"
+
   it "can get best answer" do
     answer = create(:answer, question: question)
     answer.switch_promotion!
