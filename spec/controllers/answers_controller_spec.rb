@@ -237,19 +237,22 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not raise score' do
         expect {
           patch :vote, id: answer.id, question_id: question.id, direction: :up, format: :json
+          answer.reload
         }.not_to change(answer, :score)
       end    
 
       it 'does not lower score' do
         expect {
           patch :vote, id: answer.id, question_id: question.id, direction: :down, format: :json
+          answer.reload
         }.not_to change(answer, :score)
       end   
     end
 
     describe 'when logged in' do
       context 'as correct user' do
-        before(:each) { log_in_as user }
+        let (:other) { create(:user_multi) }
+        before(:each) { log_in_as other }
       
         it "assigns correct Question to @question" do
           patch :vote, id: answer.id, question_id: question.id, direction: :up, format: :json
@@ -280,11 +283,13 @@ RSpec.describe AnswersController, type: :controller do
             answer.reload
           }.to change(answer, :score).by -1
         end    
+
+        # Стоит ли дублировать ВСЕ тесты из модели,
+        # или достаточно базовых?..
       end
 
       context 'as incorrect user' do
-        let (:other) { create(:user_multi) }
-        before(:each) { log_in_as other }
+        before(:each) { log_in_as user }
 
         it_behaves_like 'not voting for answer'
       end

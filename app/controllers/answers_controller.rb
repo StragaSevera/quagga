@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, only: [:create, :destroy, :switch_promotion, :vote]
+  before_action :authenticate_user!, only: [:create, :destroy, :switch_promotion]
+  before_action :authenticate_user!, only: [ :vote]
   before_action :load_question
   before_action :load_answer, only: [:show, :update, :destroy, :switch_promotion, :vote]
   before_action :check_current_user, only: [:update, :destroy]
@@ -32,8 +33,11 @@ class AnswersController < ApplicationController
   end
 
   def vote
-    @answer.vote(vote_params)
-    render json: { score: @answer.score }
+    if @answer.vote(vote_params, current_user.id)
+      render json: { score: @answer.score }
+    else
+      render json: { score: @answer.score }, status: :unprocessable_entity
+    end
   end
 
   private
