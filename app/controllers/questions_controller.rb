@@ -1,7 +1,9 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :destroy]
+  skip_before_action :authenticate_user!, only: [:index, :show]
   before_action :load_question, only: [:show, :update, :destroy]
   before_action :check_current_user, only: [:update, :destroy]
+
+  include Voted
 
   def index
     @questions = Question.page(params[:page]).order('id DESC')    

@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, only: [:create, :destroy, :switch_promotion]
+  skip_before_action :authenticate_user!, only: [:show]
   before_action :load_question
   before_action :load_answer, only: [:show, :update, :destroy, :switch_promotion]
   before_action :check_current_user, only: [:update, :destroy]

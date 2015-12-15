@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     get "signup", to: "users/registrations#new"
   end
 
-  resources :questions, only: [:index, :show, :new, :create, :update, :destroy] do
+  resources :questions, only: [:index, :show, :new, :create, :update, :destroy], concerns: [:votable] do
     resources :answers, only: [:show, :create, :update, :destroy], concerns: [:votable] do
       member do
         patch :switch_promotion

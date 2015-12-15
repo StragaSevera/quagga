@@ -3,7 +3,6 @@ module Voted
   include Introspected
 
   included do
-    before_action :authenticate_user!, only: [:vote]    
     before_action :load_votable, only: [:vote]    
   end
 
