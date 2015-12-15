@@ -1,5 +1,4 @@
 class AttachmentsController < ApplicationController
-  before_action :authenticate_user!
   before_action :load_attachment
   before_action :check_attachable_user
 

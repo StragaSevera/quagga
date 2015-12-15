@@ -3,7 +3,8 @@ module Voted
   include Introspected
 
   included do
-    before_action :load_votable, only: [:vote]    
+    before_action :load_votable, only: [:vote] 
+    helper ConcernHelpers::VotableHelper  
   end
 
   def vote
