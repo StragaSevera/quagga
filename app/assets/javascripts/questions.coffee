@@ -1,10 +1,10 @@
-@toggleQuestionForm = ->
-  $('.question-edit').toggleClass 'block-hidden'
+@toggleQuestionForm = (e) ->
+  e.preventDefault() unless e == undefined
+  $('.question-edit').toggleClass('block-hidden')
 
 bindToggleQuestionForms = ->
-  $('.question-show-edit-form').click (e) ->
-    e.preventDefault()
-    toggleQuestionForm()
+  $('.question-show-edit-form').rebind("click", toggleQuestionForm)
 
-$(document).ready(bindToggleQuestionForms)
-$(document).on('page:load', bindToggleQuestionForms)
+$(document).bindOnLoad(bindToggleQuestionForms)
+
+bindVote('question')

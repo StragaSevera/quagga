@@ -1,0 +1,5 @@
+div class="votes-score-block #{klass_name(votable)}-score-block"
+  => vote_link(votable, :down, poly_list)
+  span class="votes-score-value #{klass_name(votable)}-score-value" id="#{klass_name(votable)}-score-value-#{votable.id}"
+    = votable.score
+  =< vote_link(votable, :up, poly_list)

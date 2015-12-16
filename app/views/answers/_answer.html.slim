@@ -1,12 +1,13 @@
 .row.answer-row id="answer-row-#{answer.id}"
-  .col-full
-    .answer-stats
-      = render 'answers/stats', answer: answer
+  .col-full.block-flex-no-wrap
+    .stats-block
+      = render partial: 'shared/votes', locals: { votable: answer, poly_list: [answer.question, answer] }
+      = render 'answers/bests', answer: answer
 
-    .answer-text
+    .votable-text
       .answer-body
         = simple_format answer.body
-      = render 'attachments/attachment_list', object: answer
+        = render 'attachments/attachment_list', object: answer
 
       .answer-info 
         => link_to publication_date(answer.created_at), question_answer_path(question_id: answer.question.id, id:answer.id)
@@ -16,7 +17,7 @@
           | |
           =<> link_to "редактировать", "#", class: 'answer-show-edit-form', data: { answer_id: answer.id }
           | |
-          =< link_to "удалить", question_answer_path(question_id: answer.question.id, id:answer.id), method: :delete,
+          =< link_to "удалить", question_answer_path(question_id: answer.question_id, id:answer.id), method: :delete,
                      data: { confirm: "Вы уверены, что хотите удалить ответ?" }, remote: true
       .answer-edit.block-hidden id="answer-edit-#{answer.id}"
         = render partial: 'answers/form', locals: { answer: answer, errors_id: "answer-edit-errors-#{answer.id}" }

@@ -1,8 +1,4 @@
 module ConcernHelpers::VotableHelper
-  def vote_url(answer, direction)
-    vote_question_answer_url(id: answer.id, question_id: answer.question_id, direction: direction)
-  end
-
   def direction_sign(direction)
     case direction.to_sym
     when :up
@@ -12,10 +8,15 @@ module ConcernHelpers::VotableHelper
     end
   end
 
-  def vote_link(answer, direction)
-    link_to direction_sign(direction), vote_url(answer, direction), method: :patch, 
-      id: "answer-score-vote-#{direction}-#{answer.id}", remote: true, 
-      class: "answer-vote answer-vote-#{direction}", 
-      data: { answer_id: answer.id }
+  def votable_url(direction, poly_list)
+    polymorphic_url([:vote, *poly_list], direction: direction)
+  end
+
+  def vote_link(votable, direction, poly_list)
+    k_name = klass_name(votable)
+    link_to direction_sign(direction), votable_url(direction, poly_list), method: :patch, 
+      id: "#{k_name}-score-vote-#{direction}-#{votable.id}", remote: true, 
+      class: "vote-link #{k_name}-vote-link #{k_name}-vote-#{direction}", 
+      data: { "#{k_name}_id".to_sym => votable.id }
   end
 end

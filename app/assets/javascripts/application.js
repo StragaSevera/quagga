@@ -17,4 +17,5 @@
 //= require bootstrap-sprockets
 //= require turbolinks
 //= require jquery_extensions
-//= require_tree .
+//= require_directory ./concerns
+//= require_directory .

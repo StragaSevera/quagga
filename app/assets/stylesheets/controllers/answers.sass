@@ -3,41 +3,19 @@
   margin-bottom: 10px
   padding-bottom: 10px
 
-.answer-text
-  overflow: visible
-  margin-left: 120px
+.answer-best-block
+  font-size: 3.5em
+  line-height: 0.5em
 
-.answer-stats
-  width: 115px
-  float: left 
-  overflow: hidden
-  text-align: center
+  .answer-best-status
+    text-decoration: none
 
-  .answer-score-block
-    font-size: 2.5em
-    line-height: 1em
-    color: $clr-weak
+  .answer-best
+    color: $clr-good
+    &:hover
+      color: $clr-bad
 
-    .answer-vote-up, .answer-vote-down
-      text-decoration: none
-      font-weight: bold
-      color: $clr-lweak
-      &:hover
-        color: $clr-good
-
-  .answer-best-block
-    font-size: 3.5em
-    line-height: 0.5em
-
-    .answer-best-status
-      text-decoration: none
-
-    .answer-best
+  .answer-normal
+    color: $clr-ok
+    &:hover
       color: $clr-good
-      &:hover
-        color: $clr-bad
-
-    .answer-normal
-      color: $clr-ok
-      &:hover
-        color: $clr-good

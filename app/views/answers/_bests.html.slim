@@ -1,9 +1,3 @@
-.answer-score-block
-  => vote_link(answer, :down)
-  span.answer-score-value id="answer-score-value-#{answer.id}"
-    = answer.score
-  =< vote_link(answer, :up)
-
 .answer-best-block
   - if answer.question.user == current_user
     = link_to(switch_promotion_question_answer_url(id: answer.id, question_id: answer.question.id), 
