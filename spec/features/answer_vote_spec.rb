@@ -14,14 +14,14 @@ RSpec.feature "AnswerVote",
   given!(:answer) { create(:answer, question: question, user: user) }
 
   it_behaves_like "voted as correct user", "answers" do
-    before(:each) do
+    background(:each) do
       log_in_as(other)
       visit question_path(question)
     end
   end
 
   it_behaves_like "voted as incorrect user", "answers" do
-    before(:each) do
+    background(:each) do
       log_in_as(user)
       visit question_path(question)
     end

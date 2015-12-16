@@ -8,7 +8,7 @@ module Voted
   end
 
   def vote
-    if @votable.vote(vote_params, current_user.id)
+    if @votable.vote(params[:direction], current_user.id)
       render json: { score: @votable.score }
     else
       render json: { score: @votable.score }, status: :unprocessable_entity
@@ -20,7 +20,7 @@ module Voted
       @votable = model_klass.find(params[:id])
     end
 
-    def vote_params
-      params.require(:direction)
-    end
+    # def vote_params
+    #   params.require(:direction)
+    # end
 end

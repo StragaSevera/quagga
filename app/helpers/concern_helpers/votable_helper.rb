@@ -1,11 +1,7 @@
 module ConcernHelpers::VotableHelper
+  DIRECTION = {up: '>', down: '<'}
   def direction_sign(direction)
-    case direction.to_sym
-    when :up
-      ">"
-    when :down
-      "<"          
-    end
+    DIRECTION[direction.to_sym]
   end
 
   def votable_url(direction, poly_list)

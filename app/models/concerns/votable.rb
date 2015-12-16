@@ -6,28 +6,24 @@ module Votable
     validates :score, presence: true 
   end
 
+  POINTS = {up: 1, down: -1}
   def vote(direction, user_id)
     return false if self.user_id == user_id
 
-    case direction.to_s
-    when "up"
-      points = 1
-    when "down"
-      points = -1
-    end
+    points = POINTS[direction.to_sym]
 
     vote = votes.where(user_id: user_id).first
     transaction do
       if vote
         return false if vote.score == points
-        vote.destroy
+        vote.destroy!
       else
-        votes.create(user_id: user_id, score: points)
+        votes.create!(user_id: user_id, score: points)
       end
       self.score += points
       save!
     end
-  end  
+  end
 
   # В случае, если бы я решил не кешировать голоса
   # полем в модели, код выглядел бы примерно так.

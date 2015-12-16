@@ -11,7 +11,7 @@ RSpec.feature "AnswerAttach",
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
-  before(:each) { log_in_as(user) }
+  background(:each) { log_in_as(user) }
 
 
   scenario 'User adds file when makes answer', js: true do

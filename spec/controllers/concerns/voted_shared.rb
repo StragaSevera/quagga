@@ -7,15 +7,15 @@ shared_examples_for "voted" do
   describe 'PATCH #vote' do  
     shared_examples_for 'not voting for votable' do
       it 'does not raise score' do
+        patch_vote(votable, :up)
         expect {
-          patch_vote(votable, :up)
           votable.reload
         }.not_to change(votable, :score)
       end    
 
       it 'does not lower score' do
+        patch_vote(votable, :down)
         expect {
-          patch_vote(votable, :down)
           votable.reload
         }.not_to change(votable, :score)
       end   
@@ -38,21 +38,18 @@ shared_examples_for "voted" do
         end   
 
         it "increments score for @votable" do
+          patch_vote(votable, :up)
           expect {
-            patch_vote(votable, :up)
             votable.reload
           }.to change(votable, :score).by 1
         end    
 
         it "decrements score for @votable" do
+          patch_vote(votable, :down)
           expect {
-            patch_vote(votable, :down)
             votable.reload
           }.to change(votable, :score).by -1
         end    
-
-        # Стоит ли дублировать ВСЕ тесты из консерна модели,
-        # или достаточно базовых?..
       end
 
       context 'as incorrect user' do

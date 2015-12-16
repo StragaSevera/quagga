@@ -22,7 +22,7 @@ RSpec.feature "AnswerPromote",
 
   describe "when logged in" do
     context "as correct user", js: true do
-      before(:each) { log_in_as(user) }
+      background(:each) { log_in_as(user) }
 
       scenario "User can switch best answer" do
         answers[1].switch_promotion!
@@ -76,7 +76,7 @@ RSpec.feature "AnswerPromote",
     end
 
     context "as incorrect user" do
-      before(:each) { log_in_as(other) }
+      background(:each) { log_in_as(other) }
 
       it_behaves_like "cannot switch best answer"
     end
