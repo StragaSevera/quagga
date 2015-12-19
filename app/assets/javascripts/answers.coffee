@@ -10,3 +10,6 @@ toggleAnswerForm = (e) ->
 $(document).bindOnLoad(bindToggleAnswerForms)
 
 bindVote('answer')
+
+@addAnswer = (answer) ->
+  $('#answers-block').prepend(answer);

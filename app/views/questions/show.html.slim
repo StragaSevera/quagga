@@ -1,5 +1,6 @@
 - provide :title, @question.title
 - provide :button_text, "Изменить вопрос"
+= subscribe_to "/questions/#{@question.id}/answers"
 
 .content-block#question-block
   #question-content
