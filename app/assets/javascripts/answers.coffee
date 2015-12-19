@@ -11,5 +11,8 @@ $(document).bindOnLoad(bindToggleAnswerForms)
 
 bindVote('answer')
 
-@addAnswer = (answer) ->
-  $('#answers-block').prepend(answer);
+# Рендерим ответ, если его еще нет на странице.
+# Если задан user_id, рендерит лишь при несовпадающих с текущим id пользователя
+@addAnswer = (answer, id, userId) ->
+  if userId == undefined || userId != gon.currentUserId
+    $('#answers-block').prepend(answer) if $("#answer-row-#{id}").length == 0
