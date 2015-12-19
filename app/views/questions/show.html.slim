@@ -4,7 +4,7 @@
 
 .content-block#question-block
   #question-content
-    = render @question
+    = render @question, show_body: true
   - if @question.user == current_user
       .row.question-edit class=question_edit_class
         .col-full

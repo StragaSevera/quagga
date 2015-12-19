@@ -29,6 +29,14 @@ class QuestionsController < ApplicationController
   def create
     @question = current_user.questions.build(question_params)
     if @question.save
+      # Не уверен, что публиковать нужно здесь.
+      # А с другой стороны, где еще?
+      # Рендерить во вьюхе и передавать какой=нибудь параметр в урле, чтобы показать,
+      # что вопрос только что создан - как-то косячно.
+      rendered_question = render_to_string partial: "questions/question", layout: false, locals: { question: @question, render_links: false }
+      js_publication = "addQuestion('#{ActionController::Base.helpers.j rendered_question}', #{@question.id}, #{@question.user_id});"
+      PrivatePub.publish_to("/questions",
+        js_publication)
       redirect_to @question
     else
       render :new

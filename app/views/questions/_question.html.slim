@@ -1,4 +1,7 @@
-.row.question-row id="question-#{question.id}"
+- render_links = local_assigns.fetch :render_links, true
+- show_body = local_assigns.fetch :show_body, false
+
+.row.question-row id="question-row-#{question.id}"
   .col-full.block-flex-no-wrap
     .stats-block
       = render partial: 'shared/votes', locals: { votable: question, poly_list: [question] }
@@ -7,7 +10,7 @@
       .question-title
         h2
           = link_to question.title, question_path(question.id)
-      - if params[:action] != "index"
+      - if show_body
         .question-body
           = simple_format question.body
         = render 'attachments/attachment_list', object: question
@@ -16,12 +19,12 @@
         => link_to publication_date(question.created_at), question_path(question.id)
         | |
         =<> question.user.name
-        - if question.user == current_user
+        - if user_signed_in? && question.user_id == current_user.id && render_links
           | |
-          - if params[:action] == "index"
-            =<> link_to "редактировать", question_path(question.id, edit: 1)
-          - else
+          - if show_body
             =<> link_to "редактировать", "#", class: 'question-show-edit-form'
+          - else
+            =<> link_to "редактировать", question_path(question.id, edit: 1)
           | |
           =< link_to "удалить", question, method: :delete,
                      data: { confirm: "Вы уверены, что хотите удалить запись \"#{question.title}?\"" }

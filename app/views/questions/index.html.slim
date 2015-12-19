@@ -1,11 +1,9 @@
 - provide :title
+= subscribe_to "/questions"
 .content-block#questions-block
   - @questions.each do |question|
-    = render question
-    - unless @questions.last == question
-      .row
-        .col-full
-          hr
+    div.question-subblock id="question-#{question.id}"
+      = render question
   .row
     .col-middle.text-center
       = will_paginate

@@ -1,6 +1,14 @@
+.question-row
+  border-bottom: solid 1px $clr-xweak
+  margin-bottom: 10px
+  padding-bottom: 10px
+
 .hide-ruler
-  .answer-row
+  .answer-row, .question-row
     border-bottom: 0px
 
 #answers-block > div:nth-last-of-type(2)
+  @extend .hide-ruler
+
+#questions-block > div:nth-last-of-type(2)
   @extend .hide-ruler

@@ -1,3 +1,4 @@
+- render_links = local_assigns.fetch :render_links, true
 .row.answer-row id="answer-row-#{answer.id}"
   .col-full.block-flex-no-wrap
     .stats-block
@@ -13,7 +14,7 @@
         => link_to publication_date(answer.created_at), question_answer_path(question_id: answer.question.id, id:answer.id)
         | |
         =<> answer.user.name
-        - if (answer.user == current_user) && (local_assigns.fetch :render_links, true)
+        - if user_signed_in? && answer.user_id == current_user.id && render_links
           | |
           =<> link_to "редактировать", "#", class: 'answer-show-edit-form', data: { answer_id: answer.id }
           | |
