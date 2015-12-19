@@ -21,28 +21,6 @@ class QuestionsController < ApplicationController
     @answer.attachments.build
   end
 
-
-  # В случае не-кеширования голосов для ускорения запросов
-  # будет использован следующий вариант экшна.
-  # Во вьюхах, вероятно, будет использоваться вместо answer.score
-  # answer.score2 || answer.score, ибо, судя по тестам,
-  # подобное псевдополе запроса при совпадении
-  # имени с методом не перекрывает метод, определенный
-  # в модели (см. консерн Votable).
-  # Аналогичная оптимизация будет и в экшне index.
-
-  # def show
-  #   if @question.best_answer
-  #     @best_answer = @question.best_answer
-  #     @answers = @question.answers.select("answers.*, COALESCE(SUM(votes.score), 0) AS score2").joins("LEFT JOIN public.votes ON answers.id = votes.votable_id AND votes.votable_type = 'Answer'").where.not(id: @best_answer.id).group(:id).page(params[:page]).order('id DESC')
-  #   else
-  #     @answers = @question.answers.select("answers.*, COALESCE(SUM(votes.score), 0) AS score2").joins("LEFT JOIN public.votes ON answers.id = votes.votable_id AND votes.votable_type = 'Answer'").group(:id).page(params[:page]).order('id DESC')
-  #   end
-
-  #   @answer = @question.answers.build
-  #   @answer.attachments.build
-  # end
-
   def new
     @question = current_user.questions.build
     @question.attachments.build

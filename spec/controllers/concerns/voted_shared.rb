@@ -2,7 +2,7 @@ require 'rails_helper'
 
 shared_examples_for "voted" do
   let (:user) { create(:user) }
-  let (:votable) { create(described_class.model_klass.to_s.underscore.to_sym, user: user) }
+  let (:votable) { create(subject.model_klass.to_s.underscore.to_sym, user: user) }
 
   describe 'PATCH #vote' do  
     shared_examples_for 'not voting for votable' do
