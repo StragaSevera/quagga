@@ -1,6 +1,8 @@
 require 'rails_helper'
 require 'capybara/poltergeist'
 
+Dir[File.dirname(__FILE__) + "/features/concerns/*.rb"].each {|f| require f}
+
 RSpec.configure do |config|
   config.use_transactional_fixtures = false
 

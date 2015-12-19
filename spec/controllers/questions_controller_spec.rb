@@ -4,6 +4,12 @@ RSpec.describe QuestionsController, type: :controller do
   let (:user) { create(:user) }
   let (:question) { create(:question, user: user) }
 
+  it_behaves_like "voted" do
+    def patch_vote(votable, direction)
+      patch :vote, id: votable.id, direction: direction, format: :json
+    end
+  end
+
   describe 'GET #index' do
     let(:questions) { create_list(:question_multi, 2, user: user) }
 

@@ -22,7 +22,7 @@ RSpec.feature "AnswerPromote",
 
   describe "when logged in" do
     context "as correct user", js: true do
-      before(:each) { log_in_as(user) }
+      background(:each) { log_in_as(user) }
 
       scenario "User can switch best answer" do
         answers[1].switch_promotion!
@@ -32,7 +32,6 @@ RSpec.feature "AnswerPromote",
         # Проверяем, чтобы первым шел принятый ответ
         within("#answers-block") do
           within("div.answer-subblock:first-of-type") do
-            expect(page).to have_content "лучший ответ"
             expect(page).not_to have_css ".answer-normal"
             expect(page).to have_selector ".answer-best"
           end
@@ -40,47 +39,44 @@ RSpec.feature "AnswerPromote",
 
         # Переключаем принятый ответ на первый
         within "#answer-#{answers[0].id}" do
-          expect(page).not_to have_content "лучший ответ"
           expect(page).to have_selector ".answer-normal"
           expect(page).not_to have_selector ".answer-best"
 
           click_link "answer-best-status-#{answers[0].id}"
+          wait_for_ajax
 
-          expect(page).to have_content "лучший ответ"
           expect(page).not_to have_css ".answer-normal"
           expect(page).to have_selector ".answer-best"
         end
 
         # Переключаем принятый ответ на третий
         within "#answer-#{answers[2].id}" do
-          expect(page).not_to have_content "лучший ответ"
           expect(page).to have_selector ".answer-normal"
           expect(page).not_to have_selector ".answer-best"
 
           click_link "answer-best-status-#{answers[2].id}"
+          wait_for_ajax
 
-          expect(page).to have_content "лучший ответ"
           expect(page).not_to have_css ".answer-normal"
           expect(page).to have_selector ".answer-best"
         end      
 
         # Проверяем, что первый элемент отщелкнулся
         within "#answer-#{answers[0].id}" do
-          expect(page).not_to have_content "лучший ответ"
           expect(page).to have_selector ".answer-normal"
           expect(page).not_to have_selector ".answer-best"
         end 
 
         # Отменяем выбор элемента вообще
         click_link "answer-best-status-#{answers[2].id}"
+        wait_for_ajax
 
-        expect(page).not_to have_content "лучший ответ"
         expect(page).not_to have_selector ".answer-best"        
       end
     end
 
     context "as incorrect user" do
-      before(:each) { log_in_as(other) }
+      background(:each) { log_in_as(other) }
 
       it_behaves_like "cannot switch best answer"
     end

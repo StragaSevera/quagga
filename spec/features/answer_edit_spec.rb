@@ -24,7 +24,7 @@ RSpec.feature "AnswerEdit",
 
   describe "when logged in" do
     context "as correct user", js: true do
-      before(:each) { log_in_as(user) }
+      background(:each) { log_in_as(user) }
 
       scenario "User can edit with correct data" do
         visit question_path(question)
@@ -70,7 +70,7 @@ RSpec.feature "AnswerEdit",
 
     context "as incorrect user" do
       given (:other) { create(:user_multi) }
-      before(:each) { log_in_as(other) }
+      background(:each) { log_in_as(other) }
 
       it_behaves_like "cannot edit answer"
     end

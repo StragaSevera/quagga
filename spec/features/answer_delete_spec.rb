@@ -14,7 +14,7 @@ RSpec.feature "AnswerDelete",
 
   context "when logged in" do
     context "as correct user", js: true do
-      before(:each) { log_in_as(user) }    
+      background(:each) { log_in_as(user) }    
 
       scenario "User can delete answers" do
         visit question_path(question)
@@ -30,7 +30,7 @@ RSpec.feature "AnswerDelete",
 
     context "as incorrect user" do
       given(:other) { create(:user_multi) }
-      before(:each) { log_in_as(other) }    
+      background(:each) { log_in_as(other) }    
 
       scenario "User cannot delete questions" do
         visit question_path(question)

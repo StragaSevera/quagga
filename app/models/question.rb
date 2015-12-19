@@ -1,4 +1,6 @@
 class Question < ActiveRecord::Base
+  include Votable
+
   has_many :answers, dependent: :destroy
   has_many :attachments, as: :attachable
   has_one :best_answer, -> { where(best: true) }, class_name: 'Answer'

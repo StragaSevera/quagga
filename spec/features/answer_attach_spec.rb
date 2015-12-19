@@ -11,7 +11,7 @@ RSpec.feature "AnswerAttach",
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
-  before(:each) { log_in_as(user) }
+  background(:each) { log_in_as(user) }
 
 
   scenario 'User adds file when makes answer', js: true do
@@ -79,8 +79,6 @@ RSpec.feature "AnswerAttach",
 
     expect(page).to have_content "Ответ был изменен!"
 
-    # ВНЕЗАПНО проблема решилась сама собой после рефакторинга.
-    # Не имею ни малейшего понятия, откуда она взялась и куда делась =-)
     expect(page).to have_content 'Gemfile'
   end
 end

@@ -12,7 +12,7 @@ RSpec.feature "AnswerNew",
   given(:question) { create(:question, user: user) }
 
   context "when logged in", js: true do
-    before(:each) { log_in_as(user) }    
+    background(:each) { log_in_as(user) }    
 
     scenario "User can make correct answers" do
       visit question_path(question)

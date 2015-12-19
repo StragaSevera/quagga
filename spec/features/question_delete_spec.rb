@@ -13,7 +13,7 @@ RSpec.feature "QuestionDelete",
 
   context "when logged in" do
     context "as correct user" do
-      before(:each) { log_in_as(user) }    
+      background(:each) { log_in_as(user) }    
 
       scenario "User can delete questions" do
         create(:question_multi, user: user, title: 'Other title')
@@ -33,7 +33,7 @@ RSpec.feature "QuestionDelete",
 
     context "as incorrect user" do
       given(:other) { create(:user_multi) }
-      before(:each) { log_in_as(other) }    
+      background(:each) { log_in_as(other) }    
 
       scenario "User cannot delete questions" do
         visit question_path(question)

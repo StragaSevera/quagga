@@ -5,6 +5,12 @@ RSpec.describe AnswersController, type: :controller do
   let (:question) { create(:question, user: user) }
   let (:answer) { create(:answer, user: user, question: question) }
 
+  it_behaves_like "voted" do
+    def patch_vote(votable, direction)
+      patch :vote, id: votable.id, question_id: votable.question.id, direction: direction, format: :json
+    end
+  end
+
   describe 'GET #show' do
     before(:each) { get :show, id: answer, question_id: question }
 
@@ -230,5 +236,5 @@ RSpec.describe AnswersController, type: :controller do
     context 'when logged out' do
       it_behaves_like 'not switching answer'
     end    
-  end    
+  end  
 end

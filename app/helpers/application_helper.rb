@@ -38,4 +38,8 @@ module ApplicationHelper
   def publication_date(date)
     str = "Опубликовано %s в %s" % [date.strftime("%d.%m.%Y"), date.strftime("%k:%M")]
   end
+
+  def klass_name(object)
+    object.class.name.underscore
+  end
 end

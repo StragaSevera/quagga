@@ -1,11 +1,12 @@
-toggleAnswerForm = (id) ->
-  $("#answer-edit-#{id}").toggleClass 'block-hidden'
+toggleAnswerForm = (e) ->
+  e.preventDefault()
+  answer_id = $(this).data('answerId')
+  $("#answer-edit-#{answer_id}").toggleClass 'block-hidden'
+  
 
 @bindToggleAnswerForms = ->
-  $('.answer-show-edit-form').click (e) ->
-    e.preventDefault()
-    answer_id = $(this).data('answerId')
-    toggleAnswerForm(answer_id)
+  $('.answer-show-edit-form').rebind("click", toggleAnswerForm)
 
-$(document).ready(bindToggleAnswerForms)
-$(document).on('page:load', bindToggleAnswerForms)
+$(document).bindOnLoad(bindToggleAnswerForms)
+
+bindVote('answer')

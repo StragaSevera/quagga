@@ -1,22 +1,27 @@
 .row.question-row id="question-#{question.id}"
-  .col-full
-    h2.question-title
-      = link_to question.title, question_path(question.id)
-    - if params[:action] != "index"
-      .question-body
-        = simple_format question.body
-      = render 'attachments/attachment_list', object: question
-  
-    .question-info 
-      => link_to publication_date(question.created_at), question_path(question.id)
-      | |
-      =<> question.user.name
-      - if question.user == current_user
+  .col-full.block-flex-no-wrap
+    .stats-block
+      = render partial: 'shared/votes', locals: { votable: question, poly_list: [question] }
+
+    .question-text.votable-text
+      .question-title
+        h2
+          = link_to question.title, question_path(question.id)
+      - if params[:action] != "index"
+        .question-body
+          = simple_format question.body
+        = render 'attachments/attachment_list', object: question
+    
+      .question-info 
+        => link_to publication_date(question.created_at), question_path(question.id)
         | |
-        - if params[:action] == "index"
-          =<> link_to "редактировать", question_path(question.id, edit: 1)
-        - else
-          =<> link_to "редактировать", "#", class: 'question-show-edit-form'
-        | |
-        =< link_to "удалить", question, method: :delete,
-                   data: { confirm: "Вы уверены, что хотите удалить запись \"#{question.title}?\"" }
+        =<> question.user.name
+        - if question.user == current_user
+          | |
+          - if params[:action] == "index"
+            =<> link_to "редактировать", question_path(question.id, edit: 1)
+          - else
+            =<> link_to "редактировать", "#", class: 'question-show-edit-form'
+          | |
+          =< link_to "удалить", question, method: :delete,
+                     data: { confirm: "Вы уверены, что хотите удалить запись \"#{question.title}?\"" }

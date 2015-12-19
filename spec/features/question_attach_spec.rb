@@ -10,7 +10,7 @@ RSpec.feature "QuestionAttach",
 
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
-  before(:each) { log_in_as(user) }    
+  background(:each) { log_in_as(user) }    
 
   scenario 'User adds files when asks question', js: true do
     visit new_question_path

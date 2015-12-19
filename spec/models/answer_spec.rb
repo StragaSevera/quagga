@@ -16,6 +16,8 @@ RSpec.describe Answer, type: :model do
     it { should have_many(:attachments) }
   end
 
+  it_behaves_like "votable"
+
   it "has default best status" do
     expect(answer).not_to be_best
   end
@@ -36,5 +38,9 @@ RSpec.describe Answer, type: :model do
     other.switch_promotion!
     answer.switch_promotion!
     expect(other.reload).not_to be_best
+  end
+
+  it "has default zero score" do
+    expect(answer.score).to eq 0
   end
 end

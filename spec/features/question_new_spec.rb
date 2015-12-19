@@ -10,7 +10,7 @@ RSpec.feature "QuestionNew",
 
   context "when logged in" do
     given(:user) { create(:user) }
-    before(:each) { log_in_as(user) }    
+    background(:each) { log_in_as(user) }    
 
     scenario "User can ask correct questions" do
       visit new_question_path
