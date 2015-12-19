@@ -12,7 +12,7 @@
   //   addAnswer('<%= j render @answer %>');
   // <% end %>
 
-  <%= publish_to "/questions/#{@question.id}/answers" do %>
+  <% publish_to "/questions/#{@question.id}/answers" do %>
     addAnswer('<%= j render @answer %>');
   <% end %>
 <% else %>
