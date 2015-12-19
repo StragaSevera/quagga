@@ -13,12 +13,11 @@ RSpec.describe Question, type: :model do
     it { should have_many(:answers).dependent(:destroy) } 
     it { should belong_to(:user) }
     it { should have_one(:best_answer).conditions(best: true).class_name(:Answer) } 
-
-    it { should have_many(:attachments) } 
-    it { should accept_nested_attributes_for :attachments }
   end
 
   it_behaves_like "votable"
+
+  it_behaves_like "attachable"
 
   it "can get best answer" do
     answer = create(:answer, question: question)
