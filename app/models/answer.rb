@@ -1,6 +1,7 @@
 class Answer < ActiveRecord::Base
   include Votable
   include Attachable
+  include Commentable
 
   belongs_to :question, required: true
   belongs_to :user, required: true

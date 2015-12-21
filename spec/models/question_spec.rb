@@ -16,8 +16,8 @@ RSpec.describe Question, type: :model do
   end
 
   it_behaves_like "votable"
-
   it_behaves_like "attachable"
+  it_behaves_like "commentable"
 
   it "can get best answer" do
     answer = create(:answer, question: question)
