@@ -23,4 +23,5 @@ Rails.application.routes.draw do
   end
 
   resources :attachments, only: [:destroy]
+  resources :comments, only: [:create]
 end

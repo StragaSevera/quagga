@@ -19,8 +19,4 @@ module Voted
     def load_votable
       @votable = model_klass.find(params[:id])
     end
-
-    # def vote_params
-    #   params.require(:direction)
-    # end
 end
