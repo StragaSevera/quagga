@@ -1,0 +1,17 @@
+var commentable_name = "<%= @commentable_name %>";
+<% if @comment.errors.empty? %>
+  $('#' + commentable_name + '_comment_body').val('');
+
+  addComment('<%= j render @comment %>', <%= @comment.id %>, commentable_name);
+  $('#' + commentable_name + '-comment-errors').html('');
+
+  <%= render partial: "shared/flash_messages_js.erb" %>
+
+  <% publish_to "/questions/#{@comment.question_id}/comments" do %>
+    addComment('<%= j render @comment %>', <%= @comment.id %>, "<%= @commentable_name %>", <%= @comment.user_id %>);
+  <% end %>
+<% else %>
+
+  $('#' + commentable_name + '-comment-errors').html('<%= j render "shared/error_messages", object: @comment %>');
+
+<% end %>

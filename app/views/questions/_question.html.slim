@@ -13,7 +13,6 @@
       - if show_body
         .question-body
           = simple_format question.body
-        = render 'attachments/attachment_list', object: question
     
       .question-info 
         => link_to publication_date(question.created_at), question_path(question.id)
@@ -28,3 +27,17 @@
           | |
           =< link_to "удалить", question, method: :delete,
                      data: { confirm: "Вы уверены, что хотите удалить запись \"#{question.title}?\"" }
+      - if show_body
+        = render 'attachments/attachment_list', object: question
+        - if question.comments.any?
+          .question-comments.commentable-comments
+            h4 Комментарии:
+            ul id="#{commentable_name(question)}-comments-block"
+              - question.comments.each do |comment|
+                div.question-comment-subblock id="#{commentable_name(question)}-comment-#{comment.id}"
+                  = render comment, commentable: question
+
+        div
+          =<> link_to "оставить комментарий", "#", class: 'commentable-show-comment-form', data: { commentable_name: commentable_name(question) }
+        .block-hidden id="#{commentable_name(question)}-comment-form"
+          = render partial: 'comments/form', locals: { comment: question.comments.build, commentable: question }

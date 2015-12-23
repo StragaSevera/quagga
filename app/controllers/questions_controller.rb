@@ -10,12 +10,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    if @question.best_answer
-      @best_answer = @question.best_answer
-      @answers = @question.answers.where.not(id: @best_answer.id).page(params[:page]).order('id DESC')
-    else
-      @answers = @question.answers.page(params[:page]).order('id DESC')
-    end
+    @answers = @question.answers.page(params[:page]).order('best DESC, id DESC')
 
     @answer = @question.answers.build
     @answer.attachments.build

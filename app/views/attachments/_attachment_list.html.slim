@@ -1,6 +1,6 @@
 - if object.attachments.any?
   .attachments-list
-    p Вложенные файлы:
+    h4 Вложенные файлы:
     ul
       - object.attachments.each do |a|
         li id="attachment-#{a.id}"

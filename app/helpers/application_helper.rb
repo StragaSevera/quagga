@@ -35,8 +35,13 @@ module ApplicationHelper
     "К сожалению, в форме #{t(:custom_errors, count: number)}:"
   end
 
-  def publication_date(date)
-    str = "Опубликовано %s в %s" % [date.strftime("%d.%m.%Y"), date.strftime("%k:%M")]
+  def publication_date(date, short = false)
+    if short
+      pattern = "%s, %s"
+    else
+      pattern = "Опубликовано %s в %s"
+    end
+    str = pattern % [date.strftime("%d.%m.%Y"), date.strftime("%k:%M")]
   end
 
   def klass_name(object)
