@@ -30,5 +30,8 @@
 # Ignore uploads
 /public/uploads
 
+# Ignore precompiled assets
+/public/assets
+
 # Ignore database
 /config/database.yml

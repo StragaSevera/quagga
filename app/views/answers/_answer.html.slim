@@ -8,7 +8,7 @@
     .votable-text
       .answer-body
         = simple_format answer.body
-        = render 'attachments/attachment_list', object: answer
+        
 
       .answer-info 
         => link_to publication_date(answer.created_at), question_answer_path(question_id: answer.question.id, id:answer.id)
@@ -22,3 +22,7 @@
                      data: { confirm: "Вы уверены, что хотите удалить ответ?" }, remote: true
       .answer-edit.block-hidden id="answer-edit-#{answer.id}"
         = render partial: 'answers/form', locals: { answer: answer, errors_id: "answer-edit-errors-#{answer.id}" }
+
+      = render 'attachments/attachment_list', object: answer
+
+      = render 'comments/comment_list', object: answer

@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
     commentable_id = params[:comment][:commentable_id]
     @commentable_name = view_context.commentable_compose(commentable_type, commentable_id)
     if @comment.save
-      flash.now[:success] = "Ответ был создан!"
+      flash.now[:success] = "Комментарий был создан!"
     end
   end
 

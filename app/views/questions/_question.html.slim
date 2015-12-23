@@ -29,15 +29,5 @@
                      data: { confirm: "Вы уверены, что хотите удалить запись \"#{question.title}?\"" }
       - if show_body
         = render 'attachments/attachment_list', object: question
-        - if question.comments.any?
-          .question-comments.commentable-comments
-            h4 Комментарии:
-            ul id="#{commentable_name(question)}-comments-block"
-              - question.comments.each do |comment|
-                div.question-comment-subblock id="#{commentable_name(question)}-comment-#{comment.id}"
-                  = render comment, commentable: question
-
-        div
-          =<> link_to "оставить комментарий", "#", class: 'commentable-show-comment-form', data: { commentable_name: commentable_name(question) }
-        .block-hidden id="#{commentable_name(question)}-comment-form"
-          = render partial: 'comments/form', locals: { comment: question.comments.build, commentable: question }
+        
+        = render 'comments/comment_list', object: question

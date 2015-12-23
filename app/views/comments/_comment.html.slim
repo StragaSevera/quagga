@@ -1,8 +1,9 @@
-li
-  span.comment-body
-    => comment.body
-  span.comment-stats
-    | |
-    =<> publication_date(comment.created_at, true)
-    | |
-    =< comment.user.name
+- if comment.persisted?
+  li
+    span.comment-body
+      => comment.body
+    span.comment-stats
+      | |
+      =<> publication_date(comment.created_at, true)
+      | |
+      =< comment.user.name
