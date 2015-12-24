@@ -10,7 +10,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @answers = @question.answers.page(params[:page]).order('best DESC, id DESC')
+    @answers = @question.answers.page(params[:page])
 
     @answer = @question.answers.build
     @answer.attachments.build
