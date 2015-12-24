@@ -1,4 +1,4 @@
-= form_for comment, namespace: commentable_name(commentable), html: { class: "comment-form" }, remote: true do |f|
+= form_for [commentable, comment], namespace: commentable_name(commentable), html: { class: "comment-form" }, remote: true do |f|
   div id="#{commentable_name(commentable)}-comment-errors"
     = render 'shared/error_messages', object: comment
   div.comment-form-fields

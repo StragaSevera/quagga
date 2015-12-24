@@ -1,6 +1,6 @@
 module CommentsHelper
   def commentable_compose(type, id)
-    "#{type}-#{id}"
+    "#{type.underscore}-#{id}"
   end
 
   def commentable_name(commentable)
