@@ -3,6 +3,4 @@
     = render 'shared/error_messages', object: comment
   div.comment-form-fields
     = f.text_field :body, class: 'form-control'
-    = f.hidden_field :commentable_id, value: commentable.id
-    = f.hidden_field :commentable_type, value: commentable.class.name
     = f.submit "Отправить", class: "btn btn-primary"
