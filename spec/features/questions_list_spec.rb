@@ -17,7 +17,7 @@ RSpec.feature "QuestionsList",
     visit questions_path
     # Тестируем с учетом пагинации и порядка
     6.downto(4) do |n| 
-      within("div.question-row:nth-of-type(#{7-n})") do
+      within("div.question-subblock:nth-of-type(#{7-n})") do
         expect(page).to have_content "##{n} question"
       end
     end 
@@ -25,7 +25,7 @@ RSpec.feature "QuestionsList",
 
     click_link '2'
     3.downto(1) do |n| 
-      within("div.question-row:nth-of-type(#{4-n})") do
+      within("div.question-subblock:nth-of-type(#{4-n})") do
         expect(page).to have_content "##{n} question"
       end
     end     

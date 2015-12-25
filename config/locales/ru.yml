@@ -5,6 +5,7 @@ ru:
       answer: "Ответ"
       user: "Пользователь"
       attachment: "Вложение"
+      comment: "Комментарий"
     attributes:
       question:
         title: "Заголовок"
@@ -19,6 +20,8 @@ ru:
         remember_me: "Запомнить пароль?"
       attachment:
         file: "Файл"
+      comment:
+        body: "Комментарий"
     errors:
       models:
         user:

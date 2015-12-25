@@ -12,11 +12,11 @@ RSpec.describe Answer, type: :model do
 
     it { should belong_to(:question) }
     it { should belong_to(:user) }
-
-    it { should have_many(:attachments) }
   end
 
   it_behaves_like "votable"
+  it_behaves_like "attachable"
+  it_behaves_like "commentable"
 
   it "has default best status" do
     expect(answer).not_to be_best

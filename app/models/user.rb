@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   # Зависимость не ставим, ибо информация должна храниться вечно! ;-)
   has_many :questions
   has_many :answers
+  has_many :comments
 
   validates :name, presence: true, length: { in: 2..30 }
   validates :email, length: { in: 2..200 }

@@ -10,12 +10,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    if @question.best_answer
-      @best_answer = @question.best_answer
-      @answers = @question.answers.where.not(id: @best_answer.id).page(params[:page]).order('id DESC')
-    else
-      @answers = @question.answers.page(params[:page]).order('id DESC')
-    end
+    @answers = @question.answers.page(params[:page])
 
     @answer = @question.answers.build
     @answer.attachments.build
@@ -29,6 +24,7 @@ class QuestionsController < ApplicationController
   def create
     @question = current_user.questions.build(question_params)
     if @question.save
+      PrivatePub.publish_to "/questions", render_to_string(partial: "questions/publish.js.erb")
       redirect_to @question
     else
       render :new

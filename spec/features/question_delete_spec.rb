@@ -19,7 +19,7 @@ RSpec.feature "QuestionDelete",
         create(:question_multi, user: user, title: 'Other title')
         visit question_path(question)
         
-        within "#question-#{question.id}" do
+        within "#question-row-#{question.id}" do
           click_link 'удалить'
         end
 

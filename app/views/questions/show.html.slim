@@ -1,9 +1,11 @@
 - provide :title, @question.title
 - provide :button_text, "Изменить вопрос"
+= subscribe_to "/questions/#{@question.id}/answers"
+= subscribe_to "/questions/#{@question.id}/comments"
 
 .content-block#question-block
   #question-content
-    = render @question
+    = render @question, show_body: true
   - if @question.user == current_user
       .row.question-edit class=question_edit_class
         .col-full
@@ -17,9 +19,6 @@
           = render partial: 'answers/form', locals: { answer: @answer, errors_id: "answer-new-errors" }
 
 .content-block#answers-block
-  - if @best_answer
-    div.answer-subblock id="answer-#{@best_answer.id}"
-      = render @best_answer   
   - @answers.each do |answer|
     div.answer-subblock id="answer-#{answer.id}"
       = render answer
