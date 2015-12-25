@@ -1,6 +1,5 @@
 class CommentsController < ApplicationController
   def create
-    # Надо бы элегантнее и метапрограммнее, но как - не вижу =-)
     path = request.original_fullpath
     regexp = %r|/(.*?)/|
     klass = regexp.match(path)[1]
