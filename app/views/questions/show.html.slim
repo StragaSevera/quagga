@@ -16,7 +16,7 @@
     .row
       .col-full
         #answer-form-block.answer-edit
-          = render partial: 'answers/form', locals: { answer: @answer, errors_id: "answer-new-errors" }
+          = render partial: 'answers/form', locals: { answer: @question.answers.build, errors_id: "answer-new-errors" }
 
 .content-block#answers-block
   - @answers.each do |answer|

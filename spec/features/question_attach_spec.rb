@@ -76,7 +76,7 @@ RSpec.feature "QuestionAttach",
       click_button 'Изменить вопрос'
     end
 
-    expect(page).to have_content "Вопрос был изменен!"
+    expect(page).to have_content "Вопрос был успешно отредактирован!"
     expect(page).to have_content 'Gemfile'
   end
 end

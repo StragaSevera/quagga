@@ -67,11 +67,15 @@ gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
 
+# PubSub
 gem 'private_pub'
 gem 'thin'
 
+# Variables in JS
 gem 'gon'
 
+# Responders
+gem 'responders', '~> 2.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
