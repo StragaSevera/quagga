@@ -63,7 +63,7 @@ RSpec.feature "QuestionAttach",
       end
     end
 
-    expect(page).to have_content "Файл был удален!"
+    expect(page).to have_content "Файл был успешно удален!"
     expect(page).not_to have_content attachment.file.identifier
   end
 

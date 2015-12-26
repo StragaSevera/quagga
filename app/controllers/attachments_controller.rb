@@ -2,9 +2,10 @@ class AttachmentsController < ApplicationController
   before_action :load_attachment
   before_action :check_attachable_user
 
+  respond_to :js
+
   def destroy
-    @attachment.destroy
-    flash.now[:success] = "Файл был удален!"
+    respond_with @attachment.destroy
   end
 
   private 
@@ -13,6 +14,6 @@ class AttachmentsController < ApplicationController
     end
 
     def check_attachable_user
-      redirect_to root_url unless current_user && @attachment.attachable.user_id == current_user.id
+      redirect_to root_url unless user_signed_in? && @attachment.attachable.user_id == current_user.id
     end
 end

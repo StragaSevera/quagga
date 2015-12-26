@@ -4,7 +4,7 @@ ru:
       question: "Вопрос"
       answer: "Ответ"
       user: "Пользователь"
-      attachment: "Вложение"
+      attachment: "Файл"
       comment: "Комментарий"
     attributes:
       question:
