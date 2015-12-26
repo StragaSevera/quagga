@@ -23,7 +23,7 @@ RSpec.feature "AnswerDelete",
           click_link 'удалить'
         end
 
-        expect(page).to have_content "Ответ был удален!"
+        expect(page).to have_content "Ответ был успешно удален!"
         expect(page).not_to have_content attributes_for(:answer)[:body]
       end
     end

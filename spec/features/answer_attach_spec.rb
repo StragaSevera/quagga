@@ -77,7 +77,7 @@ RSpec.feature "AnswerAttach",
       click_button 'Отправить'
     end
 
-    expect(page).to have_content "Ответ был изменен!"
+    expect(page).to have_content "Ответ был успешно отредактирован!"
 
     expect(page).to have_content 'Gemfile'
   end
