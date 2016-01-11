@@ -23,7 +23,7 @@ RSpec.feature "QuestionDelete",
           click_link 'удалить'
         end
 
-        expect(page).to have_content "Вопрос был удален!"
+        expect(page).to have_content "Вопрос был успешно удален!"
         expect(current_path).to eq questions_path
         expect(page).not_to have_content attributes_for(:question)[:body]
         expect(page).not_to have_content attributes_for(:question)[:title]

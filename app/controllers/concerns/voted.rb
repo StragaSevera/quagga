@@ -7,6 +7,8 @@ module Voted
     helper ConcernHelpers::VotableHelper  
   end
 
+  # Технически, можно "посадить на диету" и этот консерн,
+  # только вот куда положить JBuilder-вьюху и стоит ли вообще переусложнять?..
   def vote
     if @votable.vote(params[:direction], current_user.id)
       render json: { score: @votable.score }

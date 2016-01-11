@@ -5,32 +5,30 @@ class AnswersController < ApplicationController
   before_action :check_current_user, only: [:update, :destroy]
   before_action :check_question_user, only: [:switch_promotion]
 
+  respond_to :js
+
   include Voted
 
   def show
+    respond_with @answer
   end
 
   def create
-    @answer = @question.answers.build(answer_params)
-    @answer.user = current_user
-    if @answer.save
-      flash.now[:success] = "Ответ был создан!"
-    end
+    respond_with @answer = @question.answers.create(answer_params)
   end
 
   def update
-    if @answer.update_attributes(answer_params)
-      flash.now[:success] = "Ответ был изменен!"
-    end
+    @answer.update(answer_params)
+    respond_with @answer
   end
 
   def destroy
-    @answer.destroy
-    flash.now[:success] = "Ответ был удален!"
+    respond_with @answer.destroy
   end
 
   def switch_promotion
     @answer.switch_promotion!
+    respond_with @answer
   end
 
   private
@@ -43,7 +41,7 @@ class AnswersController < ApplicationController
     end
 
     def answer_params
-      params.require(:answer).permit(:body, attachments_attributes: [:file])
+      params.require(:answer).permit(:body, attachments_attributes: [:file]).merge({user_id: current_user.id})
     end
 
     def check_current_user

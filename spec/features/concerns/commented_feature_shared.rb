@@ -10,7 +10,7 @@ shared_examples_for "commented as user" do |klass, block|
         wait_for_ajax
       end
     end
-    expect(page).to have_content "Комментарий был создан!"
+    expect(page).to have_content "Комментарий был успешно создан!"
     expect(page).to have_content "Commenting this!"
   end
 
@@ -23,7 +23,7 @@ shared_examples_for "commented as user" do |klass, block|
       end
     end
     expect(page).to have_content "Комментарий не может быть пустым"
-    expect(page).not_to have_content "Комментарий был создан!"
+    expect(page).not_to have_content "Комментарий был успешно создан!"
   end
 end
 

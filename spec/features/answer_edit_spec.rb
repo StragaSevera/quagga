@@ -43,7 +43,7 @@ RSpec.feature "AnswerEdit",
           end
         end
 
-        expect(page).to have_content "Ответ был изменен!"
+        expect(page).to have_content "Ответ был успешно отредактирован!"
       end
 
       scenario "User cannot edit with incorrect data" do
@@ -64,7 +64,7 @@ RSpec.feature "AnswerEdit",
           expect(page).to have_content 'Ответ не может быть пустым'
         end
 
-        expect(page).not_to have_content "Ответ был изменен!"
+        expect(page).not_to have_content "Ответ был успешно отредактирован!"
       end
     end
 

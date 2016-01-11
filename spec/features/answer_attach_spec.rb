@@ -61,7 +61,7 @@ RSpec.feature "AnswerAttach",
       end
     end
 
-    expect(page).to have_content "Файл был удален!"
+    expect(page).to have_content "Файл был успешно удален!"
     expect(page).not_to have_content attachment.file.identifier
   end
 
@@ -77,7 +77,7 @@ RSpec.feature "AnswerAttach",
       click_button 'Отправить'
     end
 
-    expect(page).to have_content "Ответ был изменен!"
+    expect(page).to have_content "Ответ был успешно отредактирован!"
 
     expect(page).to have_content 'Gemfile'
   end
