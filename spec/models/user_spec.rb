@@ -22,7 +22,7 @@ RSpec.describe User, type: :model do
   describe ".find_for_oauth" do
     let!(:user) { create(:user) }
 
-    context 'user already has authorization' do
+    context 'having authorization' do
       let (:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456') }
       it 'returns the user' do
         user.authorizations.create(provider: 'facebook', uid: '123456')
@@ -30,8 +30,8 @@ RSpec.describe User, type: :model do
       end
     end
 
-    context 'user does not have authorization' do
-      context 'user already exists' do
+    context 'not having authorization' do
+      context 'when user already exists' do
         let (:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: { email: user.email }) }
 
         it 'does not create new user' do
@@ -54,8 +54,23 @@ RSpec.describe User, type: :model do
         end
       end
 
-      context 'user does not exist' do
+      context 'when user does not exist' do
         let (:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: { email: "new@user.com", name: "Новый Пользователь" }) }
+
+        # Странная микропроблема (решилась сама собой, оставляю на всякий случай в качестве заметок, в следующем занятии уберу, если не вернется).
+        # Если я запускаю сначала oauth_signup_spec,
+        # а затем эту спеку, то следующий тест выдает ошибку:
+
+        #    Failure/Error: User.create!(email: email, name: name, password: password, password_confirmation: password)
+        # ActiveRecord::RecordNotUnique:
+        #   PG::UniqueViolation: ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "users_pkey"
+        #   DETAIL:  Ключ "(id)=(1)" уже существует.
+        #   : INSERT INTO "users" ("email", "name", "encrypted_password", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"
+
+        # Если запустить user_spec два раза подряд, то второй раз она пройдет как ни в чем не бывало.
+        # Посмотрел ручками - oauth_signup_spec за собой базу "чистит", БД тестовая пустая.
+        # Также эту проблему "лечит" spring stop.
+        # Не имею ни малейшего понятия, откуда оно взялось и как пофиксить о_О
 
         it 'creates new user' do
           expect {User.find_for_oauth(auth)}.to change(User, :count).by 1
