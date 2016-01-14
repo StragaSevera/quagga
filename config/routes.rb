@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     get "login", to: "users/sessions#new"
     delete "logout", to: "users/sessions#destroy"
     get "signup", to: "users/registrations#new"
+
+    post "handle_email", to: "omniauth_callbacks#handle_email"
   end
 
   resources :questions, concerns: [:votable] do

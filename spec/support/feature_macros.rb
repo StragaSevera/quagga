@@ -23,13 +23,13 @@ module FeatureMacros
     else
       hash = { 
         provider: provider.to_s, 
-        uid: '123456'
-      }
-      hash.merge!({ 
-        info: { 
-          email: options[:email] || "new@example.org",
+        uid: '123456',
+        info: {
           name: options[:name] || "New User"
         }
+      }
+      hash[:info].merge!({ 
+        email: options[:email] || "new@example.org",
       }) if provider == :facebook
       OmniAuth.config.mock_auth[provider] = OmniAuth::AuthHash.new(hash)
     end

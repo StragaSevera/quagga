@@ -15,13 +15,14 @@ class User < ActiveRecord::Base
   validates :email, length: { in: 2..200 }
 
   class << self
-    def find_for_oauth(auth_hash)
-      authorization = Authorization.where(provider: auth_hash.provider, uid: auth_hash.uid.to_s).first
+    def find_for_oauth(auth_hash, activated = true)
+      authorization = Authorization.where(provider: auth_hash.provider, uid: auth_hash.uid.to_s, activated: true).first
       return authorization.user if authorization
 
+      return unless auth_hash.info[:email]
       user = User.where(email: auth_hash.info[:email]).first || User.create_user_by_auth_hash(auth_hash)
 
-      user.authorizations.create(provider: auth_hash.provider, uid: auth_hash.uid)
+      Authorization.create_from_hash(auth_hash, activated, user)
       user
     end
 

@@ -32,7 +32,7 @@ RSpec.describe User, type: :model do
 
     context 'not having authorization' do
       context 'when user already exists' do
-        let (:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: { email: user.email }) }
+        let (:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: { name: "New Guy", email: user.email }) }
 
         it 'does not create new user' do
           expect {User.find_for_oauth(auth)}.not_to change(User, :count)
@@ -46,11 +46,10 @@ RSpec.describe User, type: :model do
           expect(User.find_for_oauth(auth)).to eq user
         end
 
-        it 'creates authorization with provider and uid' do
+        it 'creates activated authorization' do
           authorization = User.find_for_oauth(auth).authorizations.first
 
-          expect(authorization.provider).to eq auth.provider
-          expect(authorization.uid).to eq auth.uid
+          expect(authorization).to be_activated
         end
       end
 
@@ -103,6 +102,14 @@ RSpec.describe User, type: :model do
 
           expect(authorization.provider).to eq auth.provider
           expect(authorization.uid).to eq auth.uid
+        end
+      end
+
+      context 'when not given email' do
+        let (:auth) { OmniAuth::AuthHash.new(provider: 'twitter', uid: '123456', info: { name: "Новый Пользователь" }) }
+
+        it 'returns nil' do
+          expect(User.find_for_oauth(auth)).to be_nil
         end
       end
     end
