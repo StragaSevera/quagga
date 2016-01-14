@@ -57,7 +57,7 @@ RSpec.describe User, type: :model do
       context 'when user does not exist' do
         let (:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: { email: "new@user.com", name: "Новый Пользователь" }) }
 
-        # Странная микропроблема (решилась сама собой, оставляю на всякий случай в качестве заметок, в следующем занятии уберу, если не вернется).
+        # Странная микропроблема.
         # Если я запускаю сначала oauth_signup_spec,
         # а затем эту спеку, то следующий тест выдает ошибку:
 
@@ -71,6 +71,9 @@ RSpec.describe User, type: :model do
         # Посмотрел ручками - oauth_signup_spec за собой базу "чистит", БД тестовая пустая.
         # Также эту проблему "лечит" spring stop.
         # Не имею ни малейшего понятия, откуда оно взялось и как пофиксить о_О
+
+        # Через некоторое время пофиксилась "сама", а затем "сама" разфиксилась обратно.
+        # Теперь этот эффект проявляется вообще рандомно...
 
         it 'creates new user' do
           expect {User.find_for_oauth(auth)}.to change(User, :count).by 1

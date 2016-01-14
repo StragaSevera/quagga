@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :omniauthable, omniauth_providers: [:facebook]
+         :recoverable, :rememberable, :trackable, :omniauthable, omniauth_providers: [:facebook, :twitter]
   devise :validatable, password_length: 4..200
 
   # Зависимость не ставим, ибо информация должна храниться вечно! ;-)
@@ -18,9 +18,8 @@ class User < ActiveRecord::Base
     def find_for_oauth(auth_hash)
       authorization = Authorization.where(provider: auth_hash.provider, uid: auth_hash.uid.to_s).first
       return authorization.user if authorization
-      
-      email = auth_hash.info[:email]
-      user = User.where(email: email).first || User.create_user_by_auth_hash(auth_hash)
+
+      user = User.where(email: auth_hash.info[:email]).first || User.create_user_by_auth_hash(auth_hash)
 
       user.authorizations.create(provider: auth_hash.provider, uid: auth_hash.uid)
       user
@@ -28,7 +27,7 @@ class User < ActiveRecord::Base
 
     def create_user_by_auth_hash(auth_hash)
       email = auth_hash.info[:email]
-      name = auth_hash.info[:name]
+      name = auth_hash.info[:name] || email
       password = Devise.friendly_token[0, 15]
       User.create!(email: email, name: name, password: password, password_confirmation: password)      
     end

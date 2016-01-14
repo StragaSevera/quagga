@@ -13,7 +13,8 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
         provider: 'facebook',
         uid: '123545',
         info: {
-          email: user.email
+          email: user.email,
+          name: "New Guy"
         }
       })
 
