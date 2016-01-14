@@ -23,6 +23,18 @@ class Authorization < ActiveRecord::Base
     })
   end
 
+  def activate_by_user(user)
+    return false unless user
+    self.user = user
+    self.activated = true
+    return user
+  end
+
+  def activate_by_email(email)
+    auth_hash = generate_hash(email)
+    self.activate_by_user(User.find_or_create_by_email(auth_hash))
+  end
+
   class << self
     def create_unactivated(auth_hash)
       self.create_from_hash(auth_hash, false)

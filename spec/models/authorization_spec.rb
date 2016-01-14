@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Authorization, type: :model do  
   let(:authorization) { create(:authorization) }
+  let(:user) { create(:user) }
 
   context "with validations" do
     it { should validate_presence_of :provider }
@@ -55,6 +56,28 @@ RSpec.describe Authorization, type: :model do
       expect(auth.uid).to eq auth_hash.uid
       expect(auth.name).to eq auth_hash[:info].name
       expect(auth).not_to be_activated
+    end
+  end
+
+  describe '#activate_by_user' do
+    it "activates by user" do
+      expect(authorization.activate_by_user(user)).to eq user
+      expect(authorization).to be_activated
+      expect(authorization.user).to eq user
+    end
+
+    it "do not activate by nil" do
+      expect(authorization.activate_by_user(nil)).to eq false
+      expect(authorization).not_to be_activated
+      expect(authorization.user).to eq nil
+    end
+  end
+
+  describe '#activate_by_email' do
+    it "activates by email" do
+      expect(authorization.activate_by_email(user.email)).to eq user
+      expect(authorization).to be_activated
+      expect(authorization.user).to eq user
     end
   end
 end

@@ -1,11 +1,11 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # before_action заставляет Devise сбоить при переданных Invalid credentials
   def facebook
-    handle_oauth
+    process_oauth_hash
   end
 
   def twitter
-    handle_oauth
+    process_oauth_hash
   end
 
   # Действие, которое вызывается после того, как пользователь
@@ -16,30 +16,33 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     token = session[:unactivated_auth]["token"]
     session[:unactivated_auth] = nil
 
-    @unactivated_auth = Authorization.find_by(id: id)
-    return redirect_to root_path unless @unactivated_auth && @unactivated_auth.token_matches?(token)
-
+    @auth = Authorization.find_by(id: id)
+    return redirect_to root_path unless @auth && @auth.token_matches?(token)
+    
     # Вся сложность с токенами может казаться излишней,
     # но это задел на отправку по почте.
     # Примерно в этом месте будет вставлена отправка письма,
     # а концовка действия будет после нажатия ссылки в письме
-
-    auth_hash = @unactivated_auth.generate_hash(omniauth_callback_params[:email])
-    process_oauth_hash(auth_hash)
+    if @user = @auth.activate_by_email(omniauth_callback_params[:email])
+      sign_in_verified_user(@auth.provider)
+    else
+      flash[:error] = 'Ошибка подтверждения e-mail'
+      redirect_to root_path
+    end
   end
 
   private
     # Какой-то "жирный" контроллер вышел. Что бы вырефакторить в модель?..
-    def handle_oauth
-      auth_hash = request.env['omniauth.auth']
-      process_oauth_hash(auth_hash)
+    def sign_in_verified_user(kind)
+      sign_in_and_redirect @user, event: :authentication
+      set_flash_message(:notice, :success, kind: kind.capitalize) if is_navigational_format?
     end
 
-    def process_oauth_hash(auth_hash)
+    def process_oauth_hash
+      auth_hash = request.env['omniauth.auth']
       @user = User.find_for_oauth(auth_hash)
       if @user && @user.persisted?
-        sign_in_and_redirect @user, event: :authentication
-        set_flash_message(:notice, :success, kind: auth_hash.provider.capitalize) if is_navigational_format?
+        sign_in_verified_user(auth_hash.provider)
       else
         @unactivated_auth = Authorization.create_unactivated(auth_hash)
         redirect_to root_path unless @unactivated_auth
