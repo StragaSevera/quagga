@@ -1,10 +1,11 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  before_action :handle_oauth, except: :handle_email_user
-
+  # before_action заставляет Devise сбоить при переданных Invalid credentials
   def facebook
+    handle_oauth
   end
 
   def twitter
+    handle_oauth
   end
 
   # Действие, которое вызывается после того, как пользователь
