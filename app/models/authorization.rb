@@ -9,7 +9,7 @@ class Authorization < ActiveRecord::Base
   validates :uid, presence: true
 
   def token_matches?(token)
-    BCrypt::Password.new(activation_digest) == token
+    self.class.check_token_match(token, activation_digest)
   end
 
   def generate_hash(email)

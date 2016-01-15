@@ -100,6 +100,9 @@ group :development, :test do
   # Testing by rspec
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+
+  # Open main in browser
+  gem 'letter_opener'
 end
 
 group :test do

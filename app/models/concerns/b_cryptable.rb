@@ -3,8 +3,6 @@ module BCryptable
 
   include BCrypt
 
-  # Не уверен, стоит ли тестировать,
-  # и если стоит, то как?..
   module ClassMethods
     def generate_token
       SecureRandom.urlsafe_base64
@@ -13,6 +11,10 @@ module BCryptable
     def generate_digest(string)
       cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
       BCrypt::Password.create(string, cost: cost)
+    end
+
+    def check_token_match(token, digest)
+      BCrypt::Password.new(digest) == token
     end
   end
 end

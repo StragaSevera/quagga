@@ -9,12 +9,8 @@ RSpec.feature "OauthSignup",
   type: :feature do
 
   given(:user) { create(:user) }
-  before(:each) { OmniAuth.config.test_mode = true }
-  after(:each) { OmniAuth.config.test_mode = false }
 
-  describe "signing in by Facebook" do
-    after(:each) { unmock_auth_hash(:facebook) }
-
+  scenario "signing in by Facebook" do
     context "with valid information" do
       it "enters site with existing user" do
         mock_auth_hash(:facebook, email: user.email)
@@ -44,9 +40,7 @@ RSpec.feature "OauthSignup",
   end
 
 
-  describe "signing in by Twitter" do
-    after(:each) { unmock_auth_hash(:twitter) }
-
+  scenario "signing in by Twitter" do
     context "with valid information" do
       it "enters site with existing user" do
         mock_auth_hash(:twitter)
