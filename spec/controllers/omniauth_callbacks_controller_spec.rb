@@ -118,9 +118,10 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
           expect(assigns(:user)).to eq user
         end
 
-        it "signs in user" do
-          get :handle_email, {auth: {email: user.email}}, {unactivated_auth: {"id" => unactivated_auth.id, "token" => unactivated_auth.activation_token}}
-          expect(subject.current_user).to eq user
+        it "sends email to user" do
+          expect do
+            get(:handle_email, {auth: {email: user.email}}, {unactivated_auth: {"id" => unactivated_auth.id, "token" => unactivated_auth.activation_token}})
+          end.to change(ActionMailer::Base.deliveries, :count).by 1
         end
 
         it "redirects to root" do
@@ -129,6 +130,35 @@ RSpec.describe OmniauthCallbacksController, type: :controller do
         end   
       end
     end
-
   end
+
+  describe "GET #confirm_email" do
+    let!(:auth) {create(:authorization, user: user)}
+
+    it "finds correct auth" do
+      get :confirm_email, id: auth.id, token: auth.activation_token
+      expect(assigns(:auth)).to eq auth
+    end
+
+    it "signs in correct user" do
+      get :confirm_email, id: auth.id, token: auth.activation_token
+      expect(subject.current_user).to eq user
+    end
+
+    it "does not sign in user on token mismatch" do
+      get :confirm_email, id: auth.id, token: "123456"
+      expect(subject.current_user).not_to eq user
+    end
+
+    it "activates authorization" do
+      get :confirm_email, id: auth.id, token: auth.activation_token
+      expect(auth.reload).to be_activated
+    end
+
+    it "does not activate user on token mismatch" do
+      get :confirm_email, id: auth.id, token: "123456"
+      expect(auth.reload).not_to be_activated
+    end
+  end
+
 end

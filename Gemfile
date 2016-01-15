@@ -114,6 +114,7 @@ group :test do
 
   gem 'capybara'
   gem 'capybara-screenshot'
+  gem 'capybara-email'
   gem 'poltergeist'
 
   gem 'database_cleaner'

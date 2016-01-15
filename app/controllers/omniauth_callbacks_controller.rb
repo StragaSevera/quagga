@@ -23,8 +23,22 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # но это задел на отправку по почте.
     # Примерно в этом месте будет вставлена отправка письма,
     # а концовка действия будет после нажатия ссылки в письме
-    if @user = @auth.activate_by_email(omniauth_callback_params[:email])
-      sign_in_verified_user(@auth.provider)
+    if @user = @auth.connect_by_email(omniauth_callback_params[:email])
+      AuthorizationMailer.confirm_email(@auth, token).deliver_now
+      flash[:notice] = 'На вашу почту отправлено письмо. Перейдите по ссылке в нем, чтобы зарегистрироваться.'
+      redirect_to root_path
+    else
+      flash[:error] = 'Ошибка подтверждения e-mail'
+      redirect_to root_path
+    end
+  end
+
+  def confirm_email
+    @auth = Authorization.find_by(id: params[:id])
+    token = params[:token]
+    if @auth.token_matches?(token)
+      @auth.activate!
+      sign_in_verified_user(@auth.user, @auth.provider)
     else
       flash[:error] = 'Ошибка подтверждения e-mail'
       redirect_to root_path
@@ -33,8 +47,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   private
     # Какой-то "жирный" контроллер вышел. Что бы вырефакторить в модель?..
-    def sign_in_verified_user(kind)
-      sign_in_and_redirect @user, event: :authentication
+    def sign_in_verified_user(user, kind)
+      sign_in_and_redirect user, event: :authentication
       set_flash_message(:notice, :success, kind: kind.capitalize) if is_navigational_format?
     end
 
@@ -42,7 +56,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       auth_hash = request.env['omniauth.auth']
       @user = User.find_for_oauth(auth_hash)
       if @user && @user.persisted?
-        sign_in_verified_user(auth_hash.provider)
+        sign_in_verified_user(@user, auth_hash.provider)
       else
         @unactivated_auth = Authorization.create_unactivated(auth_hash)
         redirect_to root_path unless @unactivated_auth

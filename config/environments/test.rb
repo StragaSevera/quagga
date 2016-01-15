@@ -43,3 +43,5 @@ end
 
 # Не 2, чтобы в будущем иметь возможность тестировать "первый", "средний" и "последний" элементы
 WillPaginate.per_page = 3
+
+Rails.application.routes.default_url_options[:host] = 'localhost:3000'

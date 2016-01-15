@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     get "signup", to: "users/registrations#new"
 
     post "handle_email", to: "omniauth_callbacks#handle_email"
+    get "confirm_email", to: "omniauth_callbacks#confirm_email"
   end
 
   resources :questions, concerns: [:votable] do

@@ -3,10 +3,17 @@ class Authorization < ActiveRecord::Base
 
   attr_accessor :activation_token
 
+  before_create :make_tokens
+
   belongs_to :user
 
   validates :provider, presence: true
   validates :uid, presence: true
+
+  def make_tokens
+    self.activation_token = self.class.generate_token
+    self.activation_digest = self.class.generate_digest(activation_token)
+  end
 
   def token_matches?(token)
     self.class.check_token_match(token, activation_digest)
@@ -23,16 +30,19 @@ class Authorization < ActiveRecord::Base
     })
   end
 
-  def activate_by_user(user)
+  def activate!
+    self.update_attribute(:activated, true)
+  end
+
+  def connect_by_user(user)
     return false unless user
-    self.user = user
-    self.activated = true
+    self.update_attribute(:user_id, user.id)
     return user
   end
 
-  def activate_by_email(email)
+  def connect_by_email(email)
     auth_hash = generate_hash(email)
-    self.activate_by_user(User.find_or_create_by_email(auth_hash))
+    self.connect_by_user(User.find_or_create_by_email(auth_hash))
   end
 
   class << self
@@ -45,15 +55,11 @@ class Authorization < ActiveRecord::Base
     end
 
     def create_from_hash(auth_hash, activated, user = nil)
-      activation_token = generate_token
-      activation_digest = generate_digest(activation_token)
       auth = self.create!(provider: auth_hash.provider, 
         uid: auth_hash.uid,
         name: auth_hash[:info].name,
         user: user,
-        activation_digest: activation_digest,
         activated: activated)  
-      auth.activation_token = activation_token
       auth
     end
   end

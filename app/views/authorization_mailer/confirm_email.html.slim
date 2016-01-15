@@ -1,0 +1,3 @@
+h4 Здравствуйте, товарищ #{@auth.name}!
+p Вы запросили аутенфикацию через #{@auth.provider}. Пожалуйста, подтвердите свою почту, перейдя по ссылке:
+p = link_to "Подтвердить e-mail", confirm_email_url(id: @auth.id, token: @token)
