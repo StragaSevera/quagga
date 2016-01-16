@@ -12,10 +12,10 @@ Rails.application.routes.draw do
     get "login", to: "users/sessions#new"
     delete "logout", to: "users/sessions#destroy"
     get "signup", to: "users/registrations#new"
-
-    post "handle_email", to: "omniauth_callbacks#handle_email"
-    get "confirm_email", to: "omniauth_callbacks#confirm_email"
   end
+
+  post "handle_email", to: "omniauth_email#handle_email"
+  get "confirm_email", to: "omniauth_email#confirm_email"
 
   resources :questions, concerns: [:votable] do
     resources :comments, only: [:create]
