@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { sessions: 'users/sessions', registrations: "users/registrations" }
+  devise_for :users, controllers: { sessions: 'users/sessions', registrations: "users/registrations", omniauth_callbacks: "omniauth_callbacks" }
 
   concern :votable do
     member do
@@ -13,6 +13,9 @@ Rails.application.routes.draw do
     delete "logout", to: "users/sessions#destroy"
     get "signup", to: "users/registrations#new"
   end
+
+  post "handle_email", to: "omniauth_email#handle_email"
+  get "confirm_email", to: "omniauth_email#confirm_email"
 
   resources :questions, concerns: [:votable] do
     resources :comments, only: [:create]

@@ -28,6 +28,10 @@ ru:
           attributes:
             password_confirmation:
               confirmation: "не совпадает с самим паролем. Возможно, вы допустили опечатку?.."
+  helpers:
+    label:
+      auth:
+        email: "E-mail"
   will_paginate:
     previous_label: "&#8592; Назад"
     next_label: "Вперед &#8594;"

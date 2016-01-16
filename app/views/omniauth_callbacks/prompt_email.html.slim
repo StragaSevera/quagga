@@ -1,0 +1,8 @@
+- provide :title, "Завершение регистрации"
+.content-block
+  .row
+    .col-middle
+      = form_for :auth, url: handle_email_path, method: :post do |f|
+        = f.label :email
+        = f.email_field :email, class: 'form-control', autofocus: true
+        = f.submit "Отправить", class: "btn btn-primary", id: "button-submit"

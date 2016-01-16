@@ -6,6 +6,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'spec_helper'
 require 'capybara'
 require 'capybara-screenshot/rspec'
+require 'capybara/email/rspec'
 require 'rspec/rails'
 require 'shoulda/matchers'
 require 'pry-byebug'
@@ -31,3 +32,5 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+OmniAuth.config.test_mode = true

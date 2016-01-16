@@ -47,7 +47,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
@@ -77,6 +77,11 @@ gem 'gon'
 # Responders
 gem 'responders', '~> 2.0'
 
+# OmniAuth
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -95,6 +100,9 @@ group :development, :test do
   # Testing by rspec
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+
+  # Open main in browser
+  gem 'letter_opener'
 end
 
 group :test do
@@ -106,6 +114,7 @@ group :test do
 
   gem 'capybara'
   gem 'capybara-screenshot'
+  gem 'capybara-email'
   gem 'poltergeist'
 
   gem 'database_cleaner'
