@@ -6,11 +6,9 @@
       div id="#{commentable_name(object)}-comment-#{comment.id}"
         = render comment, commentable: object
 
-- if user_signed_in?
+- if can? :create, Comment
   div
     =<> link_to "оставить комментарий", "#", class: 'commentable-show-comment-form', data: { commentable_name: commentable_name(object) }
 
-  / Мне не кажется, что использовать object.comments.build
-  / в модели верно. Но как иначе? Использовать теги "врукопашную"?..
   .block-hidden id="#{commentable_name(object)}-comment-form"
     = render partial: 'comments/form', locals: { comment: object.comments.build, commentable: object }

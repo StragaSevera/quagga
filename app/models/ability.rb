@@ -7,7 +7,6 @@ class Ability
     if user
       user.admin? ? admin_abilities : user_abilities
     else
-      pp user
       guest_abilities
     end
   end

@@ -18,15 +18,17 @@
         => link_to publication_date(question.created_at), question_path(question.id)
         | |
         =<> question.user.name
-        - if user_signed_in? && question.user_id == current_user.id && render_links
-          | |
-          - if show_body
-            =<> link_to "редактировать", "#", class: 'question-show-edit-form'
-          - else
-            =<> link_to "редактировать", question_path(question.id, edit: 1)
-          | |
-          =< link_to "удалить", question, method: :delete,
-                     data: { confirm: "Вы уверены, что хотите удалить запись \"#{question.title}?\"" }
+        - if render_links
+          - if can? :update, question
+            | |
+            - if show_body
+              =<> link_to "редактировать", "#", class: 'question-show-edit-form'
+            - else
+              =<> link_to "редактировать", question_path(question.id, edit: 1)
+          - if can? :destroy, question
+            | |
+            =< link_to "удалить", question, method: :delete,
+                       data: { confirm: "Вы уверены, что хотите удалить запись \"#{question.title}?\"" }
       - if show_body
         = render 'attachments/attachment_list', object: question
         

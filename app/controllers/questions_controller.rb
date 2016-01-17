@@ -13,7 +13,7 @@ class QuestionsController < ApplicationController
   include Voted
 
   def index
-    respond_with @questions = Question.page(params[:page]).order('id DESC')
+    respond_with @questions = Question.accessible_by(current_ability).page(params[:page]).order('id DESC')
   end
 
   def show
@@ -43,7 +43,7 @@ class QuestionsController < ApplicationController
     end
 
     def load_answers
-      @answers = @question.answers.page(params[:page])
+      @answers = @question.answers.accessible_by(current_ability).page(params[:page])
     end
 
     def publish_question

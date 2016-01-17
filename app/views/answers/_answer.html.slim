@@ -14,12 +14,14 @@
         => link_to publication_date(answer.created_at), question_answer_path(question_id: answer.question.id, id:answer.id)
         | |
         =<> answer.user.name
-        - if user_signed_in? && answer.user_id == current_user.id && render_links
-          | |
-          =<> link_to "редактировать", "#", class: 'answer-show-edit-form', data: { answer_id: answer.id }
-          | |
-          =< link_to "удалить", question_answer_path(question_id: answer.question_id, id:answer.id), method: :delete,
-                     data: { confirm: "Вы уверены, что хотите удалить ответ?" }, remote: true
+        - if render_links
+          - if can? :update, answer
+            | |
+            =<> link_to "редактировать", "#", class: 'answer-show-edit-form', data: { answer_id: answer.id }
+          - if can? :destroy, answer
+            | |
+            =< link_to "удалить", question_answer_path(question_id: answer.question_id, id:answer.id), method: :delete,
+                       data: { confirm: "Вы уверены, что хотите удалить ответ?" }, remote: true
       .answer-edit.block-hidden id="answer-edit-#{answer.id}"
         = render partial: 'answers/form', locals: { answer: answer, errors_id: "answer-edit-errors-#{answer.id}" }
 
