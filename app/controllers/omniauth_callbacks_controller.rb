@@ -1,4 +1,5 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  skip_authorization_check
   include OmniauthSigned
 
   # before_action заставляет Devise сбоить при переданных Invalid credentials

@@ -1,4 +1,5 @@
 class OmniauthEmailController < ApplicationController
+  skip_authorization_check 
   skip_before_action :authenticate_user!
   include OmniauthSigned
 

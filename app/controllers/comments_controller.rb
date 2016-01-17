@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   before_action :get_commentables
-
+  authorize_resource
+  
   respond_to :js
 
   def create

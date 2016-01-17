@@ -1,6 +1,6 @@
 class AttachmentsController < ApplicationController
   before_action :load_attachment
-  before_action :check_attachable_user
+  authorize_resource
 
   respond_to :js
 
