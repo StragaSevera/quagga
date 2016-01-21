@@ -16,16 +16,15 @@ class ApplicationController < ActionController::Base
       puts session[:next]
       redirect_to login_url, :alert => "Для использования этой функции необходимо авторизоваться."
     else
-      #render :file => "#{Rails.root}/public/403.html", :status => 403
       if request.env["HTTP_REFERER"].present?
-        redirect_to :back, :alert => exception.message
+        redirect_to :back, alert: exception.message
       else
-        redirect_to root_url, :alert => exception.message
+        redirect_to root_url, alert: exception.message
       end
     end
   end
 
-  check_authorization :unless => :devise_controller?
+  check_authorization unless: :devise_controller?
 
   private
     def gonify_current_user_id
