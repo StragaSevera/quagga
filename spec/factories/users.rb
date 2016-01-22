@@ -5,6 +5,7 @@ FactoryGirl.define do
     email 'john@example.org'
     password 'password'
     password_confirmation 'password'
+    admin false
 
     initialize_with { User.find_or_create_by(id: id) }
 

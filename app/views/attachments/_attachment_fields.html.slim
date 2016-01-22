@@ -1,8 +1,3 @@
 .nested-fields  
   = f.label :file
   = f.file_field :file
-  / В случе, если оставляем эту ссылку,
-  / и отправляем вопрос с пустым полем файла,
-  / появляется непонятная ошибка с делегацией
-  / file.identifier к nil.
-  / = link_to_remove_association "удалить файл", f

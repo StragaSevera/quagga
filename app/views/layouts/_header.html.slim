@@ -13,7 +13,8 @@ header#app-header
       #navbar.collapse.navbar-collapse
         ul.nav.navbar-nav
           = nav_link "Главная", root_path
-          = nav_link "Задать вопрос", new_question_path
+          - if can? :create, Question
+            = nav_link "Задать вопрос", new_question_path
         ul.nav.navbar-nav.navbar-right
           - if user_signed_in?
             li.dropdown

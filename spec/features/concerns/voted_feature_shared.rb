@@ -49,18 +49,14 @@ shared_examples_for "voted as correct user" do |klass|
 end
 
 shared_examples_for "voted as incorrect user" do |klass|
-  scenario 'User cannot vote for his own answer', js: true do
+  scenario 'User cannot vote incorrectly', js: true do
     within "##{klass}-block" do
       within '.stats-block' do
-        click_link '>'
-        wait_for_ajax
-        expect(page).not_to have_content "1"
-        expect(page).to have_content "0"
+        expect(page).to have_content '<'
+        expect(page).not_to have_link '<'
 
-        click_link '<'
-        wait_for_ajax
-        expect(page).not_to have_content "1"
-        expect(page).to have_content "0"
+        expect(page).to have_content '>'
+        expect(page).not_to have_link '>'
       end
     end
   end  

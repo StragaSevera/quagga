@@ -1,8 +1,11 @@
 class QuestionsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
+  
   before_action :load_question, only: [:show, :update, :destroy]
-  before_action :check_current_user, only: [:update, :destroy]
   before_action :load_answers, only: [:show]
+
+  authorize_resource
+
   after_action :publish_question, only: [:create]
 
   respond_to :js, only: :update
@@ -10,7 +13,7 @@ class QuestionsController < ApplicationController
   include Voted
 
   def index
-    respond_with @questions = Question.page(params[:page]).order('id DESC')
+    respond_with @questions = Question.accessible_by(current_ability).page(params[:page]).order('id DESC')
   end
 
   def show
@@ -40,7 +43,7 @@ class QuestionsController < ApplicationController
     end
 
     def load_answers
-      @answers = @question.answers.page(params[:page])
+      @answers = @question.answers.accessible_by(current_ability).page(params[:page])
     end
 
     def publish_question
@@ -49,9 +52,5 @@ class QuestionsController < ApplicationController
 
     def question_params
       params.require(:question).permit(:title, :body, attachments_attributes: [:file])
-    end
-
-    def check_current_user
-      redirect_to root_url unless current_user && @question.user.id == current_user.id
     end
 end

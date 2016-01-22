@@ -9,6 +9,7 @@ require 'capybara-screenshot/rspec'
 require 'capybara/email/rspec'
 require 'rspec/rails'
 require 'shoulda/matchers'
+require 'cancan/matchers'
 require 'pry-byebug'
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}

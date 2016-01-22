@@ -1,9 +1,10 @@
 class AnswersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show]
+
   before_action :load_question
   before_action :load_answer, only: [:show, :update, :destroy, :switch_promotion]
-  before_action :check_current_user, only: [:update, :destroy]
-  before_action :check_question_user, only: [:switch_promotion]
+
+  authorize_resource
 
   respond_to :js
 
@@ -42,13 +43,5 @@ class AnswersController < ApplicationController
 
     def answer_params
       params.require(:answer).permit(:body, attachments_attributes: [:file]).merge({user_id: current_user.id})
-    end
-
-    def check_current_user
-      redirect_to root_url unless current_user && @answer.user.id == current_user.id
-    end
-
-    def check_question_user
-      redirect_to root_url unless current_user && @question.user.id == current_user.id
     end
 end

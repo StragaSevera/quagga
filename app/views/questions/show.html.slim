@@ -6,12 +6,12 @@
 .content-block#question-block
   #question-content
     = render @question, show_body: true
-  - if @question.user == current_user
+  - if can? :update, @question
       .row.question-edit class=question_edit_class
         .col-full
           = render 'form', remote: true
 
-- if user_signed_in?
+- if can? :create, Answer
   .content-block
     .row
       .col-full

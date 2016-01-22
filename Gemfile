@@ -61,6 +61,7 @@ gem 'unicode_utils'
 
 # Authorization
 gem 'devise'
+gem 'cancancan'
 
 # Attachment handling
 gem 'carrierwave'

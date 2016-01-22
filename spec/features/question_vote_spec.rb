@@ -19,10 +19,20 @@ RSpec.feature "QuestionVote",
     end
   end
 
-  it_behaves_like "voted as incorrect user", "questions" do
-    background(:each) do
-      log_in_as(user)
-      visit questions_path
+  context "voting as same user" do
+    it_behaves_like "voted as incorrect user", "questions" do
+      background(:each) do
+        log_in_as(user)
+        visit questions_path
+      end
+    end
+  end
+
+  context "voting as no user" do
+    it_behaves_like "voted as incorrect user", "questions" do
+      background(:each) do
+        visit questions_path
+      end
     end
   end
 end
