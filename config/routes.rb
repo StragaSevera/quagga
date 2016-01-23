@@ -8,6 +8,15 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :api do
+    namespace :v1 do
+      resource :profiles do
+        get :me, on: :collection
+        get :users, on: :collection
+      end
+    end
+  end
+
   root 'questions#index'
   devise_scope :user do
     get "login", to: "users/sessions#new"

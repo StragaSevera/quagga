@@ -5,5 +5,4 @@ FactoryGirl.define do
     uid "123456"
     activated false
   end
-
 end

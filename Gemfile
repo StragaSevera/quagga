@@ -121,4 +121,6 @@ group :test do
 
   gem 'database_cleaner'
   gem 'launchy'
+
+  gem 'json_spec'
 end
