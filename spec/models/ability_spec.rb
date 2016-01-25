@@ -37,6 +37,9 @@ RSpec.describe Ability do
     let(:user) { create(:user) }
     let(:other) { create(:user_multi) }
 
+    it { should be_able_to :read, User }
+    it { should be_able_to :me, User }
+
     it { should be_able_to :read, Question }
     it { should be_able_to :read, Answer }
     it { should be_able_to :read, Comment }
