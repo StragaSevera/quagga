@@ -38,15 +38,15 @@ RSpec.describe 'Profile API', type: :request do
     end
   end
 
-  describe 'GET /users' do
+  describe 'GET /' do
     context 'unauthorized' do
       it 'returns 401 if no access token' do
-        get '/api/v1/profiles/users', format: :json
+        get '/api/v1/profiles', format: :json
         expect(response.status).to eq 401
       end
 
       it 'returns 401 if invalid access token' do
-        get '/api/v1/profiles/users', format: :json, access_token: '123456'
+        get '/api/v1/profiles', format: :json, access_token: '123456'
         expect(response.status).to eq 401
       end
     end
@@ -56,7 +56,7 @@ RSpec.describe 'Profile API', type: :request do
       let!(:others) { create_list(:user_multi, 2) }
       let (:access_token) { create(:doorkeeper_access_token, resource_owner_id: me.id) }
 
-      before { get '/api/v1/profiles/users', format: :json, access_token: access_token.token }
+      before { get '/api/v1/profiles', format: :json, access_token: access_token.token }
 
       it 'returns 200' do
         expect(response).to be_success
@@ -72,7 +72,7 @@ RSpec.describe 'Profile API', type: :request do
         end
       end
 
-      it 'contains all other users' do
+      it 'contains all other index' do
         others.each do |user|
           expect(response.body).to include_json(user.to_json)
         end
