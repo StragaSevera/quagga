@@ -63,18 +63,18 @@ RSpec.describe 'Profile API', type: :request do
       end
 
       it 'does not contain me' do
-        expect(response.body).not_to include_json(me.to_json)
+        expect(response.body).not_to include_json(me.to_json).at_path("profiles")
       end
 
       %w(password encrypted_password).each do |attribute|
         it "does not contain #{attribute}" do
-          expect(response.body).to_not have_json_path(attribute)
+          expect(response.body).to_not have_json_path("profiles/#{attribute}")
         end
       end
 
       it 'contains all other index' do
         others.each do |user|
-          expect(response.body).to include_json(user.to_json)
+          expect(response.body).to include_json(user.to_json).at_path("profiles")
         end
       end
     end
