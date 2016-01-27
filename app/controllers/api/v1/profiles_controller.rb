@@ -9,6 +9,7 @@ class Api::V1::ProfilesController < Api::V1::BaseController
   # Используем новый оператор &. из нового руби
   def index
     authorize! :index, User
-    respond_with User.where.not(id: doorkeeper_token&.resource_owner_id)
+    @users = User.where.not(id: doorkeeper_token&.resource_owner_id)
+    respond_with @users 
   end
 end
