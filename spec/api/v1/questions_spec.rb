@@ -52,14 +52,11 @@ RSpec.describe 'Questions API', type: :request do
     let!(:question) { create(:question, id: 1) }
     let!(:attachments) { create_list(:attachment, 2, attachable_id: question.id, attachable_type: "Question") }
     let!(:comments) { create_list(:comment, 2, commentable_id: question.id, commentable_type: "Question") }
-    # Чтобы не было проблем с сортировкой, берем через скоуп
-    let!(:attachment) { question.attachments.first }
-    let!(:comment) { question.comments.first }
 
     it_behaves_like 'unauthorized api', "/api/v1/questions/1"
 
     context 'authorized' do
-      it_behaves_like 'commentable and attachable api', "/api/v1/questions/1", "question_show", ["title"]
+      it_behaves_like 'commentable and attachable api', "/api/v1/questions/1", :question, ["title"]
     end
   end
 end 
