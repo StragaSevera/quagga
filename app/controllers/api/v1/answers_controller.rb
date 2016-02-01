@@ -12,6 +12,9 @@ class Api::V1::AnswersController < Api::V1::BaseController
     respond_with @answer, serializer: AnswerShowSerializer
   end
 
+  def create
+  end
+
   private
     def load_question
       @question = Question.find(params[:question_id])

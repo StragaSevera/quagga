@@ -59,4 +59,47 @@ RSpec.describe 'Questions API', type: :request do
       it_behaves_like 'commentable and attachable api', "/api/v1/questions/1", :question, ["title"]
     end
   end
+
+  describe 'POST /create' do
+    it_behaves_like 'unauthorized api', "/api/v1/questions", :post
+
+    context 'authorized' do
+      let!(:access_token) { create(:doorkeeper_access_token) }
+      let!(:user) { create(:user) }
+
+      context 'with valid attributes' do
+        let(:attributes) { attributes_for(:question, user: user) }
+
+        it 'creates new question' do
+          expect {
+            post '/api/v1/questions', format: :json, access_token: access_token.token, question: attributes
+          }.to change(user.questions, :count).by 1
+        end
+
+        it 'correctly fills fields' do
+          post '/api/v1/questions', format: :json, access_token: access_token.token, question: attributes
+
+          attributes.each do |key, value|
+            expect(response.body).to be_json_eql(value.to_json).at_path("question_show/#{key}")
+          end
+        end
+      end
+
+      context 'with invalid attributes' do
+        let(:attributes) { attributes_for(:question, user: user, body: '') }
+
+        it 'does not create question' do
+          expect {
+            post '/api/v1/questions', format: :json, access_token: access_token.token, question: attributes
+          }.not_to change(user.questions, :count)
+        end
+
+        it 'returns error' do
+          post '/api/v1/questions', format: :json, access_token: access_token.token, question: attributes
+          expect(response.status).to eq 422
+          expect(response.body).to have_json_path('errors')
+        end
+      end
+    end
+  end
 end 
