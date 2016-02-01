@@ -70,7 +70,7 @@ RSpec.describe 'Questions API', type: :request do
       context 'with valid attributes' do
         let(:attributes) { attributes_for(:question, user: user) }
 
-        it 'creates new question' do
+        it 'creates new question for user' do
           expect {
             post '/api/v1/questions', format: :json, access_token: access_token.token, question: attributes
           }.to change(user.questions, :count).by 1
