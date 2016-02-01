@@ -59,46 +59,7 @@ RSpec.describe 'Questions API', type: :request do
     it_behaves_like 'unauthorized api', "/api/v1/questions/1"
 
     context 'authorized' do
-      let(:access_token) { create(:doorkeeper_access_token) }
-
-      before { get "/api/v1/questions/1", format: :json, access_token: access_token.token }
-
-      it 'returns 200 status code' do
-        expect(response).to be_success
-      end
-
-      %w(id title body created_at updated_at).each do |attr|
-        it "question object contains #{attr}" do
-          expect(response.body).to be_json_eql(question.send(attr.to_sym).to_json).at_path("question_show/#{attr}")
-        end
-      end
-
-      context 'attachments' do
-        it 'returns list of attachments' do
-          expect(response.body).to have_json_size(2).at_path("question_show/attachments")
-        end
-
-        it 'returns id of attachment' do
-          expect(response.body).to be_json_eql(attachment.id.to_json).at_path("question_show/attachments/0/id")
-        end
-
-        # Очень некрасиво, но никакие манипуляции с @request.host и host! не помогли
-        it 'returns url of attachment' do
-          expect(response.body).to be_json_eql("http://localhost:3000#{attachment.file.url}".to_json).at_path("question_show/attachments/0/url")
-        end         
-      end
-
-      context 'comments' do
-        it 'returns list of comments' do
-          expect(response.body).to have_json_size(2).at_path("question_show/comments")
-        end
-
-        %w(id user_id body created_at updated_at).each do |attr|
-          it "contains #{attr}" do
-            expect(response.body).to be_json_eql(comment.send(attr.to_sym).to_json).at_path("question_show/comments/0/#{attr}")
-          end
-        end
-      end
+      it_behaves_like 'commentable and attachable api', "/api/v1/questions/1", "question_show", ["title"]
     end
   end
 end 
