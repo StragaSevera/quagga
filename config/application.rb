@@ -29,6 +29,8 @@ module Quagga
     config.i18n.default_locale = :ru
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 
+    config.autoload_paths << "#{Rails.root}/app/serializers/concerns"
+
     config.generators do |g|
       g.test_framework :rspec,
         fixtures: true,

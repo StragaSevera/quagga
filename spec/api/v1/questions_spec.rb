@@ -1,18 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Questions API', type: :request do
-  describe 'GET /index' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access_token' do
-        get '/api/v1/questions', format: :json
-        expect(response.status).to eq 401
-      end
-
-      it 'returns 401 status if access_token is invalid' do
-        get '/api/v1/questions', format: :json, access_token: '1234'
-        expect(response.status).to eq 401
-      end
-    end
+  describe 'GET /' do
+    it_behaves_like 'unauthorized api', '/api/v1/questions'
 
     context 'authorized' do
       let(:access_token) { create(:doorkeeper_access_token) }
@@ -53,6 +43,46 @@ RSpec.describe 'Questions API', type: :request do
           end
         end
       end
+    end
+  end
+
+  describe 'GET /show' do
+    # Указание ID "наживую", возможно, вызовет баги. Но по-другому без извращения с блоками before 
+    # в ссылку его не вставить...
+    let!(:question) { create(:question, id: 1) }
+    let!(:attachments) { create_list(:attachment, 2, attachable_id: question.id, attachable_type: "Question") }
+    # Чтобы не было проблем с сортировкой, берем через скоуп
+    let(:attachment) { question.attachments.first }
+
+    it_behaves_like 'unauthorized api', "/api/v1/questions/1"
+
+    context 'authorized' do
+      let(:access_token) { create(:doorkeeper_access_token) }
+
+      before { get "/api/v1/questions/1", format: :json, access_token: access_token.token }
+
+      it 'returns 200 status code' do
+        expect(response).to be_success
+      end
+
+      %w(id title body created_at updated_at).each do |attr|
+        it "question object contains #{attr}" do
+          expect(response.body).to be_json_eql(question.send(attr.to_sym).to_json).at_path("question_show/#{attr}")
+        end
+      end
+
+      it 'returns list of attachments' do
+        expect(response.body).to have_json_size(2).at_path("question_show/attachments")
+      end
+
+      it 'returns id of attachment' do
+        expect(response.body).to be_json_eql(attachment.id.to_json).at_path("question_show/attachments/0/id")
+      end
+
+      # Очень некрасиво, но никакие манипуляции с @request.host и host! не помогли
+      it 'returns url of attachment' do
+        expect(response.body).to be_json_eql("http://localhost:3000#{attachment.file.url}".to_json).at_path("question_show/attachments/0/url")
+      end 
     end
   end
 end 
