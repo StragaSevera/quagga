@@ -51,8 +51,10 @@ RSpec.describe 'Questions API', type: :request do
     # в ссылку его не вставить...
     let!(:question) { create(:question, id: 1) }
     let!(:attachments) { create_list(:attachment, 2, attachable_id: question.id, attachable_type: "Question") }
+    let!(:comments) { create_list(:comment, 2, commentable_id: question.id, commentable_type: "Question") }
     # Чтобы не было проблем с сортировкой, берем через скоуп
-    let(:attachment) { question.attachments.first }
+    let!(:attachment) { question.attachments.first }
+    let!(:comment) { question.comments.first }
 
     it_behaves_like 'unauthorized api', "/api/v1/questions/1"
 
@@ -71,18 +73,32 @@ RSpec.describe 'Questions API', type: :request do
         end
       end
 
-      it 'returns list of attachments' do
-        expect(response.body).to have_json_size(2).at_path("question_show/attachments")
+      context 'attachments' do
+        it 'returns list of attachments' do
+          expect(response.body).to have_json_size(2).at_path("question_show/attachments")
+        end
+
+        it 'returns id of attachment' do
+          expect(response.body).to be_json_eql(attachment.id.to_json).at_path("question_show/attachments/0/id")
+        end
+
+        # Очень некрасиво, но никакие манипуляции с @request.host и host! не помогли
+        it 'returns url of attachment' do
+          expect(response.body).to be_json_eql("http://localhost:3000#{attachment.file.url}".to_json).at_path("question_show/attachments/0/url")
+        end         
       end
 
-      it 'returns id of attachment' do
-        expect(response.body).to be_json_eql(attachment.id.to_json).at_path("question_show/attachments/0/id")
-      end
+      context 'comments' do
+        it 'returns list of comments' do
+          expect(response.body).to have_json_size(2).at_path("question_show/comments")
+        end
 
-      # Очень некрасиво, но никакие манипуляции с @request.host и host! не помогли
-      it 'returns url of attachment' do
-        expect(response.body).to be_json_eql("http://localhost:3000#{attachment.file.url}".to_json).at_path("question_show/attachments/0/url")
-      end 
+        %w(id user_id body created_at updated_at).each do |attr|
+          it "contains #{attr}" do
+            expect(response.body).to be_json_eql(comment.send(attr.to_sym).to_json).at_path("question_show/comments/0/#{attr}")
+          end
+        end
+      end
     end
   end
 end 
