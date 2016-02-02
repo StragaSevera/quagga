@@ -63,6 +63,11 @@ gem 'unicode_utils'
 gem 'devise'
 gem 'cancancan'
 
+# JSON
+gem 'active_model_serializers'
+gem 'oj'
+gem 'oj_mimic_json'
+
 # Attachment handling
 gem 'carrierwave'
 gem 'remotipart'

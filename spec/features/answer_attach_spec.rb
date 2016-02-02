@@ -37,10 +37,10 @@ RSpec.feature "AnswerAttach",
       within '.attachments-list' do
         # Так как тесты должны не зависеть друг от друга, то применяем regexp:
         link = page.find('a', text: 'spec_helper.rb')
-        expect(link[:href]).to match %r!/uploads/attachment/file/*./spec_helper.rb!
+        expect(link[:href]).to match %r!/uploads/attachment/file/.*/spec_helper.rb!
 
         link = page.find('a', text: 'rails_helper.rb')
-        expect(link[:href]).to match %r!/uploads/attachment/file/*./rails_helper.rb!
+        expect(link[:href]).to match %r!/uploads/attachment/file/.*/rails_helper.rb!
       end
     end
   end
