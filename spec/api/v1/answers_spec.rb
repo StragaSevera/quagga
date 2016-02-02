@@ -25,11 +25,7 @@ RSpec.describe 'Answers API', type: :request do
         expect(response.body).to have_json_size(2).at_path("answers")
       end
 
-      %w(id body created_at updated_at).each do |attr|
-        it "answer object contains #{attr}" do
-          expect(response.body).to be_json_eql(answer.send(attr.to_sym).to_json).at_path("answers/0/#{attr}")
-        end
-      end
+      it_behaves_like "json list", %w(id body created_at updated_at), :answer, "answers/0/"
     end
   end
 
