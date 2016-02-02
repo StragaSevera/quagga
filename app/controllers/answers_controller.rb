@@ -15,11 +15,11 @@ class AnswersController < ApplicationController
   end
 
   def create
-    respond_with @answer = @question.answers.create(answer_params)
+    respond_with @answer = @question.answers.create(answer_params.merge({user_id: current_user.id}))
   end
 
   def update
-    @answer.update(answer_params)
+    @answer.update(answer_params.merge({user_id: current_user.id}))
     respond_with @answer
   end
 
@@ -42,6 +42,6 @@ class AnswersController < ApplicationController
     end
 
     def answer_params
-      params.require(:answer).permit(:body, attachments_attributes: [:file]).merge({user_id: current_user.id})
+      params.require(:answer).permit(:body, attachments_attributes: [:file])
     end
 end

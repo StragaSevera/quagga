@@ -13,7 +13,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def create
-    @answer = current_resource_owner.answers.create(answer_params)
+    @answer = current_resource_owner.answers.create(answer_params.merge({question_id: params[:question_id]}))
     respond_with @answer, serializer: AnswerShowSerializer
   end
 
@@ -23,6 +23,6 @@ class Api::V1::AnswersController < Api::V1::BaseController
     end
 
     def answer_params
-      params.require(:answer).permit(:body).merge({question_id: params[:question_id]})
+      params.require(:answer).permit(:body)
     end
 end
