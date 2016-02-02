@@ -13,9 +13,9 @@ RSpec.describe 'Answers API', type: :request do
       let(:access_token) { create(:doorkeeper_access_token) }
       let!(:answers) { create_list(:answer_multi, 2, question: question) }
       # Чтобы не было проблем с сортировкой, берем через скоуп
-      let(:answer) { question.answers.first }
+      let!(:answer) { question.answers.first }
 
-      before { get '/api/v1/questions/1/answers', format: :json, access_token: access_token.token }
+      before(:each) { get '/api/v1/questions/1/answers', format: :json, access_token: access_token.token }
 
       it 'returns 200 status code' do
         expect(response).to be_success

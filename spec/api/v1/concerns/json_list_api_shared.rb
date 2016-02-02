@@ -2,12 +2,12 @@ require 'rails_helper'
 
 shared_examples_for "json list" do |hash, object, path, match = true|
   hash.each do |attr|
-    it "object #{match ? "contains" : "does not contain"} #{attr}" do
-      object = send(object) if object.is_a? Symbol
+    it "object #{match ? "contains" : "does not contain"} matching #{attr}" do
+      matching_object = send(object)
       if match
-        expect(response.body).to be_json_eql(object.send(attr.to_sym).to_json).at_path(path + attr)
+        expect(response.body).to be_json_eql(matching_object.send(attr.to_sym).to_json).at_path(path + attr)
       else
-        expect(response.body).not_to be_json_eql(object.send(attr.to_sym).to_json).at_path(path + attr)
+        expect(response.body).not_to be_json_eql(matching_object.send(attr.to_sym).to_json).at_path(path + attr)
       end
     end
   end
