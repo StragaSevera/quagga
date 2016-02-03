@@ -81,6 +81,11 @@ RSpec.describe QuestionsController, type: :controller do
           post :create, question: attributes_for(:question)
           expect(response).to redirect_to question_path(assigns(:question))
         end
+
+        it "publishes new question" do
+          expect(PrivatePub).to receive(:publish_to).with("/questions", instance_of(String))
+          post :create, question: attributes_for(:question)
+        end
       end
 
       context 'with invalid attributes' do
@@ -99,6 +104,11 @@ RSpec.describe QuestionsController, type: :controller do
           post :create, question: attributes_for(:question_invalid)
           expect(assigns(:question).errors).not_to be_empty
         end  
+
+        it "does not publish new question" do
+          expect(PrivatePub).not_to receive(:publish_to)
+          post :create, question: attributes_for(:question_invalid)
+        end
       end
     end
 

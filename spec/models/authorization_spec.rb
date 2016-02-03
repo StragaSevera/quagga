@@ -4,6 +4,8 @@ RSpec.describe Authorization, type: :model do
   let(:authorization) { create(:authorization) }
   let(:user) { create(:user) }
 
+  it_behaves_like "b_cryptable"
+
   context "with validations" do
     it { should validate_presence_of :provider }
     it { should validate_presence_of :uid }

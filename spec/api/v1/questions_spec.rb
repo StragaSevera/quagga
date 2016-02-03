@@ -22,11 +22,7 @@ RSpec.describe 'Questions API', type: :request do
         expect(response.body).to have_json_size(2).at_path("questions")
       end
 
-      %w(id title body created_at updated_at).each do |attr|
-        it "question object contains #{attr}" do
-          expect(response.body).to be_json_eql(question.send(attr.to_sym).to_json).at_path("questions/0/#{attr}")
-        end
-      end
+      it_behaves_like "json list", %w(id title body created_at updated_at), :question, "questions/0/"
 
       it 'question object contains short_title' do
         expect(response.body).to be_json_eql(question.title.truncate(10).to_json).at_path("questions/0/short_title")
