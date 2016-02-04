@@ -24,4 +24,12 @@ RSpec.describe Question, type: :model do
     answer.switch_promotion!
     expect(question.best_answer).to eq answer
   end
+
+  # Некрасиво, не спорю. Но мне кажется, что дергать базу, создавая несколько объектов -
+  # еще более некрасиво
+  it "makes correct digest" do
+    Timecop.freeze do
+      expect(Question.digest.where_values.first).to match("created_at >= '#{1.day.ago.to_s(:db)}")
+    end
+  end
 end

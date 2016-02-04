@@ -11,6 +11,10 @@ require 'rspec/rails'
 require 'shoulda/matchers'
 require 'cancan/matchers'
 require 'pry-byebug'
+require 'sidekiq/testing'
+include ActiveJob::TestHelper
+
+Sidekiq::Testing.fake!
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 Dir[File.dirname(__FILE__) + "/models/concerns/*.rb"].each {|f| require f}

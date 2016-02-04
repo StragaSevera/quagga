@@ -1,0 +1,6 @@
+Здравствуйте, товарищ <%= @user.name %>!
+Дайджест свежих вопросов от Quagga:
+
+<%- @questions.each do |question| %>
+  <%= "#{question.title} - #{question_url(question.id)}" %>
+<%- end %>

@@ -39,7 +39,6 @@ RSpec.feature "OauthSignup",
     end
   end
 
-
   feature "signing in by Twitter" do
     context "with valid information" do
       background do
@@ -51,7 +50,11 @@ RSpec.feature "OauthSignup",
         visit new_user_session_path
         click_link "Зайти через Twitter"
         fill_in "E-mail", with: user.email
-        click_button "Отправить"
+
+        perform_enqueued_jobs do
+          click_button "Отправить"
+        end
+
         open_email user.email
         current_email.click_link 'Подтвердить e-mail'
         expect(page).to have_content "Вход в систему выполнен с учётной записью Twitter."
@@ -63,7 +66,11 @@ RSpec.feature "OauthSignup",
         visit new_user_session_path
         click_link "Зайти через Twitter"
         fill_in "E-mail", with: "newauth@example.org"
-        click_button "Отправить"
+
+        perform_enqueued_jobs do
+          click_button "Отправить"
+        end
+        
         open_email "newauth@example.org"
         current_email.click_link 'Подтвердить e-mail'
         expect(page).to have_content "Вход в систему выполнен с учётной записью Twitter."

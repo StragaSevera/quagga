@@ -6,6 +6,8 @@ class Question < ActiveRecord::Base
   has_many :answers, -> { order('best DESC, id DESC') }, dependent: :destroy
   
   has_one :best_answer, -> { where(best: true) }, class_name: 'Answer'
+
+  scope :digest, -> { where("created_at >= ?", 1.day.ago) }
   
   belongs_to :user, required: true
 

@@ -72,6 +72,7 @@ GEM
       activesupport (>= 3.2.0)
       json (>= 1.7)
       mime-types (>= 1.16)
+    chronic (0.10.2)
     cliver (0.3.2)
     cocoon (1.2.6)
     coderay (1.1.0)
@@ -83,6 +84,7 @@ GEM
       execjs
     coffee-script-source (1.10.0)
     concurrent-ruby (1.0.0)
+    connection_pool (2.2.0)
     cookiejar (0.3.0)
     daemons (1.2.3)
     database_cleaner (1.5.1)
@@ -264,6 +266,7 @@ GEM
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     rdoc (4.2.1)
+    redis (3.2.2)
     remotipart (1.2.1)
     request_store (1.3.0)
     responders (2.1.1)
@@ -305,6 +308,10 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (3.1.0)
       activesupport (>= 4.0.0)
+    sidekiq (4.1.0)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      redis (~> 3.2, >= 3.2.1)
     slim (3.0.6)
       temple (~> 0.7.3)
       tilt (>= 1.3.3, < 2.1)
@@ -333,6 +340,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.2)
+    timecop (0.8.0)
     turbolinks (2.5.3)
       coffee-rails
     tzinfo (1.2.2)
@@ -351,6 +359,8 @@ GEM
     websocket-driver (0.6.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
+    whenever (0.9.4)
+      chronic (>= 0.6.3)
     will_paginate (3.1.0)
     xpath (2.0.0)
       nokogiri (~> 1.3)
@@ -403,13 +413,16 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   selectivizr-rails
   shoulda-matchers (~> 3.0)
+  sidekiq
   slim-rails
   spring-commands-rspec
   thin
+  timecop
   turbolinks
   uglifier (>= 1.3.0)
   unicode_utils
   web-console (~> 2.0)
+  whenever
   will_paginate
 
 BUNDLED WITH
