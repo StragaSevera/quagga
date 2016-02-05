@@ -17,6 +17,27 @@ RSpec.describe User, type: :model do
     it { should have_many(:answers) } 
     it { should have_many(:comments) } 
     it { should have_many(:authorizations) } 
+    it { should have_many(:subscriptions).dependent(:destroy) } 
+  end
+
+  context "subscripions" do
+    let!(:user) { create(:user) }
+    let!(:other) { create(:user_multi) }
+    let!(:question) { create(:question, user: other) }
+
+    it "#subscribe_to subscribes correctly" do
+      user.subscribe_to(question)
+      expect(user.subscriptions.first.question).to eq question
+    end
+
+    it "#is_subscribed? correctly handles false" do
+      expect(user).not_to be_subscribed(question)
+    end
+
+    it "#is_subscribed? correctly handles true" do
+      user.subscribe_to(question)
+      expect(user).to be_subscribed(question)
+    end
   end
 
   describe ".find_for_oauth" do

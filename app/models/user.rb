@@ -10,9 +10,18 @@ class User < ActiveRecord::Base
   has_many :answers
   has_many :comments
   has_many :authorizations
+  has_many :subscriptions, dependent: :destroy
 
   validates :name, presence: true, length: { in: 2..30 }
   validates :email, length: { in: 2..200 }
+
+  def subscribe_to(question)
+    subscriptions.create(user_id: self.id, question_id: question.id)
+  end
+
+  def subscribed?(question)
+    self.subscriptions.exists?(question_id: question.id)
+  end
 
   class << self
     def find_for_oauth(auth_hash)

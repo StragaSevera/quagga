@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Question, type: :model do
-  let (:question) { create(:question) }
+  let (:user) { create(:user) }
+  let (:question) { create(:question, user: user) }
 
   context "with validations" do
     it { should validate_presence_of :title }
@@ -11,6 +12,7 @@ RSpec.describe Question, type: :model do
     it { should validate_length_of(:body).is_at_least(10).is_at_most 10.kilobytes }
 
     it { should have_many(:answers).dependent(:destroy) } 
+    it { should have_many(:subscriptions).dependent(:destroy) } 
     it { should belong_to(:user) }
     it { should have_one(:best_answer).conditions(best: true).class_name(:Answer) } 
   end
@@ -31,5 +33,9 @@ RSpec.describe Question, type: :model do
     Timecop.freeze do
       expect(Question.digest.where_values.first).to match("created_at >= '#{1.day.ago.to_s(:db)}")
     end
+  end
+
+  it "should subscribe after create" do
+    expect(question.subscriptions.first.user).to eq user
   end
 end
