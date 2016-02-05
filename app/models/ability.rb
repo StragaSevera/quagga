@@ -27,6 +27,8 @@ class Ability
 
       can :switch_promotion, Answer, question: { user_id: @user.id }
 
+      can :toggle_subscription, Question
+
       can :destroy, Attachment, attachable: { user_id: @user.id }
     end
 

@@ -48,6 +48,8 @@ RSpec.describe Ability do
     it { should be_able_to :create, Answer }
     it { should be_able_to :create, Comment }
 
+    it { should be_able_to :toggle_subscription, Question }
+
     it_should_have_ability_by_user(:update, :question)
     it_should_have_ability_by_user(:update, :answer)
 

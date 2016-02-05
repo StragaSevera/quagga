@@ -1,0 +1,7 @@
+$("#question-edit-errors").html('<%= j render "shared/error_messages", object: @question %>');
+
+<% if @question.errors.empty? %>
+  $('#question-content').html('<%= j render @question, show_body: true %>');
+  toggleQuestionForm();
+  <%= render partial: "shared/flash_messages_js.erb" %>
+<% end %>

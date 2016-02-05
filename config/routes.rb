@@ -31,6 +31,9 @@ Rails.application.routes.draw do
   get "confirm_email", to: "omniauth_email#confirm_email"
 
   resources :questions, concerns: [:votable] do
+    member do
+      patch :toggle_subscription
+    end
     resources :comments, only: [:create]
     resources :answers, only: [:show, :create, :update, :destroy], concerns: [:votable] do
       patch :switch_promotion, on: :member

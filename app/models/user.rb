@@ -15,12 +15,25 @@ class User < ActiveRecord::Base
   validates :name, presence: true, length: { in: 2..30 }
   validates :email, length: { in: 2..200 }
 
+  # Стоит ли для оптимизации переделать на мередачу id? Или выигрыша не будет?
+  def subscribed?(question)
+    subscriptions.exists?(question_id: question.id)
+  end
+
   def subscribe_to(question)
     subscriptions.create(user_id: self.id, question_id: question.id)
   end
 
-  def subscribed?(question)
-    self.subscriptions.exists?(question_id: question.id)
+  def unsubscribe_from(question)
+    subscriptions.where(question_id: question.id).destroy_all
+  end
+
+  def toggle_subscription(question)
+    if subscribed?(question)
+      unsubscribe_from(question)
+    else
+      subscribe_to(question)
+    end
   end
 
   class << self

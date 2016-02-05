@@ -30,6 +30,12 @@ RSpec.describe User, type: :model do
       expect(user.subscriptions.first.question).to eq question
     end
 
+    it "#unsubscribe_from unsubscribes correctly" do
+      user.subscribe_to(question)
+      user.unsubscribe_from(question)
+      expect(user.subscriptions.reload).to be_empty
+    end
+
     it "#is_subscribed? correctly handles false" do
       expect(user).not_to be_subscribed(question)
     end
@@ -37,6 +43,17 @@ RSpec.describe User, type: :model do
     it "#is_subscribed? correctly handles true" do
       user.subscribe_to(question)
       expect(user).to be_subscribed(question)
+    end
+
+    it "#toggle_subscription toggles to true" do
+      user.toggle_subscription(question)
+      expect(user).to be_subscribed(question)
+    end
+
+    it "#toggle_subscription toggles to false" do
+      user.subscribe_to(question)
+      user.toggle_subscription(question)
+      expect(user).not_to be_subscribed(question)
     end
   end
 
