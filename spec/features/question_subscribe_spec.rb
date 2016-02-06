@@ -12,7 +12,7 @@ RSpec.feature "QuestionSubscribe",
   given(:other) { create(:user_multi) }
   given(:question) { create(:question, user: user) }
 
-  xscenario "correctly subscribes and unsubscribes", js: true do
+  scenario "correctly subscribes and unsubscribes", js: true do
     log_in_as(user)
     visit new_question_path
 

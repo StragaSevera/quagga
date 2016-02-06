@@ -47,7 +47,6 @@ class AnswersController < ApplicationController
     def send_email_to_subscribers
       if @answer.persisted?
         @question.subscriptions.find_each do |sub|
-          pp sub.user
           MassNotificationMailer.question_subscribers(sub.user, @question, @answer).deliver_later
         end
       end
