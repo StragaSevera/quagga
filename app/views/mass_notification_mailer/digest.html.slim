@@ -1,5 +1,5 @@
-p Здравствуйте, товарищ #{@user.name}!
-h4 Дайджест свежих вопросов от Quagga:
+h3Здравствуйте, товарищ #{@user.name}!
+p Дайджест свежих вопросов от Quagga:
 ul
 - @questions.each do |question|
   li = link_to question.title, question_url(question.id)

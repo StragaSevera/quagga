@@ -44,6 +44,14 @@ RSpec.describe AnswersController, type: :controller do
           post :create, answer: attributes_for(:answer), question_id: question, format: :js
           expect(response).to render_template :create
         end
+
+        it "sends email to subscribers" do
+          other = create(:user_multi)
+          other.subscribe_to(question)
+          expect do
+            post :create, answer: attributes_for(:answer), question_id: question, format: :js
+          end.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by 2
+        end
       end
 
       context 'with invalid attributes' do

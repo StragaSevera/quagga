@@ -8,4 +8,12 @@ class MassNotificationMailer < ApplicationMailer
 
     mail to: @user.email, subject: "Дайджест свежих вопросов"
   end
+
+  def question_subscribers(user, question, answer)
+    @user = user
+    @question = question
+    @answer = answer
+
+    mail to: @user.email, subject: "На ваш вопрос \"#{@question.title}\" дан новый ответ"  
+  end
 end

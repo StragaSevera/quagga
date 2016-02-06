@@ -13,4 +13,16 @@ class MassNotificationMailerPreview < ActionMailer::Preview
     end
     @mail
   end
+
+  def question_subscribers
+    ActiveRecord::Base.transaction do
+      user = FactoryGirl.create(:user_safe)
+      other = FactoryGirl.create(:user_safe)
+      question = FactoryGirl.create(:question, user_id: user.id)
+      answer = FactoryGirl.create(:answer, question_id: question.id, user_id: other.id)
+      @mail = MassNotificationMailer.question_subscribers(user, question, answer)
+      raise ActiveRecord::Rollback, "Тупой превьюшер не умеет сам откатывать данные =-("
+    end
+    @mail
+  end
 end
