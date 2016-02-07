@@ -30,6 +30,12 @@ RSpec.describe User, type: :model do
       expect(user.subscriptions.first.question).to eq question
     end
 
+    it "#subscribe_to does not subscribe twice" do
+      user.subscribe_to(question)
+      user.subscribe_to(question)
+      expect(user.subscriptions.size).to eq 1
+    end
+
     it "#unsubscribe_from unsubscribes correctly" do
       user.subscribe_to(question)
       user.unsubscribe_from(question)

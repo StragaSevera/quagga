@@ -9,6 +9,8 @@ class Answer < ActiveRecord::Base
   validates :question_id, presence: true 
   validates :body, presence: true, length: { in: 10..10.kilobytes }
 
+  after_save :send_email_to_subscribers
+
   self.per_page = 10
 
   def switch_promotion!
@@ -22,4 +24,9 @@ class Answer < ActiveRecord::Base
       save!
     end
   end
+
+  protected # не private, дабы можно было переопределить в eigenclass
+    def send_email_to_subscribers
+      QuestionSubscribersJob.perform_later(question, self)
+    end
 end

@@ -15,6 +15,24 @@ FactoryGirl.define do
     factory :answer_multi do
       sequence(:body) { |n| "##{n} problem solved!" }
     end
+
+    # Применяем извращения, NC17
+    # Открываем eigenclass для вновь созданного объекта
+    # и заменяем метод send_email_to_subscribers заглушкой,
+    # чтобы он не мешался, за исключением моментов, когда нужен
+    after(:build) { |answer| 
+      class << answer
+        def send_email_to_subscribers; true; end
+      end
+    }
+
+    trait :with_email do
+      after(:build) { |answer| 
+        class << answer
+          def send_email_to_subscribers; super; end
+        end
+      }
+    end
   end
 
 end

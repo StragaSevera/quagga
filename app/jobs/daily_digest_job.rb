@@ -3,9 +3,9 @@ class DailyDigestJob < ActiveJob::Base
 
   def perform
     questions = Question.digest
-    User.find_each.each do |user|
+    User.find_each do |user|
       mail = MassNotificationMailer.digest(user, questions)
-      mail.deliver_now
+      mail.deliver_later
     end
   end
 end

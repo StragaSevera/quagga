@@ -20,19 +20,19 @@ class User < ActiveRecord::Base
     subscriptions.exists?(question_id: question.id)
   end
 
-  def subscribe_to(question)
-    subscriptions.create(user_id: self.id, question_id: question.id)
+  def subscribe_to(question, skip = false)
+    subscriptions.create(user_id: self.id, question_id: question.id) if skip || !subscribed?(question)
   end
 
-  def unsubscribe_from(question)
-    subscriptions.where(question_id: question.id).destroy_all
+  def unsubscribe_from(question, skip = false)
+    subscriptions.where(question_id: question.id).destroy_all if skip || subscribed?(question)
   end
 
   def toggle_subscription(question)
     if subscribed?(question)
-      unsubscribe_from(question)
+      unsubscribe_from(question, true)
     else
-      subscribe_to(question)
+      subscribe_to(question, true)
     end
   end
 

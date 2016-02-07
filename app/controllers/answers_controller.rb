@@ -3,7 +3,6 @@ class AnswersController < ApplicationController
 
   before_action :load_question
   before_action :load_answer, only: [:show, :update, :destroy, :switch_promotion]
-  after_action :send_email_to_subscribers, only: [:create]
 
   authorize_resource
 
@@ -40,16 +39,6 @@ class AnswersController < ApplicationController
 
     def load_answer
       @answer = @question.answers.find(params[:id])
-    end
-
-    # Мне кажется, что отправлять почту - задача уж точно не для модели.
-    # Поэтому помещаю обработчик сюда.
-    def send_email_to_subscribers
-      if @answer.persisted?
-        @question.subscriptions.find_each do |sub|
-          MassNotificationMailer.question_subscribers(sub.user, @question, @answer).deliver_later
-        end
-      end
     end
 
     def answer_params
