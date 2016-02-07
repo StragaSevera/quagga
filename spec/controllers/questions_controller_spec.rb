@@ -188,6 +188,37 @@ RSpec.describe QuestionsController, type: :controller do
     end    
   end
 
+  describe 'PATCH #toggle_subscription' do
+    describe 'when logged in' do
+      let(:other) { create(:user_multi) }
+      before(:each) { log_in_as other }
+
+      it "correctly switches subscription to true" do
+        patch :toggle_subscription, id: question.id, format: :js
+        expect(other).to be_subscribed(question)
+      end
+
+      it "correctly switches subscription to false" do
+        other.toggle_subscription(question)
+        patch :toggle_subscription, id: question.id, format: :js
+        expect(other).not_to be_subscribed(question)
+      end
+
+      it "renders toggle_subscription template" do
+        patch :toggle_subscription, id: question.id, format: :js
+        expect(response).to render_template :toggle_subscription
+      end
+    end
+
+    context 'when logged out' do
+      before(:each) { patch :toggle_subscription, id: question.id, format: :js}
+                
+      it "renders nothing"  do
+        expect(response.body).to eq "Вам необходимо войти в систему или зарегистрироваться."
+      end
+    end   
+  end
+
   describe 'DELETE #destroy' do
     context 'when logged in' do
       context 'as correct user' do

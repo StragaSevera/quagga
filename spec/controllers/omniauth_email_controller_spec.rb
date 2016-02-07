@@ -42,7 +42,7 @@ RSpec.describe OmniauthEmailController, type: :controller do
         it "sends email to user" do
           expect do
             get(:handle_email, {auth: {email: user.email}}, {unactivated_auth: {"id" => unactivated_auth.id, "token" => unactivated_auth.activation_token}})
-          end.to change(ActionMailer::Base.deliveries, :count).by 1
+          end.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by 1
         end
 
         it "redirects to root" do

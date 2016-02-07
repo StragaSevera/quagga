@@ -27,8 +27,11 @@
               =<> link_to "редактировать", question_path(question.id, edit: 1)
           - if can? :destroy, question
             | |
-            =< link_to "удалить", question, method: :delete,
+            =<> link_to "удалить", question, method: :delete,
                        data: { confirm: "Вы уверены, что хотите удалить запись \"#{question.title}?\"" }
+          - if can? :toggle_subscription, question
+            | |
+            =<> link_to subscription_text(question), toggle_subscription_question_path(question), method: :patch, id: "question-#{question.id}-toggle-subscription", remote: true
       - if show_body
         = render 'attachments/attachment_list', object: question
         

@@ -17,6 +17,50 @@ RSpec.describe User, type: :model do
     it { should have_many(:answers) } 
     it { should have_many(:comments) } 
     it { should have_many(:authorizations) } 
+    it { should have_many(:subscriptions).dependent(:destroy) } 
+  end
+
+  context "subscripions" do
+    let!(:user) { create(:user) }
+    let!(:other) { create(:user_multi) }
+    let!(:question) { create(:question, user: other) }
+
+    it "#subscribe_to subscribes correctly" do
+      user.subscribe_to(question)
+      expect(user.subscriptions.first.question).to eq question
+    end
+
+    it "#subscribe_to does not subscribe twice" do
+      user.subscribe_to(question)
+      user.subscribe_to(question)
+      expect(user.subscriptions.size).to eq 1
+    end
+
+    it "#unsubscribe_from unsubscribes correctly" do
+      user.subscribe_to(question)
+      user.unsubscribe_from(question)
+      expect(user.subscriptions.reload).to be_empty
+    end
+
+    it "#is_subscribed? correctly handles false" do
+      expect(user).not_to be_subscribed(question)
+    end
+
+    it "#is_subscribed? correctly handles true" do
+      user.subscribe_to(question)
+      expect(user).to be_subscribed(question)
+    end
+
+    it "#toggle_subscription toggles to true" do
+      user.toggle_subscription(question)
+      expect(user).to be_subscribed(question)
+    end
+
+    it "#toggle_subscription toggles to false" do
+      user.subscribe_to(question)
+      user.toggle_subscription(question)
+      expect(user).not_to be_subscribed(question)
+    end
   end
 
   describe ".find_for_oauth" do

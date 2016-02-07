@@ -10,9 +10,31 @@ class User < ActiveRecord::Base
   has_many :answers
   has_many :comments
   has_many :authorizations
+  has_many :subscriptions, dependent: :destroy
 
   validates :name, presence: true, length: { in: 2..30 }
   validates :email, length: { in: 2..200 }
+
+  # Стоит ли для оптимизации переделать на мередачу id? Или выигрыша не будет?
+  def subscribed?(question)
+    subscriptions.exists?(question_id: question.id)
+  end
+
+  def subscribe_to(question, skip = false)
+    subscriptions.create(user_id: self.id, question_id: question.id) if skip || !subscribed?(question)
+  end
+
+  def unsubscribe_from(question, skip = false)
+    subscriptions.where(question_id: question.id).destroy_all if skip || subscribed?(question)
+  end
+
+  def toggle_subscription(question)
+    if subscribed?(question)
+      unsubscribe_from(question, true)
+    else
+      subscribe_to(question, true)
+    end
+  end
 
   class << self
     def find_for_oauth(auth_hash)

@@ -43,4 +43,10 @@ RSpec.describe Answer, type: :model do
   it "has default zero score" do
     expect(answer.score).to eq 0
   end
+
+  it "sends email to subscribers" do
+    expect do
+      create(:answer, :with_email, question: question)
+    end.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by 1
+  end
 end

@@ -20,4 +20,12 @@ FactoryGirl.define do
       sequence(:email) { |n| "user#{n}@example.org" }
     end
   end
+
+  factory :user_safe, class: User do
+    sequence(:name) { |n| "Safe User ##{n}" }
+    sequence(:email) { |n| "safe_user#{n}@example.org" }
+    password 'password'
+    password_confirmation 'password'
+    admin false
+  end
 end

@@ -44,6 +44,12 @@ RSpec.describe AnswersController, type: :controller do
           post :create, answer: attributes_for(:answer), question_id: question, format: :js
           expect(response).to render_template :create
         end
+
+        it "sends email to subscribers" do
+          expect do
+            post :create, answer: attributes_for(:answer), question_id: question, format: :js
+          end.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by 1
+        end
       end
 
       context 'with invalid attributes' do
@@ -62,7 +68,13 @@ RSpec.describe AnswersController, type: :controller do
         it "shows error message" do
           post :create, answer: attributes_for(:answer_invalid), question_id: question, format: :js
           expect(assigns(:answer).errors).not_to be_empty
-        end  
+        end 
+
+        it "does not send email to subscribers" do
+          expect do
+            post :create, answer: attributes_for(:answer_invalid), question_id: question, format: :js
+          end.not_to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size)
+        end 
       end
     end
 

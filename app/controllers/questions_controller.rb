@@ -1,14 +1,14 @@
 class QuestionsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
   
-  before_action :load_question, only: [:show, :update, :destroy]
+  before_action :load_question, only: [:show, :update, :destroy, :toggle_subscription]
   before_action :load_answers, only: [:show]
 
   authorize_resource
 
   after_action :publish_question, only: [:create]
 
-  respond_to :js, only: :update
+  respond_to :js, only: [:update, :toggle_subscription]
 
   include Voted
 
@@ -35,6 +35,11 @@ class QuestionsController < ApplicationController
 
   def destroy
     respond_with @question.destroy
+  end
+
+  def toggle_subscription
+    current_user.toggle_subscription(@question)
+    respond_with @question
   end
 
   private

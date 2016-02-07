@@ -1,0 +1,4 @@
+Здравствуйте, товарищ <%= @user.name %>!
+На ваш вопрос <%= @question.title %> (<%= question_url(@question.id) %>) пользователем <%= @answer.user.name %> дан следующий ответ:
+
+<%= @answer.body %>
