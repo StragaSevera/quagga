@@ -36,6 +36,15 @@ ru:
     previous_label: "&#8592; Назад"
     next_label: "Вперед &#8594;"
     page_gap: "&hellip;"
+  search:
+    make_search:
+      query: "Текст:"
+      scope: "Область поиска:"
+      all: "везде"
+      question: "вопросы"
+      answer: "ответы"
+      comment: "комментарии"
+      user: "пользователи"
   custom_errors:
     zero: "не обнаружено ошибок"
     one: "обнаружена ошибка"

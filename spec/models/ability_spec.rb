@@ -25,6 +25,8 @@ RSpec.describe Ability do
     it { should be_able_to :read, Question }
     it { should be_able_to :read, Answer }
     it { should be_able_to :read, Comment }
+
+    it { should be_able_to :make_search, Search }
   end
 
   describe 'for admin' do
@@ -47,6 +49,8 @@ RSpec.describe Ability do
     it { should be_able_to :create, Question }
     it { should be_able_to :create, Answer }
     it { should be_able_to :create, Comment }
+
+    it { should be_able_to :make_search, Search }
 
     it { should be_able_to :toggle_subscription, Question }
 

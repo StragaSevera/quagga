@@ -29,6 +29,16 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.include FeatureMacros, type: :feature
+
+  config.include SphinxHelpers, type: :feature
+
+  config.before(:suite) do
+    # Ensure sphinx directories exist for the test environment
+    ThinkingSphinx::Test.init
+    # Configure and start Sphinx, and automatically
+    # stop Sphinx at the end of the test suite.
+    ThinkingSphinx::Test.start_with_autostop
+  end
 end
 
 Capybara::Screenshot.autosave_on_failure = false
