@@ -2,5 +2,3 @@ development:
   mysql41: 9312
 test:
   mysql41: 9313
-production:
-  mysql41: 9312
