@@ -34,5 +34,6 @@ class Ability
 
     def guest_abilities
       can :read, [Answer, Comment, Question]
+      can :make_search, [Search]
     end
 end

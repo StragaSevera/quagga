@@ -30,6 +30,12 @@ Rails.application.routes.draw do
   post "handle_email", to: "omniauth_email#handle_email"
   get "confirm_email", to: "omniauth_email#confirm_email"
 
+  # Как-то не очень красиво. Но разбивать на два экшна не хочется,
+  # а если отправлять запрос гетом, то в адресной строке красуется
+  # UTF-галочка и прочая фигня
+  get "search", to: 'search#make_search'
+  post "search", to: 'search#make_search'
+
   resources :questions, concerns: [:votable] do
     member do
       patch :toggle_subscription

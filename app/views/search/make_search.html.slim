@@ -1,0 +1,32 @@
+- provide :title
+.content-block#search-block
+  .row
+    .col-middle
+      = form_tag search_url do
+        .form-group
+          = label_tag :query, t('.query')
+          = text_field_tag :query, '', class: 'form-control'
+        .form-group
+          = label_tag :scope, t('.scope')
+          = select_search_scope
+        = submit_tag "Отправить", class: "btn btn-primary"
+  - unless @result.nil?
+    - if @result.empty?
+      .row
+        .col-middle
+          p К сожалению, поиск не дал результатов.
+    - else
+      .row
+        .col-full
+          h2 Результаты поиска: 
+      .results-subblock  
+        - @result.each do |item|
+          .row.result-row
+            .col-full
+              .result-title
+                = result_title(item)
+              .result-body
+                = result_body(item)          
+    .row
+      .col-middle.text-center
+        = will_paginate @result
