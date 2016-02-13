@@ -12,9 +12,8 @@ require 'shoulda/matchers'
 require 'cancan/matchers'
 require 'pry-byebug'
 require 'sidekiq/testing'
-include ActiveJob::TestHelper
 
-Sidekiq::Testing.fake!
+Sidekiq::Testing.inline!
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 Dir[File.dirname(__FILE__) + "/models/concerns/*.rb"].each {|f| require f}
@@ -31,7 +30,10 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include Devise::TestHelpers, type: :controller
   config.include ControllerMacros, type: :controller
+  config.include ActiveJob::TestHelper
 end
+
+
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|

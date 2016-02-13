@@ -33,18 +33,19 @@ RSpec.feature "QuestionSubscribe",
   end
 
   scenario "correctly receives notification", js: true do
+    expect(user).to be_subscribed(question)
     log_in_as(other)
     visit question_path(question)
     fill_in 'Ответ', with: "I want to send you e-mail!"
 
     perform_enqueued_jobs do
       click_button 'Отправить'
+      sleep 0.5
+      open_email user.email
+      expect(current_email).to have_content("I want to send you e-mail!")
+      expect(current_email).to have_content(user.name)
+      expect(current_email).to have_content(other.name)
+      expect(current_email).to have_content(question.title)
     end
-
-    open_email user.email
-    expect(current_email).to have_content("I want to send you e-mail!")
-    expect(current_email).to have_content(user.name)
-    expect(current_email).to have_content(other.name)
-    expect(current_email).to have_content(question.title)
   end
 end
