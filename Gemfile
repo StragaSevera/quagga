@@ -4,6 +4,9 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
 
+# Dotenv
+gem 'dotenv-rails', :require => 'dotenv/rails-now'
+
 # Use postgresql as the database for Active Record
 gem 'pg'
 
@@ -96,10 +99,6 @@ gem 'whenever'
 # Full-text search
 gem 'mysql2'
 gem 'thinking-sphinx'
-
-# # Dotenv
-gem 'dotenv'
-gem 'dotenv-deployment', require: 'dotenv/deployment'
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
