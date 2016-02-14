@@ -23,6 +23,7 @@
 
 # Ignore rbenv-vars
 *.rbenv-vars
+*.env
 
 # Ignore Spring files.
 /spring/*.pid
