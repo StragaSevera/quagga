@@ -1,6 +1,6 @@
 class Comment < ActiveRecord::Base
   belongs_to :user, required: true
-  belongs_to :commentable, polymorphic: true
+  belongs_to :commentable, polymorphic: true, touch: true
 
   validates :body, presence: true, length: { in: 5..1.kilobyte }
 

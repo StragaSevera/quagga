@@ -6,14 +6,16 @@
       = render 'answers/bests', answer: answer
 
     .votable-text
-      .answer-body
-        = simple_format answer.body
+      - cache ['answer_body', answer] do
+        .answer-body
+          = simple_format answer.body
         
 
       .answer-info 
-        => link_to publication_date(answer.created_at), question_answer_path(question_id: answer.question.id, id:answer.id)
-        | |
-        =<> answer.user.name
+        - cache ['answer_info', answer] do
+          => link_to publication_date(answer.created_at), question_answer_path(question_id: answer.question.id, id:answer.id)
+          | |
+          =<> answer.user.name
         - if render_links
           - if can? :update, answer
             | |

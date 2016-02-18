@@ -7,17 +7,19 @@
       = render partial: 'shared/votes', locals: { votable: question, poly_list: [question] }
 
     .question-text.votable-text
-      .question-title
-        h2
-          = link_to question.title, question_path(question.id)
-      - if show_body
-        .question-body
-          = simple_format question.body
-    
+      - cache ['question_body', question] do
+        .question-title
+          h2
+            = link_to question.title, question_path(question.id)
+        - if show_body
+          .question-body
+            = simple_format question.body
+      
       .question-info 
-        => link_to publication_date(question.created_at), question_path(question.id)
-        | |
-        =<> question.user.name
+        - cache ['question_info', question] do
+          => link_to publication_date(question.created_at), question_path(question.id)
+          | |
+          =<> question.user.name
         - if render_links
           - if can? :update, question
             | |

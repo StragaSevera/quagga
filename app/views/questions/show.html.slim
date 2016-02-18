@@ -3,6 +3,7 @@
 = subscribe_to "/questions/#{@question.id}/answers"
 = subscribe_to "/questions/#{@question.id}/comments"
 
+
 .content-block#question-block
   #question-content
     = render @question, show_body: true
